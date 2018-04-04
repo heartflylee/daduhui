@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.less"],"names":[],"mappings":"AAEA,WACE,SAAA,SACA,IAAA,KACA,OAAA,EACA,KAAA,EACA,MAAA","file":"../style.css","sourcesContent":["@asideWidth: 100px;\r\n/*aside*/\r\n.asideWrap {\r\n  position: absolute;\r\n  top: 50px;\r\n  bottom: 0;\r\n  left: 0;\r\n  width: @asideWidth;\r\n}\r\n"]}

@@ -16,7 +16,22 @@
     <div class="wrap" id="main">
         <aside-wrap></aside-wrap>
     </div>
-    @@include("../components/aside.html")
+    <template id="asideWrap">
+    <aside class="asideWrap">
+        123
+    </aside>
+</template>
+<script>
+    var AsideWrap = Vue.extend({
+        template: '#asideWrap',
+        data: function () {
+            return {
+
+            }
+        }
+    });
+    Vue.component("AsideWrap", AsideWrap);
+</script>
     <script>
         var vm = new Vue({
             el: '#main',
