@@ -1,0 +1,14 @@
+<div class="message-li" data-toggle="MessageEditor"  data-target=".message-li"  data-backdrop="true">
+    <div class="icon edit-icon"></div>
+    <div class="message-name">
+        @@name
+    </div>
+    <div class="message-main" >
+        <!--<input type="text" placeholder="">-->
+        <div class="message-text" data-value="@@if(value != '点击填写'){@@value}" data-type="@@type" data-name="@@name" @@if(type=='select'){ data-option="@@option"} >
+            <!--<div class="message-block">-->
+                @@value
+            <!--</div>-->
+        </div>
+    </div>
+</div>

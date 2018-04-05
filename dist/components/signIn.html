@@ -1,0 +1,71 @@
+<template id="signIn">
+    <div class="signIn-wrap" v-if="layer">
+        <div class="s-logo"></div>
+        <div class="s-main">
+            <div class="login-box">
+                <form @submit.prevent="login" autocomplete="off">
+                    <div class="input-box">
+                        <input type="text" class="input l-phone" placeholder="请输入手机号" v-model="user.phone"/>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input l-pwd" placeholder="请输入密码" v-model="user.psw"/>
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="btn btn-primary l-submit" value="登 录"/>
+                    </div>
+                </form>
+            </div>
+            <div class="l-bottom">
+                <div class="right">
+                    <a class="a-btn" href="javascript:void(0)" @click="showSignup">注册</a>
+                    <a class="a-btn" href="javascript:void(0);">忘记密码</a>
+                    <div class="l-download">
+                        <label>下载云客APP</label>
+                        <div class="icon">
+                            <i class="android way-icon"></i>
+                            <div class="code-wrap">
+                                <div class="code"></div>
+                            </div>
+                        </div>
+                        <div class="icon">
+                            <i class="ios way-icon"></i>
+                            <div class="code-wrap">
+                                <div class="code"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var signIn = Vue.extend({
+        template: "#signIn",
+        props:['layer'],
+        data: function () {
+            return {
+//                signIn: true,
+                user: {
+                    phone: "",
+                    psw: ""
+                }
+            }
+        },
+        methods: {
+            login: function () {
+                if (this.user.phone.trim() != "" && this.user.psw.trim() != "") {
+                    window.location.href = "index.html";
+                }
+                else {
+                    alert("", "请输入手机号或密码");
+                }
+            },
+            showSignup: function () {
+                console.log(this);
+                this.$emit('layer', 'signUp');
+            }
+        }
+    });
+    Vue.component('signIn', signIn);
+</script>

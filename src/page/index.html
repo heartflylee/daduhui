@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <!--公共-->
+    @@include("../component/common.html",{"style":"normal"})
+    <!--图表-->
+    <script src="js/echarts.min.js"></script>
+    <script src="js/macarons.js"></script>
+    <!-- 日历插件 -->
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcalendar.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    
+<div id="app">
+     <!--header-->
+     <common-head></common-head>
+     <section class="b-main">
+         <!--左侧菜单-->
+         <menu-aside menu="index"></menu-aside>
+         <div class="b-panel">
+                <index-head></index-head>
+                @@include('../component/index/index.html')
+                @@include('../component/index/index1.html')
+         </div>
+     </section>
+    </common-body>
+</div>
+
+<!--左侧导航-->
+@@include('../components/aside.html')
+<!--顶部-->
+@@include('../components/head.html')
+<!--首页顶部筛选-->
+@@include('../components/indexHead.html')
+<!--员工列表-->
+@@include('../components/staffList.html')
+<!--首页右侧环形图-->
+@@include('../components/chartsPie.html')
+
+<script src="js/scripts.js"></script>
+<script src="js/index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<template id="mainTask">
+    <div class="main-right">
+        <div class="small-nav-wrap">
+            <div class="nav-box">
+                <label class="nav-btn" @click="taskAdd">新建任务</label>
+                <div class="nav-right">
+                    <div class="index-select">
+                        <div class="select-show">
+                            <label>全部坐席</label>
+                            <i class="t-arrow icon"></i>
+                        </div>
+                        <div class="select-wrap">
+                            <div class="date-select-box">
+                                <ul>
+                                    <li class="date-select selected">
+                                        全部坐席
+                                    </li>
+                                    <li class="date-select" v-for="seat in seats">
+                                        {{seat.text}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="jqxtable task" id="jqxtable"></div>
+        </div>
+    </div>
+</template>
+<script>
+    var mainTask = Vue.extend({
+        template: '#mainTask',
+        data: function () {
+            return {
+                seats: [
+                    {id: "1", text: "坐席1"},
+                    {id: "2", text: "坐席2"},
+                    {id: "3", text: "坐席3"},
+                    {id: "4", text: "坐席4"}
+                ]
+            }
+        },
+        methods: {
+            taskAdd: function () {
+                console.log("123");
+                vm.$data.layers.taskAdd.show = true;
+            }
+        }
+    });
+    Vue.component('mainTask', mainTask);
+</script>

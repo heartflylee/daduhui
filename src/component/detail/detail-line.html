@@ -1,0 +1,44 @@
+<div class="line-box">
+    <div class="line-time">@@time</div>
+    <div class="line-main">
+        @@if(type == "video"){
+        <div class="line-t">
+            <label class="color color-big">@@editor</label> 与
+            <label class="color">@@customer</label> 进行电话沟通
+        </div>
+        <div class="talk-time">
+            通话时长：1’ 11”<label class="video-box"><i class="icon video" data-url="voice/demo.mp3" data-name="@@customer" data-company="北京联云天下科技有限公司" onclick="audioPlay(this,event)"></i> <i class="icon download" data-url="voice/demo.mp3" onclick="audioDownload(this,event)"></i></label>
+        </div>
+        <div class="line-block">
+            沟通结果：有意向-索要线索
+        </div>
+        <div class="line-block">
+            电话备注：还行
+        </div>
+        }
+        @@if(type == "message"){
+        <div class="line-t">
+            <label class="color color-big">@@editor</label> 给
+            <label class="color">@@customer</label> 发送挂机短信
+        </div>
+        <div class="line-block">
+            短信模板：第一季度拉新短信模板
+        </div>
+        <div class="line-block">
+            短信状态：<label class="color">打开链接</label>
+        </div>
+        }
+        @@if(type == "create"){
+        <div class="line-t">
+            <label class="color color-big">@@editor</label> 创建了联系人
+            <label class="color">@@customer</label>
+        </div>
+        }
+        @@if(type == "company"){
+        <div class="line-t">
+            <label class="color color-big">@@editor</label> 创建了客户
+            <a class="line-href" href="javascript:void(0)">@@customer</a>
+        </div>
+        }
+    </div>
+</div>

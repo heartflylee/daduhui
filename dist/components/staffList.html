@@ -1,0 +1,81 @@
+<template id="staffList">
+    <select class="select-head" v-selectstaff>
+        <option data-img="img/head-all.png" data-manage="false">全部员工</option>
+        <option v-for="staff in staffs" :data-img="staff.img" :data-manage="staff.manage">{{staff.value}}</option>
+        <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+    </select>
+</template>
+<script>
+    var staffList = Vue.extend({
+        template: '#staffList',
+        data: function () {
+            return {
+                staffs: []
+            }
+        },
+        created: function () {
+            var url = "json/staffList.json";
+
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                this.staffs = json;
+            }, function (response) {
+                console.info(response);
+            })
+//            var staffsJson = [
+//                {
+//                    "id":"1",
+//                    "value":"艾云鹤",
+//                    "manage":true,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"2",
+//                    "value":"刘宇",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"3",
+//                    "value":"王佳印",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"4",
+//                    "value":"刘晓辉",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"5",
+//                    "value":"艾云鹤1",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"6",
+//                    "value":"刘宇1",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                }
+//            ];
+//            this.staffs=staffsJson;
+        },
+        directives: {
+            selectstaff:
+                {
+                    update: function (el) {
+                        console.log(el);
+                        selectStaff(el);
+                    }
+                }
+        }
+    });
+    Vue.component('staffList', staffList);
+</script>

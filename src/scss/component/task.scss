@@ -1,0 +1,14 @@
+.task-row{
+  width:500px;
+  margin: 0 auto;
+  @include clearfix;
+  .m-row{
+    width:190px;
+    float: left;
+    //display: inline-block;
+    &:first-child{
+      width:270px;
+      margin-right: 40px;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<div class="m-row">
+    <div class="m-name @@if(required == 'true'){required}">
+        @@name
+    </div>
+    <div class="m-info m-input">
+        @@if (style == "textarea"){
+        <textarea class="textarea" placeholder="请输入@@name"></textarea>
+        }
+        @@if (style == "input"){
+        <input type="text" class="input" placeholder="请输入@@name" @@if(autocomplete == "true"){ data-company="autocomplete" } />
+        }
+        @@if(style == "select"){
+        <select class="select2">
+            @@for(var i = 0; i< select.length ; i++){
+            <option value="">`+select[i]+`</option>
+            }
+        </select>
+        }
+        @@for(var i = 0 ; i < btn.length; i++){
+        <div class="enter-btn `+btn[i].icon+`" data-toggle="modal"><i></i>`+btn[i].text+`</div>
+        }
+    </div>
+</div>

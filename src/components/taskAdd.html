@@ -1,0 +1,114 @@
+<template id="taskAdd">
+    <div class="task-wrap">
+        <input-row :rows="rows.taskName"></input-row>
+        <div class="task-row">
+            <!--<input-row :rows="rows.startTime"></input-row>-->
+            <div class="m-row">
+                <div class="m-name required">
+                    开始时间
+                </div>
+                <div class="m-info m-input">
+                    <input-time :time="rows.startTime.time"></input-time>
+                    <!--<select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">-->
+                    <!--</select2>-->
+                </div>
+            </div>
+            <div class="m-row">
+                <div class="m-name required">
+                    任务周期
+                </div>
+                <div class="m-info m-input">
+                    <select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">
+                    </select2>
+                </div>
+            </div>
+        </div>
+        <div class="task-row">
+            <input-row :rows="rows.preNumber"></input-row>
+            <div class="m-row">
+                <div class="m-name required">
+                    重复次数
+                </div>
+                <div class="m-info m-input">
+                    <select2 :options="rows.repetitions.options" v-model="rows.repetitions.value" name="重复次数">
+                    </select2>
+                </div>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                执行坐席
+            </div>
+            <div class="m-info m-input">
+
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                数据来源
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
+                </select2>
+                <div class="m-tip tip-row">
+                    如果不添加数据来源，坐席将通过 “企业公海” “云客推荐” 等来源查找数据。
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskAdd = Vue.extend({
+        template: '#taskAdd',
+        data: function () {
+            return {
+                rows: {
+                    taskName: {
+                        name: "任务名称", value: "", input: true, required: true
+                    },
+                    startTime: {
+                        name: "开始时间", value: "", input: true, required: true,time:{readonly:true,icon:"time",placeholder:"请选择开始时间",istime:false,format:"YYYY-MM-DD"}
+                    },
+                    preNumber: {
+                        name: "人均电话量", placeholder: "请输入电话数量", value: "", input: true, required: true
+                    },
+                    cycle: {
+                        name: "任务周期",
+                        value: "日",
+                        options: [{id: "日", text: "日"}, {id: "周", text: "周"}, {id: "月", text: "月"}]
+                    },
+                    repetitions: {
+                        name: "重复次数",
+                        value: "不重复",
+                        options: [{id: "不重复", text: "不重复"}, {id: "1", text: "1"}, {id: "2", text: "2"}, {
+                            id: "3",
+                            text: "3"
+                        }, {id: "4", text: "4"}, {id: "5", text: "5"}, {id: "6", text: "6"}, {
+                            id: "7",
+                            text: "7"
+                        }, {id: "8", text: "8"}, {id: "9", text: "9"}, {id: "10", text: "10"}, {
+                            id: "11",
+                            text: "11"
+                        }, {id: "12", text: "12"}]
+                    },
+                    data: {
+                        name: "数据来源",
+                        value: "0",
+                        optiondefault:true,
+                        options: []
+                    },
+                }
+            }
+        },
+        methods:{
+          submit:function () {
+              console.log("新建任务提交");
+          }
+        },
+        components: {
+            'inputRow': inputRow,
+            'inputTime': inputTime
+        }
+    });
+    Vue.component('taskAdd', taskAdd);
+</script>

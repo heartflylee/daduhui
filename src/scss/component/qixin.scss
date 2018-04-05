@@ -1,0 +1,64 @@
+.qixinbao {
+  position: absolute;
+  top: 7px;
+  right: 15px;
+  padding-left: 30px;
+  line-height: 26px;
+  color: #d4d4d4;
+  i {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 22px;
+    height: 26px;
+    &:after {
+      font-family: iconfont;
+      font-style: normal;
+      font-size: 30px;
+      color: #d4d4d4;
+      content: "\e649";
+    }
+  }
+  &.active {
+    cursor: pointer;
+    color: #252834;
+    i:after {
+      color: #252834;
+    }
+  }
+}
+
+//新建客户，企业信息，编辑信息
+.message {
+  padding-top: 20px;
+}
+
+//.m-row {
+//  @include clearfix;
+//  width: 460px;
+//  margin: 0 auto 20px;
+//  font-size: 12px;
+//}
+//
+//.m-name {
+//  float: left;
+//  width: 90px;
+//  line-height: 40px;
+//}
+//
+//.m-info {
+//  margin-left: 92px;
+//  padding: 10px 15px;
+//  line-height: 20px;
+//  min-height: 40px;
+//  border: 1px solid #d4d4d4;
+//  border-radius: 5px;
+//  color: #999;
+//  background: #fff;
+//  &.m-input {
+//    padding: 0;
+//    border: none;
+//    background: none;
+//  }
+//}

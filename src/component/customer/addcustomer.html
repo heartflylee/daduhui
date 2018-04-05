@@ -1,0 +1,11 @@
+<div class="message add-message">
+    @@loop('addcusomerRow.html',[
+    {"name":"公司名称","style":"input","required":"true", "autocomplete":"true","btn":[{"text":"工商信息","icon":"qixinbao"}]},
+    {"name":"联系人姓名","style":"input","required":"true","autocomplete":"false","btn":[{"text":"查重","icon":"EnterSearch"}]},
+    {"name":"联系人手机号","style":"input","required":"true","autocomplete":"false","btn":[]},
+    {"name":"公司地址","style":"input","required":"false","autocomplete":"false","btn":[]},
+    {"name":"公司类型","style":"select","select":["有限责任公司","有限责任公司（自然人投资或控股）"], "required":"false","autocomplete":"false","btn":[]},
+    {"name":"备注","style":"textarea","required":"false","autocomplete":"false","btn":[]}
+    ])
+    <div class="" style="margin-left: 30px">添加更多信息&gt;&gt;</div>
+</div>

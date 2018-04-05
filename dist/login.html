@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link type="image/x-icon" href="img/favicon.ico" rel="icon">
+
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/beAlert.css">
+<link rel="stylesheet" href="css/select2.css">
+
+
+<link rel="stylesheet" href="css/login.css">
+
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource@1.3.4.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/resize.js"></script>
+<script src="js/beAlert.js"></script>
+<script src="js/select2.js"></script>
+<script src="js/drag.js"></script>
+<!--<script src="js/jsDate/laydate.js"></script>-->
+<!--<script src="js/layDate/laydate.js"></script>-->
+<!---->
+<!--<script src="js/login.js"></script>-->
+<!---->
+
+<!--[if lt IE 10]>
+<script type="text/javascript" src="js/html5shiv.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script>
+<script type="text/javascript" src="js/placeholder.js"></script>
+<![endif]-->
+</head>
+<body>
+<div id="app" class="login-wrap">
+    <sign-in @layer="showSignUp" :layer="layer.signIn"></sign-in>
+    <!--注册框-->
+    <transition name="layer">
+        <login-layer :layer="layer.signUp" @close="closeSignUp">
+            <sign-up @company="CompanyShow" @layer="layerShow"></sign-up>
+        </login-layer>
+    </transition>
+
+    <!--注册填写公司名称并调用企信-->
+    <transition name="layer">
+        <login-layer :layer="layer.company" @close="closeSignUp">
+            <login-company @submit="companySubmit" @layer="layerShow"></login-company>
+        </login-layer>
+    </transition>
+
+    <!--调用企信获得的企业信息-->
+    <transition name="layer">
+        <layer :layer="layers.business">
+            <business></business>
+        </layer>
+    </transition>
+    <!--注册同意协议-->
+    <transition name="layer">
+        <layer :layer="layers.statement">
+            <statement></statement>
+        </layer>
+    </transition>
+</div>
+<template id="inputRow">
+    <div class="m-row">
+        <div class="m-name " :class="{required:rows.required}">
+            {{rows.name}}
+        </div>
+        <div class="m-info m-input" v-if="rows.input">
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"/>
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon"><i></i>{{rows.text}}</div>
+        </div>
+        <div class="m-info" v-else>
+            {{rows.value}}
+        </div>
+    </div>
+</template>
+<script>
+    var inputRow = Vue.extend({
+        template: '#inputRow',
+        props: ['rows']
+    });
+//    Vue.component('inputRow',inputRow);
+</script>
+<!--登陆组件-->
+<template id="signIn">
+    <div class="signIn-wrap" v-if="layer">
+        <div class="s-logo"></div>
+        <div class="s-main">
+            <div class="login-box">
+                <form @submit.prevent="login" autocomplete="off">
+                    <div class="input-box">
+                        <input type="text" class="input l-phone" placeholder="请输入手机号" v-model="user.phone"/>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input l-pwd" placeholder="请输入密码" v-model="user.psw"/>
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="btn btn-primary l-submit" value="登 录"/>
+                    </div>
+                </form>
+            </div>
+            <div class="l-bottom">
+                <div class="right">
+                    <a class="a-btn" href="javascript:void(0)" @click="showSignup">注册</a>
+                    <a class="a-btn" href="javascript:void(0);">忘记密码</a>
+                    <div class="l-download">
+                        <label>下载云客APP</label>
+                        <div class="icon">
+                            <i class="android way-icon"></i>
+                            <div class="code-wrap">
+                                <div class="code"></div>
+                            </div>
+                        </div>
+                        <div class="icon">
+                            <i class="ios way-icon"></i>
+                            <div class="code-wrap">
+                                <div class="code"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var signIn = Vue.extend({
+        template: "#signIn",
+        props:['layer'],
+        data: function () {
+            return {
+//                signIn: true,
+                user: {
+                    phone: "",
+                    psw: ""
+                }
+            }
+        },
+        methods: {
+            login: function () {
+                if (this.user.phone.trim() != "" && this.user.psw.trim() != "") {
+                    window.location.href = "index.html";
+                }
+                else {
+                    alert("", "请输入手机号或密码");
+                }
+            },
+            showSignup: function () {
+                console.log(this);
+                this.$emit('layer', 'signUp');
+            }
+        }
+    });
+    Vue.component('signIn', signIn);
+</script>
+<!--注册弹框组件-->
+<template id="loginLayer">
+    <div class="modal" v-if="layer">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="signUp-wrap">
+                    <div class="signUp-close" @click="close('signUp')">
+                        <i>&times;</i>
+                    </div>
+                    <div class="signUp-main">
+                        <div class="s-title">
+                            欢迎注册云客企业版
+                        </div>
+                        <div class="s-box">
+                            <slot></slot>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var loginLayer = Vue.extend({
+        template: "#loginLayer",
+        props:['layer'],
+        data:function(){
+            return {
+//                layer:false
+            }
+        },
+        methods:{
+            close:function(layer){
+                console.log(layer);
+                this.$emit("close",layer)
+            }
+        },
+//        events:{
+//            'signUp':function(layer){
+//                console.log(layer);
+//            }
+//        }
+    });
+    Vue.component('loginLayer',loginLayer);
+</script>
+<!--注册信息组件-->
+<template id="signUp">
+    <form id="f-signUp" @submit.prevent="signUp" autocomplete="off">
+        <div class="s-input-box">
+            <input type="text" class="input" placeholder="请输入手机号" v-model="user.phone"/>
+        </div>
+        <div class="s-input-box">
+            <div class="box-captcha" id="popup-submit">
+                <img src="img/geetest.png"/>
+            </div>
+        </div>
+        <div class="s-input-box">
+            <input type="text" class="input yzm-input" placeholder="请输入验证码"/>
+            <a class="btn yzm-btn" href="javascript:void(0);">获取验证码</a>
+        </div>
+        <div class="s-input-box">
+            <input type="password" class="input" placeholder="请输入密码" v-model="user.psw"/>
+        </div>
+        <div class="s-input-box">
+            <input type="password" class="input" placeholder="请再次输入密码" v-model="user.repsw"/>
+        </div>
+        <div class="s-input-box">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" v-model="agree">
+                    <i></i>同意《
+                    <a class="href" href="javascript:void(0)" @click="statement">云客法律声明及隐私权保护协议</a>
+                    》</label>
+            </div>
+        </div>
+        <div class="s-input-box">
+            <input type="submit" class="btn btn-primary signUp-submit" value="下一步"/>
+        </div>
+    </form>
+
+</template>
+
+<script>
+    var signUp = Vue.extend({
+        template: '#signUp',
+        data: function () {
+            return {
+                user: {
+                    phone: "",
+                    psw: "",
+                    repsw: ""
+                },
+                agree: true
+            }
+        },
+        methods: {
+            signUp: function () {
+                if (this.user.phone.trim() == "") {
+                    alert("", "请输入手机号");
+                    return false;
+                }
+                if (this.user.psw.trim() == "") {
+                    alert("", "请输入密码");
+                    return false;
+                }
+                if (this.user.repsw.trim() == "") {
+                    alert("", "请再次输入密码");
+                    return false;
+                }
+                if (this.user.psw.trim() != this.user.repsw.trim()) {
+                    alert("", "两次密码不同，请重新输入");
+                    return false;
+                }
+                if (!this.agree) {
+                    alert("", "请同意《云客法律声明及隐私权保护协议》");
+                    return false;
+                }
+                console.log("注册提交，下一步");
+                this.$emit('company', 'signUp');
+                return false;
+            },
+            //显示协议
+            statement: function () {
+                console.log("协议");
+                this.$emit('layer', 'statement');
+            }
+        },
+//        events:{
+//            'signUp':function(layer){
+//                console.log(layer);
+//            }
+//        }
+    });
+    Vue.component('signUp', signUp);
+</script>
+<!--注册公司组件-->
+<template id="loginCompany">
+    <form id="f-company" @submit.prevent="submit" autocomplete="off">
+        <div class="s-input-box">
+            <!--<input type="text" class="input" v-model="company" placeholder="请输入公司名称"/>-->
+            <autocomplete id="company" classname="input" name="company" placeholder="请输入公司名称"
+                          url="json/company.json" param="value" limit="5" anchor="value"
+                          @value="comValue"></autocomplete>
+        </div>
+        <div class="s-input-box">
+            <input type="submit" class="btn btn-primary signUp-submit" value="完成注册"/>
+        </div>
+    </form>
+</template>
+
+<script>
+    var loginCompany = Vue.extend({
+        template: '#loginCompany',
+        data: function () {
+            return {
+                company: {
+                    value: "",
+                    Id: ""
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("注册成功");
+                this.$emit('submit', 'true');
+            },
+            comValue: function (data) {
+                console.log(data);
+                this.company.value = data.value;
+                this.company.Id = data.name;
+            }
+        }
+    });
+    Vue.component('loginCompany', loginCompany);
+</script>
+<!--普通弹框组件-->
+<template id="layer">
+    <div class="modal" v-if="layer.show">
+        <div class="layer-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="submit" autocomplete="off">
+                    <div class="modal-header layer-head">
+                        <button type="button" class="close" @click="close">&times;</button>
+                        <h4 class="modal-title">{{layer.title}}</h4>
+                    </div>
+                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
+                        <slot></slot>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click="close">关闭</button>
+                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var layer = Vue.extend({
+        template: '#layer',
+        props: ['layer'],
+        data: function () {
+            return {
+                maxHeight: document.body.clientHeight - 200
+            }
+        },
+        methods: {
+            close: function (layer) {
+                console.log(this.$props);
+                this.$props.layer.show = false;
+                return false;
+            },
+            submit: function () {
+                console.log("彈框提交");
+                console.log(vm.$refs[this.$props.layer.layerName]);
+                vm.$refs[this.$props.layer.layerName].submit();
+                return false;
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            window.onresize = function () {
+                _self.maxHeight = document.body.clientHeight - 200;
+            }
+        },
+        watch: {
+            maxHeight: function (val) {
+                var modalBody = document.getElementsByClassName('modal-body');
+                for (var i = 0; i < modalBody.length; i++) {
+                    modalBody[i].style.maxHeight = val + 'px';
+                }
+            }
+        },
+        updated: function () {
+            var modalDialog = $(this.$el).find(".modal-dialog")[0];
+            $(modalDialog).css({
+                top: ($("body").height() - $(modalDialog).height()) / 2,
+                left: ($("body").width() - $(modalDialog).width()) / 2
+            });
+            $(modalDialog).bg_move({
+                    move: '.modal-header',
+                    closed: '.close'
+                });
+        }
+    });
+
+    Vue.component('layer', layer);
+</script>
+<!--同意协议组件-->
+<template id="statement">
+    <div class="statement">
+        <div class="state-t">一．产品使用</div>
+        <div class="p">
+            未经云客允许，云客内的任何信息及其任何组成部分不得被重新编辑、复制、仿制、抄袭等用于任何商业活动。如果本公司确认用户行为违法或有损本公司的合法利益，则本公司保留包括但不限于拒绝提供服务、冻结或删除会员帐户、采取相关法律措施的权利。
+        </div>
+        <br>
+        <div class="state-t">二．隐私权保护</div>
+        <div class="p">在云客请求用户提供有关个人信息之前，云客会解释这些信息的用途。本公司在合法且经用户同意的前提下，以公平、合法的方式收集必要的用户真实个人资料。</div>
+        <div class="p">本公司有权为安全目的使用您提供的个人资料，诸如监控用户的使用及安全，实施内部控制，以及制备统计数字、进行风险调控。</div>
+        <div class="p">云客将采取合理的安全手段保护用户提供的个人资料，在未得到用户许可之前，不会将用户的任何个人信息提供给任何无关的第三方。</div>
+        <br>
+        <div class="state-t">三．信息来源及使用</div>
+        <div class="p">
+            云客中的信息和内容均来源于公开的各大互联网数据平台及用户的授权提供，所有信息都是公开合法且来源可溯，不包括任何个人或企业未公开的私人信息。云客所提供的信息仅供用户参考，不保证信息的准确性、有效性、及时性或完整性，云客不通过数据谋取任何利润。
+        </div>
+        <div class="p">
+            对所有使用云客信息的用户，云客享有监督权。对任何利用云客内部数据从事非法交易，包括但不限于诈骗、骚扰、买卖等形式，一经发现云客有权利立即调查、冻结或删除会员账户，并主动提交公安机关，积极配合公安机关调查。
+        </div>
+        <br>
+        <div class="state-t">四．免责声明</div>
+        <div class="p">
+            在法律允许的范围内，本公司不承担用户或任何人士就使用或未能使用云客所提供的信息所引致的任何直接、间接、附带、从属、特殊、惩罚性的损害赔偿（包括但不限于收益、预期利润的损失或失去的业务、未实现预期的节减）。
+        </div>
+        <br>
+        <div class="p">在法律许可的最大限度内，本公司声明不作出任何明示或暗示的陈述和保证，包括但不限于有关安全性、准确性、完整性、适销性、无侵权的保证。用户应为使用云客承担全部责任和风险。</div>
+    </div>
+</template>
+<script>
+    var statement = Vue.extend({
+        template: '#statement'
+    });
+    Vue.component('statement', statement)
+</script>
+<!--自动补全组件-->
+<template id="autocomplete">
+    <div class="autocomplete-wrap">
+        <input type="text"
+               :id="id"
+               :class="classname"
+               :name="name"
+               :placeholder="placeholder"
+               v-model="inputmodel"
+               @input="input(inputmodel)"
+               @blur="hideAll"
+               @focus="focus"/>
+        <div class="qixinbao" :class="business" @click="businessShow"><i></i>工商信息</div>
+        <div v-if="showList" :class='"autocomplete autocomplete-"+ name ' :id="'autocomplete-'+ name ">
+            <ul>
+                <li v-for="data in json">
+                    <a href="javascript:void(0)"
+                       @click="selectList(data)">
+                        <b>{{ data[anchor] }}</b>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<script>
+    var autocomplete = Vue.extend({
+        template: '#autocomplete',
+        props: {
+            id: String,
+            classname: String,
+            name: String,
+            placeholder: String,
+
+            //父组件模型名称
+            model: String,
+
+            //JSON数据取值的Key
+            anchor: {
+                type: String,
+                required: true
+            },
+
+            //请求的数据链接
+            url: {
+                type: String,
+                required: true
+            },
+
+            //请求的参数KEY
+            param: {
+                type: String,
+                default: 'q'
+            },
+
+            //拉取的数据个数的限制
+            limit: {
+                type: String,
+                default: 5
+            }
+        },
+
+        data: function () {
+            return {
+                showList: false,
+                inputmodel: '',
+                json: [],
+                focusList: '',
+                business:""
+            }
+        },
+
+        methods: {
+            input: function (val) {
+                this.showList = true;
+                console.log("输入");
+                //触发调用getData方法
+                this.getData(val);
+                this.business="";
+            },
+
+            //隐藏补全列表
+            hideAll: function (e) {
+                var _self=this;
+                //为了让blur方法延迟执行，以便能够成功执行click方法
+                setTimeout(function () {
+                    _self.showList = false;
+                }, 250);
+            },
+
+            //
+            focus: function (e) {
+                this.focusList = 0;
+            },
+
+            //选中列表中的哪一项
+            selectList: function (data) {
+                console.log(data);
+                console.log(JSON.stringify(data));
+
+                //按照指定的JSON键值显示在模型上
+                this.inputmodel = data.value;
+                //传递给父组件中的对象
+                this.showList = false;
+                this.$emit('value',data);
+                this.business="active";
+            },
+
+            //获取数据
+            getData: function (val) {
+                console.log(val);
+                let self = this;
+
+                if (this.url != null) {
+
+                    let ajax = new XMLHttpRequest();
+
+                    ajax.open('GET', `${this.url}?${this.param}=${val}`, true);
+                    ajax.send();
+
+                    ajax.addEventListener('progress', function (data) {
+                        if (data.lengthComputable) {
+                        }
+                    });
+
+                    ajax.addEventListener('loadend', function (data) {
+                        console.log(data);
+                        let json = JSON.parse(this.responseText);
+                        console.log(json);
+                        self.json = json;
+                    });
+
+                }
+            },
+            businessShow:function(){
+                if(this.business ==""){
+                    return false;
+                }
+                vm.$data.layers.business.show = true;
+
+//                this.$emit('business',this.json);
+            }
+
+        }
+    });
+    Vue.component('autocomplete',autocomplete);
+
+</script>
+
+<!--工商信息（企信宝）组件-->
+<template id="business">
+    <div class="message">
+        <!--<business-row :data="company"></business-row>-->
+        <!--<business-row :data="comType"></business-row>-->
+        <!--<business-row :data="industry"></business-row>-->
+        <!--<business-row :data="openName"></business-row>-->
+        <!--<business-row :data="registCapi"></business-row>-->
+        <!--<business-row :data="mainProduce"></business-row>-->
+        <!--<business-row :data="registAdress"></business-row>-->
+        <!--<business-row :data="comAdress"></business-row>-->
+        <!--<business-row :data="telephone"></business-row>-->
+        <input-row :rows="company"></input-row>
+        <input-row :rows="comType"></input-row>
+        <input-row :rows="industry"></input-row>
+        <input-row :rows="openName"></input-row>
+        <input-row :rows="registCapi"></input-row>
+        <input-row :rows="mainProduce"></input-row>
+        <input-row :rows="registAdress"></input-row>
+        <input-row :rows="comAdress"></input-row>
+        <input-row :rows="telephone"></input-row>
+    </div>
+</template>
+
+<script>
+    //    var businessRow = Vue.extend({
+    //        template: '<div class="m-row">\n' +
+    //        '            <div class="m-name">\n' +
+    //        '                {{data.name}}：\n' +
+    //        '            </div>\n' +
+    //        '            <div class="m-info">\n' +
+    //        '                {{data.value}}\n' +
+    //        '            </div>\n' +
+    //        '        </div>',
+    //        props: ['data']
+    //    })
+    var business = Vue.extend({
+        template: '#business',
+        props: [],
+        data: function () {
+            return {
+                company: {
+                    name: "公司名称", value: "", input: false, required: false
+                },
+                comType: {
+                    name: "公司类型", value: "", input: false, required: false
+                },
+                industry: {
+                    name: "行业", value: "", input: false, required: false
+                },
+                openName: {
+                    name: "法定代表人", value: "", input: false, required: false
+                },
+                registCapi: {
+                    name: "注册资金", value: "", input: false, required: false
+                },
+                mainProduce: {
+                    name: "经营范围", value: "", input: false, required: false
+                },
+                registAdress: {
+                    name: "注册地址", value: "", input: false, required: false
+                },
+                comAdress: {
+                    name: "办公地址", value: "", input: false, required: false
+                },
+                telephone: {
+                    name: "电话", value: "", input: false, required: false
+                }
+            }
+        },
+        components: {
+//            'businessRow': businessRow
+            'inputRow': inputRow
+        },
+        created: function () {
+            var url = "json/business.json";
+
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                console.log(data);
+                console.log(json);
+                for (var i = 0; i < json.length; i++) {
+                    this[json[i].name].value = json[i].value;
+                }
+
+//                this.data=eval("(" + json +")");
+            }, function (response) {
+                console.info(response);
+            })
+        }
+    });
+
+    Vue.component('business', business);
+</script>
+<script src="js/login.js"></script>
+</body>
+</html>

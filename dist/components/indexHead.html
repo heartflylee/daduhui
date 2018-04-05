@@ -1,0 +1,64 @@
+<template id="indexHead">
+    <div class="index-select-box">
+        <div class="index-select">
+            <div class="select-show">
+                <label id="select-time">过去7日</label>
+                <i class="t-arrow icon"></i>
+            </div>
+            <div class="select-wrap">
+                <div class="date-select-box">
+                    <ul>
+                        <li v-for="date in list" class="date-select" :class="{'selected':date.select}">
+                            {{date.value}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="date-box">
+                    <div class="datetime" v-Calendar></div>
+                    <input type="hidden" id="startTime"/>
+                    <input type="hidden" id="endTime"/>
+                    <div class="date-btn-box">
+                        <a href="javascript:dateShow();" class="btn btn-primary date-btn">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" select2-wrap index-select">
+            <staff-list></staff-list>
+        </div>
+    </div>
+
+</template>
+<script>
+    var indexHead = Vue.extend({
+        template: "#indexHead",
+        data: function () {
+            return {
+                list: [
+                    {value: "过去7日", select: true},
+                    {value: "过去30日", select: false},
+                    {value: "今日", select: false},
+                    {value: "昨日", select: false},
+                    {value: "全部", select: false}
+                ],
+                selection: {}
+            }
+        },
+        directives: {
+            Calendar: function (el) {
+                $(el).jqxCalendar('setRange', new Date(), new Date());
+                $(el).jqxCalendar({width: 220, height: 220, selectionMode: 'range', culture: 'ch-CN'});
+                $(el).jqxCalendar({firstDayOfWeek: 1});
+                $(el).jqxCalendar('setMaxDate', new Date());
+                $(el).on('change', function (event) {
+                    console.log(event);
+                    var selection = event.args.range;
+                    $("#startTime").val(selection.from.toLocaleDateString());
+                    $("#endTime").val(selection.to.toLocaleDateString());
+                });
+
+            }
+        }
+    });
+    Vue.component('indexHead', indexHead);
+</script>

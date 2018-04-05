@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    @@include("../component/common.html",{"style":"login"})
+</head>
+<body>
+<div id="app" class="login-wrap">
+    <sign-in @layer="showSignUp" :layer="layer.signIn"></sign-in>
+    <!--注册框-->
+    <transition name="layer">
+        <login-layer :layer="layer.signUp" @close="closeSignUp">
+            <sign-up @company="CompanyShow" @layer="layerShow"></sign-up>
+        </login-layer>
+    </transition>
+
+    <!--注册填写公司名称并调用企信-->
+    <transition name="layer">
+        <login-layer :layer="layer.company" @close="closeSignUp">
+            <login-company @submit="companySubmit" @layer="layerShow"></login-company>
+        </login-layer>
+    </transition>
+
+    <!--调用企信获得的企业信息-->
+    <transition name="layer">
+        <layer :layer="layers.business">
+            <business></business>
+        </layer>
+    </transition>
+    <!--注册同意协议-->
+    <transition name="layer">
+        <layer :layer="layers.statement">
+            <statement></statement>
+        </layer>
+    </transition>
+</div>
+@@include('../components/inputRow.html')
+<!--登陆组件-->
+@@include('../components/signIn.html')
+<!--注册弹框组件-->
+@@include('../components/loginLayer.html')
+<!--注册信息组件-->
+@@include('../components/signUp.html')
+<!--注册公司组件-->
+@@include('../components/loginCompany.html')
+<!--普通弹框组件-->
+@@include('../components/layer.html')
+<!--同意协议组件-->
+@@include('../components/statement.html')
+<!--自动补全组件-->
+@@include('../components/autocomplete.html')
+<!--工商信息（企信宝）组件-->
+@@include('../components/business.html')
+<script src="js/login.js"></script>
+</body>
+</html>

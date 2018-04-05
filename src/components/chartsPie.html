@@ -1,0 +1,35 @@
+<template id="chartsPie">
+    <div class="charts-li">
+        <div class="charts-t">{{charts.title}}</div>
+        <div class="charts" v-chart="data"></div>
+    </div>
+</template>
+<script>
+    var chartsPie = Vue.extend({
+        template: '#chartsPie',
+        props: ['charts'],
+        data: function () {
+            return {
+                data: []
+            }
+        },
+        created: function () {
+            var url = this.$props.charts.url;
+
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                this.data = json;
+            }, function (response) {
+                console.info(response);
+            })
+        },
+        directives: {
+            chart: {
+                update: function (el, data) {
+                    chartsPie(el, data.value);
+                }
+            }
+        }
+    });
+    Vue.component('chartsPie', chartsPie);
+</script>

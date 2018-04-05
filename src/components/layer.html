@@ -1,0 +1,73 @@
+<template id="layer">
+    <div class="modal" v-if="layer.show">
+        <div class="layer-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="submit" autocomplete="off">
+                    <div class="modal-header layer-head">
+                        <button type="button" class="close" @click="close">&times;</button>
+                        <h4 class="modal-title">{{layer.title}}</h4>
+                    </div>
+                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
+                        <slot></slot>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click="close">关闭</button>
+                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var layer = Vue.extend({
+        template: '#layer',
+        props: ['layer'],
+        data: function () {
+            return {
+                maxHeight: document.body.clientHeight - 200
+            }
+        },
+        methods: {
+            close: function (layer) {
+                console.log(this.$props);
+                this.$props.layer.show = false;
+                return false;
+            },
+            submit: function () {
+                console.log("彈框提交");
+                console.log(vm.$refs[this.$props.layer.layerName]);
+                vm.$refs[this.$props.layer.layerName].submit();
+                return false;
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            window.onresize = function () {
+                _self.maxHeight = document.body.clientHeight - 200;
+            }
+        },
+        watch: {
+            maxHeight: function (val) {
+                var modalBody = document.getElementsByClassName('modal-body');
+                for (var i = 0; i < modalBody.length; i++) {
+                    modalBody[i].style.maxHeight = val + 'px';
+                }
+            }
+        },
+        updated: function () {
+            var modalDialog = $(this.$el).find(".modal-dialog")[0];
+            $(modalDialog).css({
+                top: ($("body").height() - $(modalDialog).height()) / 2,
+                left: ($("body").width() - $(modalDialog).width()) / 2
+            });
+            $(modalDialog).bg_move({
+                    move: '.modal-header',
+                    closed: '.close'
+                });
+        }
+    });
+
+    Vue.component('layer', layer);
+</script>

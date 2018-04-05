@@ -1,0 +1,28 @@
+<template id="commnBody">
+    <div class="bodyWrap">
+        <!--header-->
+        <common-head></common-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="index"></menu-aside>
+            <div class="b-panel">
+                <slot></slot>
+            </div>
+        </section>
+    </div>
+</template>
+
+<script>
+    var commonBody = Vue.extend({
+        template: '#commonBody',
+        data: function () {
+            return {
+
+            }
+        },
+        methods: {
+
+        }
+    });
+    Vue.component('commonBody', commonBody);
+</script>

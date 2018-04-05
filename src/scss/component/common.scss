@@ -1,0 +1,319 @@
+@charset "utf-8";
+@import "vars";
+
+%box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+@mixin icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+}
+
+@function rem($number) {
+  @return ($number/$htmlfontsize)*1rem;
+}
+
+//--------单位转换-----------
+@mixin font-size($font-size) {
+  font-size: $font-size;
+  [data-dpr="2"] & {
+    font-size: $font-size * 2;
+  }
+  [data-dpr="3"] & {
+    font-size: $font-size * 3;
+  }
+}
+
+//----------字体大小--------
+//是否支持某个浏览器的前缀，如果你不想支持，可以设置为false
+//----------------------------
+$prefix-for-webkit: true !default;
+$prefix-for-mozilla: true !default;
+$prefix-for-microsoft: true !default;
+$prefix-for-opera: true !default;
+$prefix-for-spec: true !default; // 标准版
+// prefixer
+//----------------------------
+@mixin prefixer($property, $value, $prefixes) {
+  @each $prefix in $prefixes {
+    @if $prefix == webkit and $prefix-for-webkit == true {
+      -webkit-#{$property}: $value;
+    } @else if $prefix == moz and $prefix-for-mozilla == true {
+      -moz-#{$property}: $value;
+    } @else if $prefix == ms and $prefix-for-microsoft == true {
+      -ms-#{$property}: $value;
+    } @else if $prefix == o and $prefix-for-opera == true {
+      -o-#{$property}: $value;
+    } @else if $prefix == spec and $prefix-for-spec == true {
+      #{$property}: $value;
+    } @else {
+      @warn "Unrecognized prefix: #{$prefix}";
+    }
+  }
+}
+
+@mixin compatible($style, $value) {
+  @include prefixer($style, $value, spec webkit moz o ms); //
+}
+
+@mixin borderradius($width) {
+  @include compatible(border-radius, $width);
+}
+
+@mixin boxshadow($args) {
+  @include compatible(box-shadow, $args);
+}
+
+@mixin animation($args) {
+  @include compatible(animation, $args);
+}
+
+@mixin transform($value) {
+  @include compatible(transform, $value);
+}
+
+@mixin opacity($value) {
+  @include compatible(opacity, $value);
+}
+
+//定义animation的keyframes
+@mixin keyframes($name, $prefixes) {
+  @each $prefix in $prefixes {
+    @if $prefix == webkit and $prefix-for-webkit == true {
+      @-webkit-keyframes #{$name} {
+        @content;
+      }
+    } @else if $prefix == moz and $prefix-for-mozilla == true {
+      @-moz-keyframes #{$name} {
+        @content;
+      }
+    } @else if $prefix == ms and $prefix-for-microsoft == true {
+      @-ms-keyframes #{$name} {
+        @content;
+      }
+    } @else if $prefix == o and $prefix-for-opera == true {
+      @-o-keyframes #{$name} {
+        @content;
+      }
+    } @else if $prefix == spec and $prefix-for-spec == true {
+      @keyframes #{$name} {
+        @content;
+      }
+    } @else {
+      @warn "Unrecognized prefix: #{$prefix}";
+    }
+  }
+}
+
+//-----------兼容-------------
+$lte7: true;
+@mixin clearfix {
+  //  &:after {
+  //      display: table;
+  //      content: "";
+  //      clear: both;
+  //  }
+  @if $lte7 {
+    *zoom: 1;
+  }
+  &:after,
+  &:before {
+    content: "";
+    display: table;
+    font: 0/0 a;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+%clearfix {
+  @if $lte7 {
+    *zoom: 1;
+  }
+  &:after,
+  &:before {
+    content: "";
+    display: table;
+    font: 0/0 a;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+//--------清除浮动cleafix---------
+@mixin calc($style, $percentage, $width) {
+  #{$style}: -webkit-calc(#{$percentage} - #{$width}) !important;
+  #{$style}: -moz-calc(#{$percentage} - #{$width}) !important;
+  #{$style}: calc(#{$percentage} - #{$width}) !important;
+}
+
+//-----------计算---------------
+@mixin center() {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+//--------div居中---------
+@mixin position($position, $args) {
+  position: $position;
+  $offsets: top right bottom left;
+  @each $o in $offsets {
+    $i: index($args, $o);
+    @if $i and $i + 1 <= length($args) and type-of( nth($args, $i + 1) ) == number {
+      #{$o}: nth($args, $i + 1);
+    }
+  }
+}
+
+@mixin absolute($args) {
+  @include position(absolute, $args);
+}
+
+@mixin fixed($args) {
+  @include position(fixed, $args);
+}
+
+@mixin relative($args) {
+  @include position(relative, $args);
+}
+
+//-------定位----------
+//定义所有不支持圆角的浏览器使用背景图片
+//得使用[modernizr](http://modernizr.com/)来检测，在html上加class
+@mixin no-border-radius {
+  .no-border-radius {
+    @content
+  }
+}
+
+//设置固定两边圆角
+@mixin borderradius-d($direction, $size ) {
+  @if $direction == tl {
+    @include prefixer("border-top-left-radius", $size, spec webkit o ms);
+    -moz-border-radius-topleft: $size;
+  } @else if $direction == tr {
+    @include prefixer("border-top-right-radius", $size, spec webkit o ms);
+    -moz-border-radius-topright: $size;
+  } @else if $direction == bl {
+    @include prefixer("border-bottom-left-radius", $size, spec webkit o ms);
+    -moz-border-radius-bottomleft: $size;
+  } @else if $direction == br {
+    @include prefixer("border-bottom-right-radius", $size, spec webkit o ms);
+    -moz-border-radius-bottomright: $size;
+  } @else if $direction == t {
+    @include prefixer("border-top-right-radius", $size, spec webkit o ms);
+    @include prefixer("border-top-left-radius", $size, spec webkit o ms);
+    -moz-border-radius-topleft: $size;
+    -moz-border-radius-topright: $size;
+  } @else if $direction == b {
+    @include prefixer("border-bottom-right-radius", $size, spec webkit o ms);
+    @include prefixer("border-bottom-left-radius", $size, spec webkit o ms);
+    -moz-border-radius-bottomleft: $size;
+    -moz-border-radius-bottomright: $size;
+  } @else if $direction == l {
+    @include prefixer("border-top-left-radius", $size, spec webkit o ms);
+    @include prefixer("border-bottom-left-radius", $size, spec webkit o ms);
+    -moz-border-radius-topleft: $size;
+    -moz-border-radius-bottomleft: $size;
+  } @else if $direction == r {
+    @include prefixer("border-top-right-radius", $size, spec webkit o ms);
+    @include prefixer("border-bottom-right-radius", $size, spec webkit o ms);
+    -moz-border-radius-topright: $size;
+    -moz-border-radius-bottomright: $size;
+  } @else if $direction == all {
+    @include prefixer("border-radius", $size, spec webkit moz o ms);
+  } @else if $direction == reset {
+    @include prefixer("border-radius", 0, spec webkit moz o ms);
+  }
+}
+
+//先来个我们常用的用border生成三角形的@mixin:
+// triangle
+@mixin triangle($direction, $size, $borderColor ) {
+  $color-border-style: $size solid $borderColor;
+  $transparent-border-style: $size dashed transparent;
+  content: "";
+  height: 0;
+  width: 0;
+  @if $direction == top {
+    border-bottom: $color-border-style;
+    border-left: $transparent-border-style;
+    border-right: $transparent-border-style;
+  } @else if $direction == right {
+    border-left: $color-border-style;
+    border-top: $transparent-border-style;
+    border-bottom: $transparent-border-style;
+  } @else if $direction == bottom {
+    border-top: $color-border-style;
+    border-left: $transparent-border-style;
+    border-right: $transparent-border-style;
+  } @else if $direction == left {
+    border-right: $color-border-style;
+    border-top: $transparent-border-style;
+    border-bottom: $transparent-border-style;
+  }
+}
+
+$breakpoints: (
+        small: 320px,
+        medium: 480px,
+        medium1: 767px,
+        medium2: 992px,
+        medium3: 1024px,
+        large: 1200px
+); // _mixins.scss
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: #{map-get($breakpoints, $breakpoint)}) {
+      @content;
+    }
+  } @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. " + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+
+//定义media-queries的最小最大宽度
+@mixin screen($res-min, $res-max) {
+  @media screen and (min-width: $res-min) and (max-width: $res-max) {
+    @content;
+  }
+}
+
+/// @param {number} $width - 盒子宽度
+/// @param {number} $height:$width - 盒子高度
+@mixin size($width, $height:$width) {
+  width: $width;
+  height: $height;
+}
+
+//------------设置盒子的宽和高---------------
+//-----------------------------------------------------------------------------------------------------------------------
+
+@mixin backgroundChang($position,$start,$end) {
+  $ieType: 0;
+  $webkitStart: 0% 0%;
+  $webkitEnd: 0% 100%;
+  @if $position == left {
+    $ieType: 1;
+    $webkitStart: 0% 100%;
+    $webkitEnd: 100% 100%;
+  }
+
+  background: -ms-linear-gradient($position, $start, $end); /* IE 10 */
+
+  background: -moz-linear-gradient($position, $start, $end); /*火狐*/
+
+  background: -webkit-gradient(linear, $webkitStart, $webkitEnd, from($start), to($end)); /*谷歌*/
+
+  //background: -webkit-gradient(linear, 0% 100%, 100% 100%, from($start), to($end));      /* Safari 4-5, Chrome 1-9*/
+
+  background: -webkit-linear-gradient($position, $start, $end); /*Safari5.1 Chrome 10+*/
+
+  background: -o-linear-gradient($position, $start, $end); /*Opera 11.10+*/
+}

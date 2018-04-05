@@ -1,0 +1,95 @@
+/*弹层*/
+.layer-bg {
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+%layer-none {
+  display: none;
+}
+
+%layer-bg {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.layer-bg {
+  position: fixed;
+  z-index: 0;
+  @extend %layer-bg;
+}
+
+//.modal.fade.layer-detail-wrap .modal-dialog {
+//  transform: translate3d(100%, 0, 0);
+//  transition: transform .3s ease-out;
+//}
+//
+//.modal.in.layer-detail-wrap .modal-dialog {
+//}
+
+.layer-detail-wrap .modal-dialog {
+  position: absolute;
+  // top: $header-h;
+  top:0;
+  right: 0;
+  left:auto;
+  bottom: 0;
+  min-width: 800px;
+  width: calc(100% - 280px);
+  margin: 0;
+  padding: 0;
+  transform: translate3d(0, 0, 0);
+}
+
+.layer-detail {
+  background: #ebebeb;
+  height: 100%;
+}
+
+.layer-head {
+  position: relative;
+  padding: 10px 16px 10px 34px;
+  line-height: 40px;
+  background: #252834;
+  font-size: 16px;
+  color: #fff;
+cursor: move;
+}
+
+.modal-dialog {
+  transition: all .3s ease-in-out;
+}
+.modal-body{
+  overflow-y: auto;
+}
+.layer-leave, .layer-enter {
+  .modal-dialog {
+    // transform: translate3d(-50%, -50%, 0);
+  }
+}
+
+.layer-leave-active, .layer-enter-active {
+  .modal-dialog {
+    // transform: translate3d(-50%, -100%, 0);
+  }
+}
+
+.detail-leave, .detail-enter {
+  .modal-dialog {
+    // transform: translate3d(0, 0, 0);
+  }
+}
+
+.detail-leave-active, .detail-enter-active {
+  .modal-dialog {
+    // transform: translate3d(100%, 0, 0);
+  }
+}
+
+
+
+
+

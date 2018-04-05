@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>客户</title>
+    <!--公共-->
+    @@include("../component/common.html",{"style":"normal"})
+    <!--表格-->
+
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
+
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
+
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+</head>
+<body>
+<div id="app">
+     <!-- Preloader -->
+  <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+     <!--header-->
+     <common-head></common-head>
+     <section class="b-main">
+         <!--左侧菜单-->
+         <menu-aside menu="index"></menu-aside>
+         <div class="b-panel">
+                <customer-head @layer="layer"></customer-head>
+                <customer-table></customer-table>
+         </div>
+     </section>
+        
+    <!-- 表格内详情显示 -->
+    <div class="panels" id="panels-detail"></div>
+    <!--客户详情-->
+    <transition name="detail">
+        <keep-alive v-if="layers.customerDetail.show">
+            <customer-detail :layer="layers.customerDetail" @layer="layer"></customer-detail>
+        </keep-alive>
+    </transition>
+
+    <!--新建客户-->
+    <transition name="layer">
+        <layer :layer="layers.customerAdd" >
+            <customer-add ref="customerAdd"></customer-add>
+        </layer>
+    </transition>
+
+    <transition name="layer">
+        <layer :layer="layers.tableHead">
+            <table-head ref="tableHead"></table-head>
+        </layer>
+    </transition>
+
+    <!--工商信息-->
+    <transition name="layer">
+        <layer :layer="layers.business">
+            <business></business>
+        </layer>
+    </transition>
+
+    <transition name="audio">
+        <my-audio :layer="audio"></my-audio>
+    </transition>
+</div>
+
+<!--include('../component/customer/detail.html')-->
+<!--&lt;!&ndash;新增客户&ndash;&gt;-->
+<!--include('../component/layer/layer.html',{"layer":"customer","layerTitle":"新建客户","layerFrame":"../customer/addcustomer.html","submit":"true","submitBtn":"customAdd()","close":"false","closeBtn":""})-->
+<!--&lt;!&ndash; 自定义表头 &ndash;&gt;-->
+<!--include('../component/layer/layer.html',{"layer":"customHead","layerTitle":"编辑显示字段","layerFrame":"../customer/cusomHead.html","submit":"true","submitBtn":"customSubmit()","close":"false","closeBtn":""})-->
+<!--&lt;!&ndash;调用企信获得的企业信息&ndash;&gt;-->
+<!--include('../component/layer/layer.html',{"layer":"business","layerTitle":"工商信息","layerFrame":"../qixin/qixin.html","submit":"false","submitBtn":"","close":"false","closeBtn":""})-->
+<!--&lt;!&ndash; 音频播放 &ndash;&gt;-->
+<!--include('../component/layer/layer.html',{"layer":"audio","layerTitle":"通话录音","layerFrame":"../audio/audio.html","submit":"false","submitBtn":"","close":"true","closeBtn":"audioClose()"})-->
+
+
+@@include('../components/inputRow.html')
+<!--左侧导航-->
+@@include('../components/aside.html')
+<!--顶部-->
+@@include('../components/head.html')
+<!--客户头部-->
+@@include('../components/customer-head.html')
+<!--客户表格-->
+@@include('../components/customer-table.html')
+<!--客户详情-->
+@@include('../components/customerDetail.html')
+<!--弹框-->
+@@include('../components/layer.html')
+<!--工商信息（企信宝）-->
+@@include('../components/business.html')
+<!--新建客户-->
+@@include('../components/customerAdd.html')
+@@include('../components/autocomplete.html')
+
+<!--自定义表头-->
+@@include('../components/tableHead.html')
+
+@@include('../components/audio.html')
+
+<script src="js/scripts.js"></script>
+<script src="js/customer.js"></script>
+<script src="js/MessageEditor.js"></script>
+<script src="js/customerDetail.js"></script>
+
+</body>
+</html>

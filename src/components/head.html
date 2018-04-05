@@ -1,0 +1,94 @@
+<template id="head">
+    <header class="b-header">
+        <div class="h-right">
+            <div class="h-search">
+                <form @submit.prevent="Hsearch">
+                    <div class="search-input-box">
+                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息"/>
+                    </div>
+                    <div class="search-btn-box">
+                        <input type="submit" value="&#xe616" class="search-btn"/>
+                    </div>
+                </form>
+            </div>
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-href" href="#">
+                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left"
+                           title="在线客服"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href info-number" href="javascript:void(0);">
+                        <i class="nav-icon nav-news" data-toggle="tooltip" data-placement="auto left" title="消息"></i>
+                        <span class="badge bg-danger">555</span>
+                    </a>
+                </div>
+                <div class="nav-li dropdown">
+                    <a class="nav-href" href="javascript:void(0);" data-toggle="dropdown">
+                        <i class="nav-icon nav-help" data-toggle="tooltip" data-placement="auto left" title="帮助"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-box">
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-new"></i>
+                            <label>新手引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-help"></i>
+                            <label>帮助中心</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-video"></i>
+                            <label>视频引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-return"></i>
+                            <label>意见反馈</label>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-setup" data-toggle="tooltip" data-placement="auto left" title="设置"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout" data-toggle="tooltip" data-placement="auto left" title="退出登录"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var head = Vue.extend({
+        template: '#head',
+        data: function () {
+            return {
+                search: "",
+                user:{
+                    company:"北京蜜宝世纪科技有限公司",
+                    headImg:"img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+                if (this.search.trim() == "") {
+                    alert("", "搜索内容不能为空");
+                    return false;
+                }
+                window.location.href = "customer.html";
+            }
+        }
+    });
+    Vue.component('commonHead', head);
+</script>

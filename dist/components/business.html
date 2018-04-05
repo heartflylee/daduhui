@@ -1,0 +1,93 @@
+<template id="business">
+    <div class="message">
+        <!--<business-row :data="company"></business-row>-->
+        <!--<business-row :data="comType"></business-row>-->
+        <!--<business-row :data="industry"></business-row>-->
+        <!--<business-row :data="openName"></business-row>-->
+        <!--<business-row :data="registCapi"></business-row>-->
+        <!--<business-row :data="mainProduce"></business-row>-->
+        <!--<business-row :data="registAdress"></business-row>-->
+        <!--<business-row :data="comAdress"></business-row>-->
+        <!--<business-row :data="telephone"></business-row>-->
+        <input-row :rows="company"></input-row>
+        <input-row :rows="comType"></input-row>
+        <input-row :rows="industry"></input-row>
+        <input-row :rows="openName"></input-row>
+        <input-row :rows="registCapi"></input-row>
+        <input-row :rows="mainProduce"></input-row>
+        <input-row :rows="registAdress"></input-row>
+        <input-row :rows="comAdress"></input-row>
+        <input-row :rows="telephone"></input-row>
+    </div>
+</template>
+
+<script>
+    //    var businessRow = Vue.extend({
+    //        template: '<div class="m-row">\n' +
+    //        '            <div class="m-name">\n' +
+    //        '                {{data.name}}：\n' +
+    //        '            </div>\n' +
+    //        '            <div class="m-info">\n' +
+    //        '                {{data.value}}\n' +
+    //        '            </div>\n' +
+    //        '        </div>',
+    //        props: ['data']
+    //    })
+    var business = Vue.extend({
+        template: '#business',
+        props: [],
+        data: function () {
+            return {
+                company: {
+                    name: "公司名称", value: "", input: false, required: false
+                },
+                comType: {
+                    name: "公司类型", value: "", input: false, required: false
+                },
+                industry: {
+                    name: "行业", value: "", input: false, required: false
+                },
+                openName: {
+                    name: "法定代表人", value: "", input: false, required: false
+                },
+                registCapi: {
+                    name: "注册资金", value: "", input: false, required: false
+                },
+                mainProduce: {
+                    name: "经营范围", value: "", input: false, required: false
+                },
+                registAdress: {
+                    name: "注册地址", value: "", input: false, required: false
+                },
+                comAdress: {
+                    name: "办公地址", value: "", input: false, required: false
+                },
+                telephone: {
+                    name: "电话", value: "", input: false, required: false
+                }
+            }
+        },
+        components: {
+//            'businessRow': businessRow
+            'inputRow': inputRow
+        },
+        created: function () {
+            var url = "json/business.json";
+
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                console.log(data);
+                console.log(json);
+                for (var i = 0; i < json.length; i++) {
+                    this[json[i].name].value = json[i].value;
+                }
+
+//                this.data=eval("(" + json +")");
+            }, function (response) {
+                console.info(response);
+            })
+        }
+    });
+
+    Vue.component('business', business);
+</script>

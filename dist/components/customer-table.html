@@ -1,0 +1,32 @@
+<template id="customer-table">
+    <div class="table-wrap">
+        <div class="jqxtable customer" id="jqxtable"></div>
+    </div>
+</template>
+<script>
+
+
+    var customerTable = Vue.extend({
+        template: '#customer-table',
+        data: function () {
+            return {}
+        },
+        created: function () {
+//            var url = "json/customer-table.json";
+//
+//            this.$http.get(url).then(function (data) {
+//                var json = JSON.parse(data.bodyText);
+//                console.log(data);
+//                console.log(json);
+//
+//
+//
+////                this.data=eval("(" + json +")");
+//            }, function (response) {
+//                console.info(response);
+//            })
+        }
+    });
+    Vue.component('customerTable', customerTable);
+
+</script>

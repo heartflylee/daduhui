@@ -1,0 +1,44 @@
+<template id="loginLayer">
+    <div class="modal" v-if="layer">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="signUp-wrap">
+                    <div class="signUp-close" @click="close('signUp')">
+                        <i>&times;</i>
+                    </div>
+                    <div class="signUp-main">
+                        <div class="s-title">
+                            欢迎注册云客企业版
+                        </div>
+                        <div class="s-box">
+                            <slot></slot>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var loginLayer = Vue.extend({
+        template: "#loginLayer",
+        props:['layer'],
+        data:function(){
+            return {
+//                layer:false
+            }
+        },
+        methods:{
+            close:function(layer){
+                console.log(layer);
+                this.$emit("close",layer)
+            }
+        },
+//        events:{
+//            'signUp':function(layer){
+//                console.log(layer);
+//            }
+//        }
+    });
+    Vue.component('loginLayer',loginLayer);
+</script>

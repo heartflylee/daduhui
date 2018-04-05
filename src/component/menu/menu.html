@@ -1,0 +1,19 @@
+<li class="m-nav @@if(sub.length > 0){ menu-list} @@if(asideMenu == menu){ nav-active}">
+    <a class='nav-info' href="@@href">
+        <i class="icon m-icon icon-m@@icon"></i>
+        <label>@@title</label>
+        <i class="icon-sign"></i>
+    </a>
+    @@if(sub.length > 0){
+    <ul class="m-second-list child-list">
+        @@for(var i = 0; i < sub.length ; i++){
+        <li class="m-second">
+            <a href="`+sub[i].href+`">
+                <i></i>
+                <label>`+sub[i].title+`</label>
+            </a>
+        </li>
+        }
+    </ul>
+    }
+</li>

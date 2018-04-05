@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>客户</title>
+    <!--公共-->
+    <link type="image/x-icon" href="img/favicon.ico" rel="icon">
+
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/beAlert.css">
+<link rel="stylesheet" href="css/select2.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/jqxgrid.css">
+
+
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource@1.3.4.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/resize.js"></script>
+<script src="js/beAlert.js"></script>
+<script src="js/select2.js"></script>
+<script src="js/drag.js"></script>
+<!--<script src="js/jsDate/laydate.js"></script>-->
+<!--<script src="js/layDate/laydate.js"></script>-->
+<!---->
+
+<script src="js/audio.js"></script>
+
+<!--[if lt IE 10]>
+<script type="text/javascript" src="js/html5shiv.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script>
+<script type="text/javascript" src="js/placeholder.js"></script>
+<![endif]-->
+    <!--表格-->
+
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
+
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
+
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+</head>
+
+<body>
+     <!-- Preloader -->
+  <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+         <!--header-->
+     <common-head></common-head>
+     <section class="b-main">
+         <!--左侧菜单-->
+         <menu-aside menu="index"></menu-aside>
+         <div class="b-panel">
+                <customer-head @layer="layer"></customer-head>
+                <customer-table></customer-table>
+         </div>
+     </section>
+
+        <!-- 表格内详情显示 -->
+        <div class="panels" id="panels-detail"></div>
+
+        <!--客户详情-->
+        <transition name="detail">
+            <keep-alive v-if="layers.customerDetail.show">
+                <customer-detail :layer="layers.customerDetail" @layer="layer"></customer-detail>
+            </keep-alive>
+        </transition>
+
+        <!--新建客户-->
+        <transition name="layer">
+            <layer :layer="layers.customerAdd">
+                <customer-add ref="customerAdd"></customer-add>
+            </layer>
+        </transition>
+
+        <!--编辑客户-->
+        <transition name="layer">
+            <layer :layer="layers.customerModify">
+                <customer-modify ref="customerModify"></customer-modify>
+            </layer>
+        </transition>
+
+        <!--自定义表头-->
+        <transition name="layer">
+            <layer :layer="layers.tableHead">
+                <table-head ref="tableHead"></table-head>
+            </layer>
+        </transition>
+
+        <!--工商信息-->
+        <transition name="layer">
+            <layer :layer="layers.business">
+                <business></business>
+            </layer>
+        </transition>
+
+        <!--变更负责人-->
+        <transition name="layer">
+            <layer :layer="layers.changeContact">
+                <change-contact></change-contact>
+            </layer>
+        </transition>
+
+        <!--通话录音-->
+        <transition name="audio">
+            <my-audio :layer="audio"></my-audio>
+        </transition>
+    </div>
+
+    <!--include('../component/customer/detail.html')-->
+    <!--&lt;!&ndash;新增客户&ndash;&gt;-->
+    <!--include('../component/layer/layer.html',{"layer":"customer","layerTitle":"新建客户","layerFrame":"../customer/addcustomer.html","submit":"true","submitBtn":"customAdd()","close":"false","closeBtn":""})-->
+    <!--&lt;!&ndash; 自定义表头 &ndash;&gt;-->
+    <!--include('../component/layer/layer.html',{"layer":"customHead","layerTitle":"编辑显示字段","layerFrame":"../customer/cusomHead.html","submit":"true","submitBtn":"customSubmit()","close":"false","closeBtn":""})-->
+    <!--&lt;!&ndash;调用企信获得的企业信息&ndash;&gt;-->
+    <!--include('../component/layer/layer.html',{"layer":"business","layerTitle":"工商信息","layerFrame":"../qixin/qixin.html","submit":"false","submitBtn":"","close":"false","closeBtn":""})-->
+    <!--&lt;!&ndash; 音频播放 &ndash;&gt;-->
+    <!--include('../component/layer/layer.html',{"layer":"audio","layerTitle":"通话录音","layerFrame":"../audio/audio.html","submit":"false","submitBtn":"","close":"true","closeBtn":"audioClose()"})-->
+    <template id="inputRow">
+    <div class="m-row">
+        <div class="m-name " :class="{required:rows.required}">
+            {{rows.name}}
+        </div>
+        <div class="m-info m-input" v-if="rows.input">
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"/>
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon"><i></i>{{rows.text}}</div>
+        </div>
+        <div class="m-info" v-else>
+            {{rows.value}}
+        </div>
+    </div>
+</template>
+<script>
+    var inputRow = Vue.extend({
+        template: '#inputRow',
+        props: ['rows']
+    });
+//    Vue.component('inputRow',inputRow);
+</script> <template id="staffSelect">
+    <div class="staff-select-wrap">
+        <select v-selectstaff multiple="multiple">
+            <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
+            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+        </select>
+    </div>
+</template>
+<script>
+    var staffSelect = Vue.extend({
+        template: '#staffSelect',
+        data: function () {
+            return {
+                staffs: []
+            }
+        },
+        created: function () {
+            var url = "json/staffList.json";
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                console.log(json);
+                this.$data.staffs = json;
+            }, function (response) {
+                console.info(response);
+            })
+//
+        },
+        directives: {
+            selectstaff:
+                {
+                    update: function (el) {
+                        console.log(el);
+//                        $(el).select2();
+//                        selectStaff(el);
+                        staffSelect(el);
+                    }
+                }
+        }
+    });
+    //    Vue.component('staffSelect', staffSelect);
+</script> <template id="changeContact">
+    <div>
+
+        <staff-select></staff-select>
+    </div>
+</template>
+<script>
+    var changeContact =  Vue.extend({
+        template:'#changeContact',
+        props:['customer'],
+        data:function(){
+            return {}
+        },
+        methods:{
+            submit:function () {
+                console.log('sdfsfs')
+            }
+        },
+        components:{
+            'staffSelect':staffSelect
+        }
+    });
+    Vue.component('changeContact',changeContact);
+</script>
+
+    <!--左侧导航-->
+    <template id="aside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <menu-content :content="index" index="1"></menu-content>
+                <menu-content :content="customer" index="2"></menu-content>
+                <menu-content :content="task" index="3"></menu-content>
+            </ul>
+        </div>
+    </aside>
+</template>
+<script>
+    var menuContent = Vue.extend({
+        template: '<li class="m-nav menu-list" :class=" \'nav-left\' + index" v-if="content.subShow">\n' +
+        '    <a class="nav-info" href="javascript:void(0)">\n' +
+        '        <i class="icon m-icon" :class="content.icon" ></i>\n' +
+        '        <label>{{content.title}}</label>\n' +
+        '        <i v-if="content.sub.length>0" class="icon-sign"></i>\n' +
+        '    </a>\n' +
+        '    <ul class="m-second-list child-list" v-if="content.sub.length>0" >\n' +
+        '        <li class="m-second" v-for="sub in content.sub">\n' +
+        '            <a :href="sub.href">\n' +
+        '                <i></i>\n' +
+        '                <label>{{sub.title}}</label>\n' +
+        '            </a>\n' +
+        '        </li>\n' +
+        '    </ul>\n' +
+        '</li>' +
+        '<li class="m-nav " v-else>\n' +
+        '    <a class=\'nav-info\' :href="content.href">\n' +
+        '        <i class="icon m-icon" :class="content.icon"></i>\n' +
+        '        <label>{{content.title}}</label>\n' +
+        '        <i class="icon-sign"></i>\n' +
+        '    </a>\n' +
+        '</li>',
+        props: ['content','index']
+    });
+
+    var aside = Vue.extend({
+        template: '#aside',
+        data: function () {
+            return {
+                index: {
+                    title: "首页",
+                    icon: "icon-m1",
+                    subShow: true,
+                    active: "",
+                    sub: []
+                },
+                customer: {
+                    title: "客户",
+                    icon: "icon-m2",
+                    subShow: true,
+                    active: "",
+                    sub: [
+                        {
+                            title: "客户列表",
+                            href: "customer.html"
+                        },
+                        {
+                            title: "企业公海",
+                            href: "contact.html"
+                        }
+                    ]
+                },
+                task: {
+                    title: "任务",
+                    icon: "icon-m3",
+                    href: "",
+                    subShow: true,
+                    active: "",
+                    sub: [{
+                        title: "电话任务",
+                        href: "task.html"
+                    }, {
+                        title: "短信任务",
+                        href: ""
+                    }, {
+                        title: "邮件任务",
+                        href: ""
+                    }]
+                }
+            }
+        },
+        methods: {
+            // menu: function () {
+            //     $("body").toggleClass('side-open');
+            //     tableResize();
+            // }
+        },
+        components: {
+            'menuContent': menuContent
+        }
+    });
+    Vue.component('menuAside', aside);
+</script>
+    <!--顶部-->
+    <template id="head">
+    <header class="b-header">
+        <div class="h-right">
+            <div class="h-search">
+                <form @submit.prevent="Hsearch">
+                    <div class="search-input-box">
+                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息"/>
+                    </div>
+                    <div class="search-btn-box">
+                        <input type="submit" value="&#xe616" class="search-btn"/>
+                    </div>
+                </form>
+            </div>
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-href" href="#">
+                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left"
+                           title="在线客服"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href info-number" href="javascript:void(0);">
+                        <i class="nav-icon nav-news" data-toggle="tooltip" data-placement="auto left" title="消息"></i>
+                        <span class="badge bg-danger">555</span>
+                    </a>
+                </div>
+                <div class="nav-li dropdown">
+                    <a class="nav-href" href="javascript:void(0);" data-toggle="dropdown">
+                        <i class="nav-icon nav-help" data-toggle="tooltip" data-placement="auto left" title="帮助"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-box">
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-new"></i>
+                            <label>新手引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-help"></i>
+                            <label>帮助中心</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-video"></i>
+                            <label>视频引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-return"></i>
+                            <label>意见反馈</label>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-setup" data-toggle="tooltip" data-placement="auto left" title="设置"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout" data-toggle="tooltip" data-placement="auto left" title="退出登录"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var head = Vue.extend({
+        template: '#head',
+        data: function () {
+            return {
+                search: "",
+                user:{
+                    company:"北京蜜宝世纪科技有限公司",
+                    headImg:"img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+                if (this.search.trim() == "") {
+                    alert("", "搜索内容不能为空");
+                    return false;
+                }
+                window.location.href = "customer.html";
+            }
+        }
+    });
+    Vue.component('commonHead', head);
+</script>
+    <!--客户头部-->
+    <template id="customer-head">
+    <div class="small-nav-wrap">
+        <div class="nav-box">
+            <div class="index-select">
+                <div class="select-show">
+                    <label>全部客户</label>
+                    <i class="t-arrow icon"></i>
+                </div>
+                <div class="select-wrap">
+                    <div class="date-select-box">
+                        <ul>
+                            <li class="date-select selected">
+                                全部客户
+                            </li>
+                            <li class="date-select">
+                                我负责的客户
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="export">
+                    <i class="icon-export icon"></i> 导出
+                </div>
+                <div class="drop-button">
+                    <label class="drop-name" @click="customerAdd">新建客户</label>
+                    <i class="icon icon-drop-button"></i>
+                </div>
+            </div>
+        </div>
+        <div class="table-setting" v-if="">
+            <div class="table-nav-right">
+                <i class="table-nav-close icon" onclick="settingHide()">&times;</i>
+            </div>
+            <div class="table-nav-list">
+                <ul>
+                    <li class="table-nav">
+                        已选中<label class="count-select">1</label>项
+                    </li>
+                    <li class="table-nav">
+                        <i class="table-icon icon-change icon"></i>
+                        <div class="table-nav-main">变更负责人</div>
+                    </li>
+                    <li class="table-nav">
+                        <i class="table-icon icon-delete icon"></i>
+                        <div class="table-nav-main">删除</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</template>
+<script>
+    var customerHead = Vue.extend({
+        template:'#customer-head',
+        data:function () {
+            return{
+
+            }
+        },
+        methods:{
+            customerAdd:function () {
+                this.$emit('layer','customerAdd');
+            }
+        }
+    });
+    Vue.component('customerHead',customerHead);
+</script>
+    <!--客户表格-->
+    <template id="customer-table">
+    <div class="table-wrap">
+        <div class="jqxtable customer" id="jqxtable"></div>
+    </div>
+</template>
+<script>
+
+
+    var customerTable = Vue.extend({
+        template: '#customer-table',
+        data: function () {
+            return {}
+        },
+        created: function () {
+//            var url = "json/customer-table.json";
+//
+//            this.$http.get(url).then(function (data) {
+//                var json = JSON.parse(data.bodyText);
+//                console.log(data);
+//                console.log(json);
+//
+//
+//
+////                this.data=eval("(" + json +")");
+//            }, function (response) {
+//                console.info(response);
+//            })
+        }
+    });
+    Vue.component('customerTable', customerTable);
+
+</script>
+    <!--客户详情-->
+    <template id="customerDetail">
+    <div class="modal layer-detail-wrap" v-if="layer.show">
+        <div class="layer-bg" @click="close"></div>
+        <div class="modal-dialog" @click="modifyDefault($event)">
+            <div class="layer-detail">
+                <div class="detail-h">
+                    <div class="detail-title">
+                        <div class="detail-h-r">
+                            <div class="h-r-box">
+                                <div class="h-r-li">
+                                    <div class="h-r-btn" @click="customerModify">
+                                        <i class="h-r-icon icon-edit icon"></i>
+                                        <label class="h-r-main">编辑</label>
+                                    </div>
+                                </div>
+                                <div class="h-r-li">
+                                    <div class="h-r-btn" @click="customerAdd">
+                                        <i class="h-r-icon icon-add icon"></i>
+                                        <label class="h-r-main">添加联系人</label>
+                                    </div>
+                                </div>
+                                <div class="h-r-li dropdown">
+                                    <div class="h-r-btn " data-toggle="dropdown">
+                                        <i class="h-r-icon icon-menu icon"></i>
+                                    </div>
+                                    <div class="h-r-drop dropdown-menu">
+                                        <div class="h-d-list">
+                                            <a class="h-d-li" href="javascript:void(0)">
+                                                删除
+                                            </a>
+                                            <a class="h-d-li" @click="changeContactBtn">
+                                                变更负责人
+                                            </a>
+                                            <a class="h-d-li" href="javascript:void(0)">
+                                                锁定
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-h-m">
+                            <div class="h-m-company">
+                                {{messages.company.value}}
+                            </div>
+                            <div class="qixin-btn" @click="businessShow">
+                                <i class="icon"></i> 工商信息
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-message">
+                        <head-message :message="messages.userName"></head-message>
+                        <head-message :message="messages.cellphone"></head-message>
+                        <head-message :message="messages.createdTime"></head-message>
+                        <head-message :message="messages.lastActionTime"></head-message>
+                        <head-message :message="messages.progress"></head-message>
+                        <head-message :message="messages.lastAction"></head-message>
+                        <!--include("../detail/detail-head-message.html")-->
+                    </div>
+                </div>
+                <div class="detail-main">
+                    <div class="detail-left">
+                        <div class="tags">
+                            <div class="tags-li active">
+                                <a href="javascript:void(0)" onclick="tags(this)">相关</a>
+                            </div>
+                            <div class="tags-li">
+                                <a href="javascript:void(0)" onclick="tags(this)">详细信息</a>
+                            </div>
+                        </div>
+                        <div class="tags-main">
+                            <div class="tags-con-li active">
+                                <div class="list-li">
+                                    <div class="list-title">
+                                        <div class="title-right">
+                                            <div class="title-btn">
+                                                <i class="icon-t icon-t-arrow icon" onclick="detail(this)"></i>
+                                            </div>
+                                            <div class="title-btn dropdown">
+                                                <i class="icon-t icon-t-set icon" data-toggle="dropdown"></i>
+                                                <div class="h-r-drop dropdown-menu">
+                                                    <div class="h-d-list">
+                                                        <a class="h-d-li" href="javascript:void(0)">
+                                                            删除
+                                                        </a>
+                                                        <a class="h-d-li" href="javascript:void(0)">
+                                                            变更跟进人
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="title-left">
+                                            <i class="title-icon icon-contact icon"></i> 联系人（2）
+                                        </div>
+                                    </div>
+                                    <div class="list-main">
+                                        <div class="list-table">
+                                            <ul class="table-row table-head">
+                                                <li class="table-li table-li1">
+                                                    <div class="checkbox">
+                                                        <label><input type="checkbox" class="checkAll"
+                                                                      onclick="checkboxAll(this)"><i></i></label>
+                                                    </div>
+                                                </li>
+                                                <li class="table-li table-li2">
+                                                    客户姓名
+                                                </li>
+                                                <li class="table-li table-li3">
+                                                    手机号
+                                                </li>
+                                                <li class="table-li table-li4">
+                                                    跟进人
+                                                </li>
+                                                <li class="table-li table-li5">
+                                                    最后一次沟通结果
+                                                </li>
+                                                <li class="table-li table-li6">
+                                                    最后一次通话录音
+                                                </li>
+                                                <li class="table-li table-li7">
+
+                                                </li>
+                                            </ul>
+                                            <contact-table-list :list="contactlist"></contact-table-list>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-li">
+                                    <div class="list-title">
+                                        <!--<div class="title-right">
+                                            <div class="title-btn">
+                                                <i class="icon-t icon-t-arrow"></i>
+                                            </div>
+                                            <div class="title-btn">
+                                                <i class="icon-t icon-t-upload"></i>
+                                            </div>
+                                        </div>-->
+                                        <div class="title-left">
+                                            <i class="title-icon icon-history icon"></i> 任务历史（2）
+                                        </div>
+                                    </div>
+                                    <div class="list-main">
+                                        <div class="list-table list-task">
+                                            <ul class="table-row table-head">
+                                                <li class="table-li">
+                                                    任务名称
+                                                </li>
+                                                <li class="table-li">
+                                                    人均电话量
+                                                </li>
+                                                <li class="table-li">
+                                                    任务状态
+                                                </li>
+                                                <li class="table-li">
+                                                    任务详情
+                                                </li>
+                                            </ul>
+                                            <task-history-list :list="taskHistory"></task-history-list>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tags-con-li">
+                                <div class="message-box">
+                                    <div class="message-t">
+                                        基本信息
+                                    </div>
+                                    <detail-message :message="messages.company" name="company"></detail-message>
+                                    <detail-message :message="messages.userName" name="userName"></detail-message>
+                                    <detail-message :message="messages.progress" name="progress"></detail-message>
+                                    <detail-message :message="messages.comType" name="comType"></detail-message>
+                                    <detail-message :message="messages.registCapi" name="registCapi"></detail-message>
+                                    <detail-message :message="messages.comType" name="comType"></detail-message>
+
+                                    <!--loop("../detail/detail-message.html",[-->
+                                    <!--{"id":"company","name":"公司名称","value":"北京联云天下科技有限公司","type":"input"},-->
+                                    <!--{"id":"userName","name":"客户负责人","value":"刘宇","type":"input"},-->
+                                    <!--{"id":"progress","name":"销售进度","value":"初步沟通","type":"select","option":"初步沟通,确认需求,报价,面谈,成单,无需求,输单"},-->
+                                    <!--{"id":"comType","name":"所属行业","value":"IT-互联网","type":"input"},-->
+                                    <!--{"id":"registCapi","name":"注册资金","value":"&#45;&#45;","type":"input"},-->
+                                    <!--{"id":"comType","name":"公司类型","value":"有限责任公司（自然人投资或控股）","type":"input"}-->
+                                    <!--])-->
+                                </div>
+                                <div class="message-box">
+                                    <div class="message-t">
+                                        联系信息
+                                    </div>
+                                    <detail-message :message="messages.cellphone" name="cellphone"></detail-message>
+                                    <detail-message :message="messages.comAdress" name="comAdress"></detail-message>
+                                    <detail-message :message="messages.postcode" nam="postcode"></detail-message>
+
+                                    <!--loop("../detail/detail-message.html",[-->
+                                    <!--{"id":"cellphone","name":"电话号码","value":"010-8888 8888","type":"input"},-->
+                                    <!--{"id":"comAdress","name":"公司地址","value":"点击填写","type":"input"},-->
+                                    <!--{"id":"comAdress","name":"公司地址","value":"北京市朝阳区建外soho西区12号楼2704室","type":"input"},-->
+                                    <!--{"id":"company","name":"邮政编码","value":"点击填写","type":"input"}-->
+                                    <!--])-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-right">
+                        <div class="tags">
+                            <div class="tags-li active">
+                                <a href="javascript:void(0)" onclick="tags(this)">时间轴</a>
+                            </div>
+                            <div class="tags-li">
+                                <a href="javascript:void(0)" onclick="tags(this)">团队成员</a>
+                            </div>
+                        </div>
+                        <div class="tags-main">
+                            <div class="tags-con-li active">
+                                <div class="note-form">
+                                    <form @submit.prevent="remarkSubmit">
+                                        <textarea class="textarea" placeholder="请输入客户备注" v-model="remark"></textarea>
+                                        <div class="btn-right-box">
+                                            <input type="button" class="btn btn-default" @click="remarkReset" value="取消"/>
+                                            <input type="submit" class="btn btn-primary" value="确定"/>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <detail-line :list="detailLineList"></detail-line>
+                                <!--loop("../detail/detail-line.html",[-->
+                                <!--{"time":"2017-02-23 17:44","editor":"刘宇","type":"video","customer":"白又亮"},-->
+                                <!--{"time":"2017-02-22 17:44","editor":"刘宇","type":"message","customer":"白又亮"},-->
+                                <!--{"time":"2017-02-21 17:44","editor":"刘宇","type":"create","customer":"白又亮"},-->
+                                <!--{"time":"2017-02-20 17:44","editor":"刘宇","type":"company","customer":"北京蜜宝世纪科技有限公司"}-->
+                                <!--])-->
+                            </div>
+                            <div class="tags-con-li">
+                                <detail-member :list="detailMemberList"></detail-member>
+                                <!--<div class="member">-->
+                                <!--&lt;!&ndash;loop("../detail/detail-member.html",[{},{},{},{}])&ndash;&gt;-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+<script>
+
+    var headMessage = Vue.extend({
+        template: '<div class="d-m-li">\n' +
+        '    <div class="d-m-name">\n' +
+        '        {{message.name}}\n' +
+        '    </div>\n' +
+        '    <div class="d-m-main">\n' +
+        ' <i class="d-m-head" v-if="message.photo != null && message.photo!= undefined && message.photo != \'\'" :style="\'background-image: url(\'+message.photo+\');\'"></i>' +
+        '        <label :class="message.photo != null && message.photo!= undefined && message.photo != \'\'?\'d-m-con\':\'\'">{{message.value}}</label>\n' +
+        '    </div>\n' +
+        '</div>',
+        props: ['message']
+    });
+
+    var contactTableList = Vue.extend({
+        template: '<div><ul class="table-row" v-for="message in list">\n' +
+        '    <li class="table-li table-li1">\n' +
+        '        <div class="checkbox">\n' +
+        '            <label><input type="checkbox" class="check" onclick="checkbox(this)"><i></i></label>\n' +
+        '        </div>\n' +
+        '    </li>\n' +
+        '    <li class="table-li table-li2">\n' +
+        '        {{message.name}}\n' +
+        '    </li>\n' +
+        '    <li class="table-li table-li3">\n' +
+        '        {{message.cellphone}}\n' +
+        '    </li>\n' +
+        '    <li class="table-li table-li4">\n' +
+        '        {{message.userName}}\n' +
+        '    </li>\n' +
+        '    <li class="table-li table-li5">\n' +
+        '        {{message.actionType}}\n' +
+        '    </li>\n' +
+        '    <li class="table-li table-li6">\n' +
+        '        通话时长：{{message.callTime}}\n' +
+        '    </li>\n' +
+        '    <li class="table-li table-li7">\n' +
+        '        <i class="icon video" :data-url="message.callDuration" :data-name="message.name" :data-company="message.company" onclick="audioPlay(this,event)"></i>\n' +
+        '        <i class="icon download" :data-url="message.callDownload" onclick="audioDownload(this,event)"></i>\n' +
+        '    </li>\n' +
+        '</ul>\n</div>',
+//        template:'<ul><li>{{list}}</li></ul>',
+        props: ['list']
+    });
+
+    var taskHistoryList = Vue.extend({
+        template: '<div><ul class="table-row" v-for="task in list">\n' +
+        '    <li class="table-li table-color">\n' +
+        '        {{task.name}}\n' +
+        '    </li>\n' +
+        '    <li class="table-li">\n' +
+        '        {{task.number}}\n' +
+        '    </li>\n' +
+        '    <li class="table-li">\n' +
+        '        {{task.state}}\n' +
+        '    </li>\n' +
+        '    <li class="table-li">\n' +
+        '        <a href="javascript:void(0)">查看详情</a>\n' +
+        '    </li>\n' +
+        '</ul></div>',
+        props: ['list']
+    });
+
+    var detailMessage = Vue.extend({
+        template: '<div class="message-li" v-modify data-toggle="MessageEditor"  data-target=".message-li"  data-backdrop="true">\n' +
+        '    <div class="icon edit-icon"></div>\n' +
+        '    <div class="message-name">\n' +
+        '        {{message.name}}\n' +
+        '    </div>\n' +
+        '    <div class="message-main" >\n' +
+//        '        <div class="message-text" v-if="editor">' +
+//        '           <input type="text" v-model="message.value"  />' +
+//        '       </div>' +
+        '        <div class="message-text" :data-name="name"  :data-value="message.value == \'\'?\'\':message.value" :data-type="message.type" :data-nametext="message.name" :data-option="message.options == null || message.options == \'\' || message.options == undefined ? \'\' :message.options ">\n' +
+        '                {{message.value == ""?"点击填写":message.value}}\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '</div>\n',
+        props: ['message','name'],
+        data: function () {
+            return {
+//                editor: false
+            }
+        },
+        directives: {
+            modify: {
+                bind: function (el) {
+                    console.log(el);
+                    $(el).click(function (e) {
+                        console.log(this);
+                        if ($(e.target).isChildAndSelfOf(".message-li")) {
+                            $(this).MessageEditor({editor: true}, this)
+                        }
+//                        $(this).MessageEditor({editor: true}, this)
+//                    _self.$data.editor = true;
+                    });
+
+//                    $(".layer-detail-wrap .modal-dialog").click(function (e) {
+//                        console.log(e);
+//                        if ($(e.target).isChildAndSelfOf(".message-li")) {
+//                            $(".editor[data-toggle='MessageEditor']").each(function () {
+//                                if (!$(e.target).isChildAndSelfOf(this)) {
+//                                    $(this).MessageEditor({editor: false, callback: changed(this)}, this)
+//                                }
+//                            })
+//                        }
+//                        else {
+//                            $(".editor[data-toggle='MessageEditor']").each(function () {
+//                                $(this).MessageEditor({editor: false, callback: changed(this)}, this)
+//                            })
+//                        }
+//                    })
+                }
+            }
+        }
+    });
+
+
+    var detailLine = Vue.extend({
+        template: '<div class="time-line">' +
+        '<div class="line-box" v-for="line in list">\n' +
+        '    <div class="line-time">{{line.time}}</div>\n' +
+        '<div class="line-main" v-if="line.type == 1">' +
+        '        <div class="line-t">\n' +
+        '            <label class="color color-big">{{line.editor}}</label> 与\n' +
+        '            <label class="color">{{line.customer}}</label> 进行电话沟通\n' +
+        '        </div>\n' +
+        '        <div class="talk-time">\n' +
+        '            通话时长：{{line.callTime}}<label class="video-box"><i class="icon video" :data-url="line.callDuration" :data-name="line.customer" :data-company="line.company" onclick="audioPlay(this,event)"></i> <i class="icon download" data-url="voice/demo.mp3" onclick="audioDownload(this,event)"></i></label>\n' +
+        '        </div>\n' +
+        '        <div class="line-block">\n' +
+        '            沟通结果：{{line.actionType}}\n' +
+        '        </div>\n' +
+        '        <div class="line-block">\n' +
+        '            电话备注：{{line.remark}}\n' +
+        '        </div>\n' +
+        '</div>' +
+        '    <div class="line-main" v-if="line.type == 2">\n' +
+        '        <div class="line-t">\n' +
+        '            <label class="color color-big">{{line.editor}}</label> 给\n' +
+        '            <label class="color">{{line.customer}}</label> 发送挂机短信\n' +
+        '        </div>\n' +
+        '        <div class="line-block">\n' +
+        '            短信模板：{{line.messageName}}\n' +
+        '        </div>\n' +
+        '        <div class="line-block">\n' +
+        '            短信状态：<label class="color">{{line.messageState}}</label>\n' +
+        '        </div>\n' +
+        '</div>' +
+        '<div class="line-main" v-if="line.type == 3">\n' +
+        '        <div class="line-t">\n' +
+        '            <label class="color color-big">{{line.editor}}</label> 创建了联系人\n' +
+        '            <label class="color">{{line.customer}}</label>\n' +
+        '        </div>\n' +
+        '</div>' +
+        '    <div class="line-main" v-if="line.type == 4">\n' +
+        '        <div class="line-t">\n' +
+        '            <label class="color color-big">{{line.editor}}</label> 创建了客户\n' +
+        '            <a class="line-href" href="javascript:void(0)">{{line.company}}</a>\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '</div>' +
+        '</div>\n',
+        props: ['list']
+    });
+
+
+    var detailMember = Vue.extend({
+        template: ' <div class="member">' +
+        '<div class="member-li" v-for="member in list">\n' +
+        '    <a href="javascript:void(0)" class="change-btn">\n' +
+        '        <i class="icon icon-change"></i>\n' +
+        '    </a>\n' +
+        '    <i class="member-head" :style="\'background-image: url(\'+member.headImg+\');\'"></i>\n' +
+        '    <label class="color color-big">{{member.customer}}</label> 对接联系人\n' +
+        '    <label class="color">{{member.contact}}</label>\n' +
+        '</div>' +
+        '</div>',
+        props: ['list']
+    });
+
+    var customerDetail = Vue.extend({
+        template: '#customerDetail',
+        props: ['layer'],
+        data: function () {
+            return {
+
+                messages: {
+                    customerId:"",
+                    company: {name: "公司名称", value: "", type: "input"},
+                    userName: {name: "客户负责人", value: "", photo: "img/head.png", type: "input"},
+                    cellphone: {name: "电话号码", value: "", type: "input"},
+                    createdTime: {name: "创建时间", value: ""},
+                    lastActionTime: {name: "最后联系时间", value: ""},
+                    progress: {name: "销售进度", value: "", type: "select", options: '初步沟通,确认需求,报价,面谈,成单,无需求,输单,未标记'},
+                    lastAction: {name: "最后一次通话结果", value: ""},
+                    comIndustry: {name: "所属行业", value: "", type: "input"},
+                    registCapi: {name: "注册资金", value: "", type: "input"},
+                    comType: {name: "公司类型", value: "", type: "input"},
+                    comAdress: {name: "公司地址", value: "", type: "input"},
+                    postcode: {name: "邮政编码", value: "", type: "input"}
+                },
+                contactlist: [],
+                taskHistory: [],
+                detailLineList: [],
+                detailMemberList: [],
+                remark:""
+            }
+        },
+        methods: {
+            close: function () {
+                console.log("关闭详情");
+                this.$props.layer.show = false;
+            },
+            businessShow: function () {
+                console.log('客户详情工商信息（企信宝）');
+                this.$emit('layer', 'business');
+            },
+            customerAdd: function () {
+                this.$emit('layer', 'customerAdd');
+            },
+            customerModify:function () {
+              this.$emit('layer','customerModify');
+            },
+            remarkReset:function () {
+              this.$data.remark = "";
+            },
+            remarkSubmit:function () {
+                console.log(this.$data.remark);
+                if(this.$data.remark == ""){
+                    return false;
+                }
+                alert("","备注添加成功");
+                this.$data.remark = "";
+            },
+            modifyDefault:function (e) {
+//                $(".layer-detail-wrap .modal-dialog").click(function (e) {
+                    console.log(e);
+                    if ($(e.target).isChildAndSelfOf(".message-li")) {
+                        $(".editor[data-toggle='MessageEditor']").each(function () {
+                            if (!$(e.target).isChildAndSelfOf(this)) {
+                                $(this).MessageEditor({editor: false, callback: 'changed(data)'}, this)
+                            }
+                        })
+                    }
+                    else {
+                        $(".editor[data-toggle='MessageEditor']").each(function () {
+                            $(this).MessageEditor({editor: false, callback: 'changed(data)'}, this)
+                        })
+                    }
+//                })
+            },
+            changeContactBtn:function () {
+                //变更跟进人
+                vm.$data.layers.changeContact.show = true ;
+            }
+        },
+        components: {
+            "headMessage": headMessage,
+            "contactTableList": contactTableList,
+            "taskHistoryList": taskHistoryList,
+            "detailMessage": detailMessage,
+            "detailLine": detailLine,
+            "detailMember": detailMember
+        },
+        activated: function () {
+//            var _self = this;
+            console.log(this);
+            var message = this.$props.layer.message;
+var $messages = this.$data.messages;
+console.log($messages);
+            $messages.customerId = message.cusid;
+            $messages.company.value = message.company;
+            $messages.userName.value = message.cusname;
+            $messages.cellphone.value = message.cellphone;
+            $messages.createdTime.value = message.createdTime;
+            $messages.lastActionTime.value = message.lastActionTime;
+            $messages.progress.value = message.progress;
+            $messages.lastAction.value = message.lastAction;
+
+//            this.$data.messages.comIndustry.value = message.comIndustry;
+            $messages.registCapi.value = message.registCapi;
+            $messages.comType.value = message.comType;
+            $messages.comAdress.value = message.comAdress;
+//            this.$data.messages.postcode.value = message.postcode;
+            //查询联系人列表
+            var contactUrl = "json/detail-contact.json";
+
+
+            this.$http.get(contactUrl, {}).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                this.$data.contactlist = json;
+                console.log(this);
+            }, function (response) {
+                console.info(response);
+            });
+
+
+            //查询任务历史列表
+            var taskHistoryUrl = "json/detail-taskHistory.json";
+
+//
+            this.$http.get(taskHistoryUrl, {}).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                this.$data.taskHistory = json;
+                console.log(this);
+            }, function (response) {
+                console.info(response);
+            });
+
+            //时间轴列表
+            var detailLineUrl = "json/detail-line.json";
+
+            this.$http.get(detailLineUrl, {}).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                this.$data.detailLineList = json;
+                console.log(this);
+            }, function (response) {
+                console.info(response);
+            });
+            //团队成员列表
+            var detailMemberUrl = "json/detail-member.json";
+
+
+            this.$http.get(detailMemberUrl, {}).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                this.$data.detailMemberList = json;
+                console.log(this);
+            }, function (response) {
+                console.info(response);
+            });
+        },
+//        deactivated:function () {
+//            this.$data.messages.company.value = "";
+//            this.$data.messages.userName.value = "";
+//            this.$data.messages.cellphone.value = "";
+//            this.$data.messages.createdTime.value = "";
+//            this.$data.messages.lastActionTime.value = "";
+//            this.$data.messages.progress.value = "";
+//            this.$data.messages.lastAction.value = "";
+//            this.$data.contactlist = [];
+//            this.$data.taskHistory = [];
+//            this.$data.detailLineList = [];
+//            this.$data.detailMemberList = [];
+//
+//        }
+    });
+    Vue.component('customerDetail', customerDetail);
+</script>
+    <!--弹框-->
+    <template id="layer">
+    <div class="modal" v-if="layer.show">
+        <div class="layer-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="submit" autocomplete="off">
+                    <div class="modal-header layer-head">
+                        <button type="button" class="close" @click="close">&times;</button>
+                        <h4 class="modal-title">{{layer.title}}</h4>
+                    </div>
+                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
+                        <slot></slot>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click="close">关闭</button>
+                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var layer = Vue.extend({
+        template: '#layer',
+        props: ['layer'],
+        data: function () {
+            return {
+                maxHeight: document.body.clientHeight - 200
+            }
+        },
+        methods: {
+            close: function (layer) {
+                console.log(this.$props);
+                this.$props.layer.show = false;
+                return false;
+            },
+            submit: function () {
+                console.log("彈框提交");
+                console.log(vm.$refs[this.$props.layer.layerName]);
+                vm.$refs[this.$props.layer.layerName].submit();
+                return false;
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            window.onresize = function () {
+                _self.maxHeight = document.body.clientHeight - 200;
+            }
+        },
+        watch: {
+            maxHeight: function (val) {
+                var modalBody = document.getElementsByClassName('modal-body');
+                for (var i = 0; i < modalBody.length; i++) {
+                    modalBody[i].style.maxHeight = val + 'px';
+                }
+            }
+        },
+        updated: function () {
+            var modalDialog = $(this.$el).find(".modal-dialog")[0];
+            $(modalDialog).css({
+                top: ($("body").height() - $(modalDialog).height()) / 2,
+                left: ($("body").width() - $(modalDialog).width()) / 2
+            });
+            $(modalDialog).bg_move({
+                    move: '.modal-header',
+                    closed: '.close'
+                });
+        }
+    });
+
+    Vue.component('layer', layer);
+</script>
+    <!--工商信息（企信宝）-->
+    <template id="business">
+    <div class="message">
+        <!--<business-row :data="company"></business-row>-->
+        <!--<business-row :data="comType"></business-row>-->
+        <!--<business-row :data="industry"></business-row>-->
+        <!--<business-row :data="openName"></business-row>-->
+        <!--<business-row :data="registCapi"></business-row>-->
+        <!--<business-row :data="mainProduce"></business-row>-->
+        <!--<business-row :data="registAdress"></business-row>-->
+        <!--<business-row :data="comAdress"></business-row>-->
+        <!--<business-row :data="telephone"></business-row>-->
+        <input-row :rows="company"></input-row>
+        <input-row :rows="comType"></input-row>
+        <input-row :rows="industry"></input-row>
+        <input-row :rows="openName"></input-row>
+        <input-row :rows="registCapi"></input-row>
+        <input-row :rows="mainProduce"></input-row>
+        <input-row :rows="registAdress"></input-row>
+        <input-row :rows="comAdress"></input-row>
+        <input-row :rows="telephone"></input-row>
+    </div>
+</template>
+
+<script>
+    //    var businessRow = Vue.extend({
+    //        template: '<div class="m-row">\n' +
+    //        '            <div class="m-name">\n' +
+    //        '                {{data.name}}：\n' +
+    //        '            </div>\n' +
+    //        '            <div class="m-info">\n' +
+    //        '                {{data.value}}\n' +
+    //        '            </div>\n' +
+    //        '        </div>',
+    //        props: ['data']
+    //    })
+    var business = Vue.extend({
+        template: '#business',
+        props: [],
+        data: function () {
+            return {
+                company: {
+                    name: "公司名称", value: "", input: false, required: false
+                },
+                comType: {
+                    name: "公司类型", value: "", input: false, required: false
+                },
+                industry: {
+                    name: "行业", value: "", input: false, required: false
+                },
+                openName: {
+                    name: "法定代表人", value: "", input: false, required: false
+                },
+                registCapi: {
+                    name: "注册资金", value: "", input: false, required: false
+                },
+                mainProduce: {
+                    name: "经营范围", value: "", input: false, required: false
+                },
+                registAdress: {
+                    name: "注册地址", value: "", input: false, required: false
+                },
+                comAdress: {
+                    name: "办公地址", value: "", input: false, required: false
+                },
+                telephone: {
+                    name: "电话", value: "", input: false, required: false
+                }
+            }
+        },
+        components: {
+//            'businessRow': businessRow
+            'inputRow': inputRow
+        },
+        created: function () {
+            var url = "json/business.json";
+
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                console.log(data);
+                console.log(json);
+                for (var i = 0; i < json.length; i++) {
+                    this[json[i].name].value = json[i].value;
+                }
+
+//                this.data=eval("(" + json +")");
+            }, function (response) {
+                console.info(response);
+            })
+        }
+    });
+
+    Vue.component('business', business);
+</script>
+    <!--新建客户-->
+    <template id="customer-add">
+    <div class="message add-message">
+        <div class="m-row">
+            <div class="m-name required">
+                公司名称：
+            </div>
+            <div class="m-info m-input">
+                <autocomplete id="company" classname="input" name="company" placeholder="请输入公司名称"
+                              url="json/company.json" param="value" limit="5" anchor="value"
+                              @value="comValue"></autocomplete>
+            </div>
+        </div>
+        <input-row :rows="rows.customerName"></input-row>
+        <input-row :rows="rows.cellphone"></input-row>
+        <input-row :rows="rows.comAdress"></input-row>
+        <input-row :rows="rows.comType"></input-row>
+        <div class="m-row">
+            <div class="m-name">
+                备注：
+            </div>
+            <div class="m-info m-input">
+                <textarea class="textarea" placeholder="请输入备注" v-text="rows.remark.value"></textarea>
+            </div>
+        </div>
+        <input-row v-if="compnayBusiness" :rows="rows.openName"></input-row>
+        <input-row v-if="compnayBusiness" :rows="rows.registCapi"></input-row>
+        <input-row v-if="compnayBusiness" :rows="rows.mainProduce"></input-row>
+        <input-row :rows="rows.position"></input-row>
+        <div class="m-row">
+            <div class="m-name">
+                行业：
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.industry.options" optiondefault="true" v-model="rows.industry.value" name="行业">
+                </select2>
+            </div>
+        </div>
+        <div class="more-message" v-if="!more" @click="moreInput">添加更多信息&gt;&gt;</div>
+        <input-row v-if="more" :rows="rows.cellphone2"></input-row>
+        <input-row v-if="more" :rows="rows.email"></input-row>
+        <input-row v-if="more" :rows="rows.QQ"></input-row>
+        <input-row v-if="more" :rows="rows.wechat"></input-row>
+        <div class="m-row" v-if="more">
+            <div class="m-name">
+                性别：
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.gender.options" optiondefault="true" v-model="rows.gender.value" name="性别">
+                </select2>
+            </div>
+        </div>
+        <input-row v-if="more" :rows="rows.birthday"></input-row>
+        <input-row v-if="more" :rows="rows.reception"></input-row>
+        <input-row v-if="more" :rows="rows.telephone"></input-row>
+        <input-row v-if="more" :rows="rows.fax"></input-row>
+        <input-row v-if="more" :rows="rows.spare1"></input-row>
+        <input-row v-if="more" :rows="rows.spare2"></input-row>
+        <input-row v-if="more" :rows="rows.spare3"></input-row>
+        <input-row v-if="more" :rows="rows.spare4"></input-row>
+        <input-row v-if="more" :rows="rows.spare5"></input-row>
+
+    </div>
+</template>
+<script>
+    var customerAdd = Vue.extend({
+        template: '#customer-add',
+        props: ['layer'],
+        data: function () {
+            return {
+                rows: {
+                    company: {name: "公司名称", input: true, value: "", required: true},
+                    customerName: {name: "联系人姓名", input: true, value: "", required: true},
+                    cellphone: {name: "联系人手机号", input: true, value: "", required: true,enter:true,icon:"EnterSearch",text:"查重"},
+                    comAdress: {name: "公司地址", input: true, value: ""},
+                    comType: {name: "公司类型", value: "", input: true},
+                    remark: {name: "备注", value: ""},
+                    openName: {name: "企业法人", value: ""},
+                    registCapi: {name: "注册资金", value: ""},
+                    mainProduce: {name: "经营范围", value: ""},
+                    position: {name: "职位", value: "", input: true},
+                    industry: {
+                        name: "行业", value: "0", options: [
+                            {id: "IT/通讯/电子/互联网", text: "IT/通讯/电子/互联网"},
+                            {id: "金融业", text: "金融业"},
+                            {id: "房地产/建筑业", text: "房地产/建筑业"},
+                            {id: "商业服务", text: "商业服务"},
+                            {id: "贸易/批发/零售", text: "贸易/批发/零售"},
+                            {id: "文教传媒/体育娱乐", text: "文教传媒/体育娱乐"},
+                            {id: "生产/加工/制造", text: "生产/加工/制造"},
+                            {id: "仓储物流", text: "仓储物流"},
+                            {id: "能源/矿产/环保", text: "能源/矿产/环保"},
+                            {id: "政府/非盈利机构", text: "政府/非盈利机构"},
+                            {id: "农林牧渔", text: "农林牧渔"}
+                        ]
+                    },
+                    cellphone2: {name: "手机号码2", value: "", input: true},
+                    email: {name: "邮箱地址", value: "", input: true},
+                    QQ: {name: "QQ号码", value: "", input: true},
+                    wechat: {name: "微信号码", value: "", input: true},
+                    gender: {name: "性别", value: "0", options: [{id: "男", text: "男"}, {id: "女", text: "女"}]},
+                    birthday: {name: "生日", value: "", input: true},
+                    reception: {name: "前台电话", value: "", input: true},
+                    telephone: {name: "座机", value: "", input: true},
+                    fax: {name: "传真", value: "", input: true},
+                    spare1: {name: "备用字段一", value: "", input: true},
+                    spare2: {name: "备用字段二", value: "", input: true},
+                    spare3: {name: "备用字段三", value: "", input: true},
+                    spare4: {name: "备用字段四", value: "", input: true},
+                    spare5: {name: "备用字段五", value: "", input: true}
+                },
+                more: false,
+                compnayBusiness: false
+            }
+        },
+        methods: {
+            moreInput: function () {
+                this.$data.more = true;
+            },
+            submit: function () {
+                console.log('新建客户组件提交');
+                console.log(this.$data.rows);
+                vm.layers.customerAdd.show = false;
+                alert("", "添加成功", function () {
+                    //新增客户弹框隐藏
+                }, {type: "success"});
+            },
+            comValue: function (data) {
+                console.log(data);
+                var url = "json/business.json";
+                this.$http.get(url).then(function (data) {
+                    var json = JSON.parse(data.bodyText);
+                    console.log(data);
+                    console.log(json);
+                    for (var i = 0; i < json.length; i++) {
+                        if (this.$data.rows[json[i].name] != null && this.$data.rows[json[i].name] != undefined) {
+                            this.$data.rows[json[i].name].value = json[i].value;
+                            console.log(this.$data.rows[json[i].name].value)
+                        }
+                    }
+                    this.$data.compnayBusiness = true;
+
+                }, function (response) {
+                    console.info(response);
+                })
+            }
+        },
+        components: {
+            "inputRow": inputRow
+        },
+        directives: {
+            select: {
+                inserted: function (el) {
+                    select(el);
+                },
+                update: function (el) {
+                    console.log(el);
+                }
+            }
+        }
+    });
+    Vue.component('customerAdd', customerAdd);
+</script> <template id="autocomplete">
+    <div class="autocomplete-wrap">
+        <input type="text"
+               :id="id"
+               :class="classname"
+               :name="name"
+               :placeholder="placeholder"
+               v-model="inputmodel"
+               @input="input(inputmodel)"
+               @blur="hideAll"
+               @focus="focus"/>
+        <div class="qixinbao" :class="business" @click="businessShow"><i></i>工商信息</div>
+        <div v-if="showList" :class='"autocomplete autocomplete-"+ name ' :id="'autocomplete-'+ name ">
+            <ul>
+                <li v-for="data in json">
+                    <a href="javascript:void(0)"
+                       @click="selectList(data)">
+                        <b>{{ data[anchor] }}</b>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<script>
+    var autocomplete = Vue.extend({
+        template: '#autocomplete',
+        props: {
+            id: String,
+            classname: String,
+            name: String,
+            placeholder: String,
+
+            //父组件模型名称
+            model: String,
+
+            //JSON数据取值的Key
+            anchor: {
+                type: String,
+                required: true
+            },
+
+            //请求的数据链接
+            url: {
+                type: String,
+                required: true
+            },
+
+            //请求的参数KEY
+            param: {
+                type: String,
+                default: 'q'
+            },
+
+            //拉取的数据个数的限制
+            limit: {
+                type: String,
+                default: 5
+            }
+        },
+
+        data: function () {
+            return {
+                showList: false,
+                inputmodel: '',
+                json: [],
+                focusList: '',
+                business:""
+            }
+        },
+
+        methods: {
+            input: function (val) {
+                this.showList = true;
+                console.log("输入");
+                //触发调用getData方法
+                this.getData(val);
+                this.business="";
+            },
+
+            //隐藏补全列表
+            hideAll: function (e) {
+                var _self=this;
+                //为了让blur方法延迟执行，以便能够成功执行click方法
+                setTimeout(function () {
+                    _self.showList = false;
+                }, 250);
+            },
+
+            //
+            focus: function (e) {
+                this.focusList = 0;
+            },
+
+            //选中列表中的哪一项
+            selectList: function (data) {
+                console.log(data);
+                console.log(JSON.stringify(data));
+
+                //按照指定的JSON键值显示在模型上
+                this.inputmodel = data.value;
+                //传递给父组件中的对象
+                this.showList = false;
+                this.$emit('value',data);
+                this.business="active";
+            },
+
+            //获取数据
+            getData: function (val) {
+                console.log(val);
+                let self = this;
+
+                if (this.url != null) {
+
+                    let ajax = new XMLHttpRequest();
+
+                    ajax.open('GET', `${this.url}?${this.param}=${val}`, true);
+                    ajax.send();
+
+                    ajax.addEventListener('progress', function (data) {
+                        if (data.lengthComputable) {
+                        }
+                    });
+
+                    ajax.addEventListener('loadend', function (data) {
+                        console.log(data);
+                        let json = JSON.parse(this.responseText);
+                        console.log(json);
+                        self.json = json;
+                    });
+
+                }
+            },
+            businessShow:function(){
+                if(this.business ==""){
+                    return false;
+                }
+                vm.$data.layers.business.show = true;
+
+//                this.$emit('business',this.json);
+            }
+
+        }
+    });
+    Vue.component('autocomplete',autocomplete);
+
+</script>
+
+    <!--编辑客户-->
+    <template id="customer-modify">
+    <div class="message add-message">
+        <div class="m-row">
+            <div class="m-name required">
+                公司名称：
+            </div>
+            <div class="m-info m-input">
+                <autocomplete id="company" classname="input" name="company" placeholder="请输入公司名称"
+                              url="json/company.json" param="value" limit="5" anchor="value"
+                              @value="comValue"></autocomplete>
+            </div>
+        </div>
+        <input-row :rows="rows.customerName"></input-row>
+        <input-row :rows="rows.cellphone"></input-row>
+        <input-row :rows="rows.comAdress"></input-row>
+        <input-row :rows="rows.comType"></input-row>
+        <div class="m-row">
+            <div class="m-name">
+                备注：
+            </div>
+            <div class="m-info m-input">
+                <textarea class="textarea" placeholder="请输入备注" v-text="rows.remark.value"></textarea>
+            </div>
+        </div>
+        <input-row v-if="compnayBusiness" :rows="rows.openName"></input-row>
+        <input-row v-if="compnayBusiness" :rows="rows.registCapi"></input-row>
+        <input-row v-if="compnayBusiness" :rows="rows.mainProduce"></input-row>
+        <input-row :rows="rows.position"></input-row>
+        <div class="m-row">
+            <div class="m-name">
+                行业：
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.industry.options" optiondefault="true" v-model="rows.industry.value" name="行业">
+                </select2>
+            </div>
+        </div>
+        <input-row :rows="rows.cellphone2"></input-row>
+        <input-row :rows="rows.email"></input-row>
+        <input-row :rows="rows.QQ"></input-row>
+        <input-row :rows="rows.wechat"></input-row>
+        <div class="m-row" >
+            <div class="m-name">
+                性别：
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.gender.options" optiondefault="true" v-model="rows.gender.value" name="性别">
+                </select2>
+            </div>
+        </div>
+        <input-row :rows="rows.birthday"></input-row>
+        <input-row :rows="rows.reception"></input-row>
+        <input-row :rows="rows.telephone"></input-row>
+        <input-row :rows="rows.fax"></input-row>
+        <input-row :rows="rows.spare1"></input-row>
+        <input-row :rows="rows.spare2"></input-row>
+        <input-row :rows="rows.spare3"></input-row>
+        <input-row :rows="rows.spare4"></input-row>
+        <input-row :rows="rows.spare5"></input-row>
+
+    </div>
+</template>
+<script>
+    var customerModify = Vue.extend({
+        template: '#customer-modify',
+        props: ['layer'],
+        data: function () {
+            return {
+                rows: {
+                    company: {name: "公司名称", input: true, value: "", required: true},
+                    customerName: {name: "联系人姓名", input: true, value: "", required: true},
+                    cellphone: {name: "联系人手机号", input: true, value: "", required: true,enter:true,icon:"EnterSearch",text:"查重"},
+                    comAdress: {name: "公司地址", input: true, value: ""},
+                    comType: {name: "公司类型", value: "", input: true},
+                    remark: {name: "备注", value: ""},
+                    openName: {name: "企业法人", value: ""},
+                    registCapi: {name: "注册资金", value: ""},
+                    mainProduce: {name: "经营范围", value: ""},
+                    position: {name: "职位", value: "", input: true},
+                    industry: {
+                        name: "行业", value: "0", options: [
+                            {id: "IT/通讯/电子/互联网", text: "IT/通讯/电子/互联网"},
+                            {id: "金融业", text: "金融业"},
+                            {id: "房地产/建筑业", text: "房地产/建筑业"},
+                            {id: "商业服务", text: "商业服务"},
+                            {id: "贸易/批发/零售", text: "贸易/批发/零售"},
+                            {id: "文教传媒/体育娱乐", text: "文教传媒/体育娱乐"},
+                            {id: "生产/加工/制造", text: "生产/加工/制造"},
+                            {id: "仓储物流", text: "仓储物流"},
+                            {id: "能源/矿产/环保", text: "能源/矿产/环保"},
+                            {id: "政府/非盈利机构", text: "政府/非盈利机构"},
+                            {id: "农林牧渔", text: "农林牧渔"}
+                        ]
+                    },
+                    cellphone2: {name: "手机号码2", value: "", input: true},
+                    email: {name: "邮箱地址", value: "", input: true},
+                    QQ: {name: "QQ号码", value: "", input: true},
+                    wechat: {name: "微信号码", value: "", input: true},
+                    gender: {name: "性别", value: "0", options: [{id: "男", text: "男"}, {id: "女", text: "女"}]},
+                    birthday: {name: "生日", value: "", input: true},
+                    reception: {name: "前台电话", value: "", input: true},
+                    telephone: {name: "座机", value: "", input: true},
+                    fax: {name: "传真", value: "", input: true},
+                    spare1: {name: "备用字段一", value: "", input: true},
+                    spare2: {name: "备用字段二", value: "", input: true},
+                    spare3: {name: "备用字段三", value: "", input: true},
+                    spare4: {name: "备用字段四", value: "", input: true},
+                    spare5: {name: "备用字段五", value: "", input: true}
+                },
+                compnayBusiness: false
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log('编辑客户组件提交');
+                console.log(this.$data.rows);
+                vm.layers.customerAdd.show = false;
+                alert("", "修改成功", function () {
+                    //新增客户弹框隐藏
+                }, {type: "success"});
+            },
+            comValue: function (data) {
+                console.log(data);
+                var url = "json/business.json";
+                this.$http.get(url).then(function (data) {
+                    var json = JSON.parse(data.bodyText);
+                    console.log(data);
+                    console.log(json);
+                    for (var i = 0; i < json.length; i++) {
+                        if (this.$data.rows[json[i].name] != null && this.$data.rows[json[i].name] != undefined) {
+                            this.$data.rows[json[i].name].value = json[i].value;
+                            console.log(this.$data.rows[json[i].name].value)
+                        }
+                    }
+                    this.$data.compnayBusiness = true;
+
+                }, function (response) {
+                    console.info(response);
+                })
+            }
+        },
+        activated:function () {
+            var rows = this.$data.rows;
+            rows.company.value = '';
+
+//            company: {name: "公司名称", input: true, value: "", required: true},
+//            customerName: {name: "联系人姓名", input: true, value: "", required: true},
+//            cellphone: {name: "联系人手机号", input: true, value: "", required: true,enter:true,icon:"EnterSearch",text:"查重"},
+//            comAdress: {name: "公司地址", input: true, value: ""},
+//            comType: {name: "公司类型", value: "", input: true},
+//            remark: {name: "备注", value: ""},
+//            openName: {name: "企业法人", value: ""},
+//            registCapi: {name: "注册资金", value: ""},
+//            mainProduce: {name: "经营范围", value: ""},
+//            position: {name: "职位", value: "", input: true},
+//            industry: {
+//                name: "行业", value: "0", options: [
+//                    {id: "IT/通讯/电子/互联网", text: "IT/通讯/电子/互联网"},
+//                    {id: "金融业", text: "金融业"},
+//                    {id: "房地产/建筑业", text: "房地产/建筑业"},
+//                    {id: "商业服务", text: "商业服务"},
+//                    {id: "贸易/批发/零售", text: "贸易/批发/零售"},
+//                    {id: "文教传媒/体育娱乐", text: "文教传媒/体育娱乐"},
+//                    {id: "生产/加工/制造", text: "生产/加工/制造"},
+//                    {id: "仓储物流", text: "仓储物流"},
+//                    {id: "能源/矿产/环保", text: "能源/矿产/环保"},
+//                    {id: "政府/非盈利机构", text: "政府/非盈利机构"},
+//                    {id: "农林牧渔", text: "农林牧渔"}
+//                ]
+//            },
+//            cellphone2: {name: "手机号码2", value: "", input: true},
+//            email: {name: "邮箱地址", value: "", input: true},
+//            QQ: {name: "QQ号码", value: "", input: true},
+//            wechat: {name: "微信号码", value: "", input: true},
+//            gender: {name: "性别", value: "0", options: [{id: "男", text: "男"}, {id: "女", text: "女"}]},
+//            birthday: {name: "生日", value: "", input: true},
+//            reception: {name: "前台电话", value: "", input: true},
+//            telephone: {name: "座机", value: "", input: true},
+//            fax: {name: "传真", value: "", input: true},
+//            spare1: {name: "备用字段一", value: "", input: true},
+//            spare2: {name: "备用字段二", value: "", input: true},
+//            spare3: {name: "备用字段三", value: "", input: true},
+//            spare4: {name: "备用字段四", value: "", input: true},
+//            spare5: {name: "备用字段五", value: "", input: true}
+        },
+        components: {
+            "inputRow": inputRow
+        },
+        directives: {
+            select: {
+                inserted: function (el) {
+                    select(el);
+                },
+                update: function (el) {
+                    console.log(el);
+                }
+            }
+        }
+    });
+    Vue.component('customerModify', customerModify);
+</script>
+    <!--自定义表头-->
+    <template id="table-head">
+    <div class="list-wrap">
+        <div class="list-left">
+            <div class="list-t">
+                隐藏字段
+            </div>
+            <div id="list-left" v-listbox="left"></div>
+        </div>
+        <div class="move-list">
+            <a href="javascript:listMove(0);"><i class="icon-list icon icon-list-left"></i></a>
+            <a href="javascript:listMove(1);"><i class="icon-list icon icon-list-right"></i></a>
+        </div>
+        <div class="list-right">
+            <div class="list-t">
+                显示字段
+            </div>
+            <div id="list-right" v-listbox="right"></div>
+        </div>
+        <div class="move-list">
+            <a href="javascript:listMove(2);"><i class="icon-list icon icon-list-up"></i></a>
+            <a href="javascript:listMove(3);"><i class="icon-list icon icon-list-down"></i></a>
+        </div>
+    </div>
+</template>
+<script>
+
+
+    var tableHead = Vue.extend({
+        template: '#table-head',
+        data: function () {
+            return {
+                left: leftsource,
+                right: rightsource
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log('提交');
+                customSubmit();
+            }
+        },
+        directives: {
+            listbox: function (el, val) {
+                console.log(val);
+                $(el).jqxListBox({width: 200, height: 335, multiple: true, scrollBarSize: 7, source: val.value});
+            }
+
+        }
+    });
+
+    Vue.component('tableHead', tableHead);
+</script>
+    <!-- 语音播放 -->
+    <template id="audio">
+    <div v-if="layer.show" class="audio-wrap">
+        <div class="audio ">
+            <a class="close" @click="close">&times;</a>
+            <div class="audio-title">{{layer.name}}</div>
+            <div class="audio-company">{{layer.company}}</div>
+            <audio preload="none" v-audio :audio="layer.url"></audio>
+            <a :href="layer.url" class="audio-download">&#xe614;</a>
+        </div>
+    </div>
+</template>
+<script>
+    var audio;
+    var myAudio = Vue.extend({
+        template: '#audio',
+        props: ['layer'],
+        data: function () {
+            return {
+
+            }
+        },
+        methods:{
+          close:function(){
+              console.log('121');
+              audio.pause();
+              vm.$data.audio.show = false;
+          }
+        },
+        directives: {
+            audio: {
+                inserted:function (el) {
+                    console.log(el);
+                    console.log(this);
+                    audio = audiojs.create(el);
+                    audio.load(vm.$data.audio.url);
+                    audio.play();
+                },
+                update: function (el) {
+                    console.log(el);
+                    console.log(this);
+//                    audio = audiojs.create(el);
+                    audio.load(vm.$data.audio.url);
+                    audio.play();
+                }
+            }
+        }
+    });
+    Vue.component('myAudio', myAudio);
+</script> 
+    <!--selected-->
+    <template id="select2-template">
+    <select>
+        <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
+        <slot></slot>
+    </select>
+</template>
+
+<script>
+    Vue.component('select2', {
+        props: ['options', 'value','name','optiondefault'],
+        template: '#select2-template',
+        mounted: function () {
+            var vm = this
+            $(this.$el)
+            // init select2
+                .select2({ data: this.options })
+                .val(this.value)
+                .trigger('change')
+                // emit event on change.
+                .on('change', function () {
+                    vm.$emit('input', this.value)
+                })
+        },
+        watch: {
+            value: function (value) {
+                // update value
+                $(this.$el).val(value).trigger('change');
+            },
+            options: function (options) {
+                console.log(options);
+                // update options
+                $(this.$el).select2({ data: options })
+            }
+        },
+        destroyed: function () {
+            $(this.$el).off().select2('destroy')
+        }
+    })
+
+</script> 
+
+    <script src="js/scripts.js"></script>
+    <script src="js/customer.js"></script>
+    <script src="js/MessageEditor.js"></script>
+    <script src="js/customerDetail.js"></script>
+
+</body>
+
+</html>

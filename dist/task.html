@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
+    <title>云客后台-电话任务</title>
+    <!--公共-->
+    <link type="image/x-icon" href="img/favicon.ico" rel="icon">
+
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/beAlert.css">
+<link rel="stylesheet" href="css/select2.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/jqxgrid.css">
+
+
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource@1.3.4.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/resize.js"></script>
+<script src="js/beAlert.js"></script>
+<script src="js/select2.js"></script>
+<script src="js/drag.js"></script>
+<!--<script src="js/jsDate/laydate.js"></script>-->
+<!--<script src="js/layDate/laydate.js"></script>-->
+<!---->
+
+<script src="js/audio.js"></script>
+
+<!--[if lt IE 10]>
+<script type="text/javascript" src="js/html5shiv.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script>
+<script type="text/javascript" src="js/placeholder.js"></script>
+<![endif]-->
+
+
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+
+    <!-- 日历插件 -->
+    <script type="text/javascript" src="js/jqx/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcalendar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxtooltip.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+</head>
+<body>
+     <!-- Preloader -->
+  <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+<div id="app">
+    
+        <!--header-->
+        <common-head ></common-head>
+   
+    <section class="b-main">
+         <!--左侧菜单-->
+    <menu-aside menu="index"></menu-aside>
+        <div class="b-panel">
+            <main-left></main-left>
+            <main-task></main-task>
+        </div>
+    </section>
+
+    <transition name="layer">
+        <layer :layer="layers.taskAdd" >
+            <task-add ref="taskAdd"></task-add>
+        </layer>
+    </transition>
+</div>
+
+<!--左侧导航-->
+<template id="aside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <menu-content :content="index" index="1"></menu-content>
+                <menu-content :content="customer" index="2"></menu-content>
+                <menu-content :content="task" index="3"></menu-content>
+            </ul>
+        </div>
+    </aside>
+</template>
+<script>
+    var menuContent = Vue.extend({
+        template: '<li class="m-nav menu-list" :class=" \'nav-left\' + index" v-if="content.subShow">\n' +
+        '    <a class="nav-info" href="javascript:void(0)">\n' +
+        '        <i class="icon m-icon" :class="content.icon" ></i>\n' +
+        '        <label>{{content.title}}</label>\n' +
+        '        <i v-if="content.sub.length>0" class="icon-sign"></i>\n' +
+        '    </a>\n' +
+        '    <ul class="m-second-list child-list" v-if="content.sub.length>0" >\n' +
+        '        <li class="m-second" v-for="sub in content.sub">\n' +
+        '            <a :href="sub.href">\n' +
+        '                <i></i>\n' +
+        '                <label>{{sub.title}}</label>\n' +
+        '            </a>\n' +
+        '        </li>\n' +
+        '    </ul>\n' +
+        '</li>' +
+        '<li class="m-nav " v-else>\n' +
+        '    <a class=\'nav-info\' :href="content.href">\n' +
+        '        <i class="icon m-icon" :class="content.icon"></i>\n' +
+        '        <label>{{content.title}}</label>\n' +
+        '        <i class="icon-sign"></i>\n' +
+        '    </a>\n' +
+        '</li>',
+        props: ['content','index']
+    });
+
+    var aside = Vue.extend({
+        template: '#aside',
+        data: function () {
+            return {
+                index: {
+                    title: "首页",
+                    icon: "icon-m1",
+                    subShow: true,
+                    active: "",
+                    sub: []
+                },
+                customer: {
+                    title: "客户",
+                    icon: "icon-m2",
+                    subShow: true,
+                    active: "",
+                    sub: [
+                        {
+                            title: "客户列表",
+                            href: "customer.html"
+                        },
+                        {
+                            title: "企业公海",
+                            href: "contact.html"
+                        }
+                    ]
+                },
+                task: {
+                    title: "任务",
+                    icon: "icon-m3",
+                    href: "",
+                    subShow: true,
+                    active: "",
+                    sub: [{
+                        title: "电话任务",
+                        href: "task.html"
+                    }, {
+                        title: "短信任务",
+                        href: ""
+                    }, {
+                        title: "邮件任务",
+                        href: ""
+                    }]
+                }
+            }
+        },
+        methods: {
+            // menu: function () {
+            //     $("body").toggleClass('side-open');
+            //     tableResize();
+            // }
+        },
+        components: {
+            'menuContent': menuContent
+        }
+    });
+    Vue.component('menuAside', aside);
+</script>
+<!--顶部-->
+<template id="head">
+    <header class="b-header">
+        <div class="h-right">
+            <div class="h-search">
+                <form @submit.prevent="Hsearch">
+                    <div class="search-input-box">
+                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息"/>
+                    </div>
+                    <div class="search-btn-box">
+                        <input type="submit" value="&#xe616" class="search-btn"/>
+                    </div>
+                </form>
+            </div>
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-href" href="#">
+                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left"
+                           title="在线客服"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href info-number" href="javascript:void(0);">
+                        <i class="nav-icon nav-news" data-toggle="tooltip" data-placement="auto left" title="消息"></i>
+                        <span class="badge bg-danger">555</span>
+                    </a>
+                </div>
+                <div class="nav-li dropdown">
+                    <a class="nav-href" href="javascript:void(0);" data-toggle="dropdown">
+                        <i class="nav-icon nav-help" data-toggle="tooltip" data-placement="auto left" title="帮助"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-box">
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-new"></i>
+                            <label>新手引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-help"></i>
+                            <label>帮助中心</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-video"></i>
+                            <label>视频引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-return"></i>
+                            <label>意见反馈</label>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-setup" data-toggle="tooltip" data-placement="auto left" title="设置"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout" data-toggle="tooltip" data-placement="auto left" title="退出登录"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var head = Vue.extend({
+        template: '#head',
+        data: function () {
+            return {
+                search: "",
+                user:{
+                    company:"北京蜜宝世纪科技有限公司",
+                    headImg:"img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+                if (this.search.trim() == "") {
+                    alert("", "搜索内容不能为空");
+                    return false;
+                }
+                window.location.href = "customer.html";
+            }
+        }
+    });
+    Vue.component('commonHead', head);
+</script>
+<template id="mainLeft">
+    <div class="left-wrap">
+        <div class="title">
+            {{data.title}}
+        </div>
+        <div class="left-list">
+            <div class="left-item" v-for="item in data.list" :class="item.id == data.active?'active':''">
+                <div class="item-number" :class="item.number>0?'count':''">{{item.number}}</div>
+                <div class="itme-text">{{item.text}}</div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var mainLeft = Vue.extend({
+        template:'#mainLeft',
+//        props:['data']
+        data:function () {
+            return{
+                data:{
+                    title:"电话任务",
+                    list:[
+                        {id:'1',text:"进行中",number:1},
+                        {id:'2',text:"未开始",number:0},
+                        {id:'3',text:"已完成",number:0},
+                        {id:'4',text:"已终止",number:0},
+                    ],
+                    active:'1'
+                }
+            }
+        }
+    });
+    Vue.component('mainLeft',mainLeft);
+</script>
+<template id="mainTask">
+    <div class="main-right">
+        <div class="small-nav-wrap">
+            <div class="nav-box">
+                <label class="nav-btn" @click="taskAdd">新建任务</label>
+                <div class="nav-right">
+                    <div class="index-select">
+                        <div class="select-show">
+                            <label>全部坐席</label>
+                            <i class="t-arrow icon"></i>
+                        </div>
+                        <div class="select-wrap">
+                            <div class="date-select-box">
+                                <ul>
+                                    <li class="date-select selected">
+                                        全部坐席
+                                    </li>
+                                    <li class="date-select" v-for="seat in seats">
+                                        {{seat.text}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="jqxtable task" id="jqxtable"></div>
+        </div>
+    </div>
+</template>
+<script>
+    var mainTask = Vue.extend({
+        template: '#mainTask',
+        data: function () {
+            return {
+                seats: [
+                    {id: "1", text: "坐席1"},
+                    {id: "2", text: "坐席2"},
+                    {id: "3", text: "坐席3"},
+                    {id: "4", text: "坐席4"}
+                ]
+            }
+        },
+        methods: {
+            taskAdd: function () {
+                console.log("123");
+                vm.$data.layers.taskAdd.show = true;
+            }
+        }
+    });
+    Vue.component('mainTask', mainTask);
+</script>
+<template id="inputRow">
+    <div class="m-row">
+        <div class="m-name " :class="{required:rows.required}">
+            {{rows.name}}
+        </div>
+        <div class="m-info m-input" v-if="rows.input">
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"/>
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon"><i></i>{{rows.text}}</div>
+        </div>
+        <div class="m-info" v-else>
+            {{rows.value}}
+        </div>
+    </div>
+</template>
+<script>
+    var inputRow = Vue.extend({
+        template: '#inputRow',
+        props: ['rows']
+    });
+//    Vue.component('inputRow',inputRow);
+</script>
+<template id="inputTime">
+    <div class="input-time">
+        <div class="input" v-time="date"></div>
+        <input type="hidden" v-model="date">
+        <!--<input type="text" class="input" :readonly="time.readonly"-->
+               <!--:placeholder="time.placeholder != undefined ? time.placeholder :''" />-->
+        <!--<i class="icon icon-time"></i>-->
+    </div>
+</template>
+<script>
+    var inputTime = Vue.extend({
+        template: '#inputTime',
+        props: ['time'],
+        data:function () {
+            return{
+                date:''
+            }
+        },
+        directives: {
+            time: {
+                inserted: function (el,date) {
+                    $(el).jqxDateTimeInput({
+                        width: '100%',
+                        height: '40px',
+                        culture: 'ch-CN',
+                        formatString: 'yyyy-MM-dd',
+                        min: new Date(new Date() - 24 * 60 * 60 * 1000)
+                    });
+                    $(el).on('valueChanged', function (event) {
+                        date.value = event.args.date.Format('yyyy-MM-dd');
+                    });
+                }
+            }
+        }
+    });
+</script>
+<template id="select2-template">
+    <select>
+        <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
+        <slot></slot>
+    </select>
+</template>
+
+<script>
+    Vue.component('select2', {
+        props: ['options', 'value','name','optiondefault'],
+        template: '#select2-template',
+        mounted: function () {
+            var vm = this
+            $(this.$el)
+            // init select2
+                .select2({ data: this.options })
+                .val(this.value)
+                .trigger('change')
+                // emit event on change.
+                .on('change', function () {
+                    vm.$emit('input', this.value)
+                })
+        },
+        watch: {
+            value: function (value) {
+                // update value
+                $(this.$el).val(value).trigger('change');
+            },
+            options: function (options) {
+                console.log(options);
+                // update options
+                $(this.$el).select2({ data: options })
+            }
+        },
+        destroyed: function () {
+            $(this.$el).off().select2('destroy')
+        }
+    })
+
+</script>
+<template id="layer">
+    <div class="modal" v-if="layer.show">
+        <div class="layer-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="submit" autocomplete="off">
+                    <div class="modal-header layer-head">
+                        <button type="button" class="close" @click="close">&times;</button>
+                        <h4 class="modal-title">{{layer.title}}</h4>
+                    </div>
+                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
+                        <slot></slot>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click="close">关闭</button>
+                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var layer = Vue.extend({
+        template: '#layer',
+        props: ['layer'],
+        data: function () {
+            return {
+                maxHeight: document.body.clientHeight - 200
+            }
+        },
+        methods: {
+            close: function (layer) {
+                console.log(this.$props);
+                this.$props.layer.show = false;
+                return false;
+            },
+            submit: function () {
+                console.log("彈框提交");
+                console.log(vm.$refs[this.$props.layer.layerName]);
+                vm.$refs[this.$props.layer.layerName].submit();
+                return false;
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            window.onresize = function () {
+                _self.maxHeight = document.body.clientHeight - 200;
+            }
+        },
+        watch: {
+            maxHeight: function (val) {
+                var modalBody = document.getElementsByClassName('modal-body');
+                for (var i = 0; i < modalBody.length; i++) {
+                    modalBody[i].style.maxHeight = val + 'px';
+                }
+            }
+        },
+        updated: function () {
+            var modalDialog = $(this.$el).find(".modal-dialog")[0];
+            $(modalDialog).css({
+                top: ($("body").height() - $(modalDialog).height()) / 2,
+                left: ($("body").width() - $(modalDialog).width()) / 2
+            });
+            $(modalDialog).bg_move({
+                    move: '.modal-header',
+                    closed: '.close'
+                });
+        }
+    });
+
+    Vue.component('layer', layer);
+</script>
+<template id="taskAdd">
+    <div class="task-wrap">
+        <input-row :rows="rows.taskName"></input-row>
+        <div class="task-row">
+            <!--<input-row :rows="rows.startTime"></input-row>-->
+            <div class="m-row">
+                <div class="m-name required">
+                    开始时间
+                </div>
+                <div class="m-info m-input">
+                    <input-time :time="rows.startTime.time"></input-time>
+                    <!--<select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">-->
+                    <!--</select2>-->
+                </div>
+            </div>
+            <div class="m-row">
+                <div class="m-name required">
+                    任务周期
+                </div>
+                <div class="m-info m-input">
+                    <select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">
+                    </select2>
+                </div>
+            </div>
+        </div>
+        <div class="task-row">
+            <input-row :rows="rows.preNumber"></input-row>
+            <div class="m-row">
+                <div class="m-name required">
+                    重复次数
+                </div>
+                <div class="m-info m-input">
+                    <select2 :options="rows.repetitions.options" v-model="rows.repetitions.value" name="重复次数">
+                    </select2>
+                </div>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                执行坐席
+            </div>
+            <div class="m-info m-input">
+
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                数据来源
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
+                </select2>
+                <div class="m-tip tip-row">
+                    如果不添加数据来源，坐席将通过 “企业公海” “云客推荐” 等来源查找数据。
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskAdd = Vue.extend({
+        template: '#taskAdd',
+        data: function () {
+            return {
+                rows: {
+                    taskName: {
+                        name: "任务名称", value: "", input: true, required: true
+                    },
+                    startTime: {
+                        name: "开始时间", value: "", input: true, required: true,time:{readonly:true,icon:"time",placeholder:"请选择开始时间",istime:false,format:"YYYY-MM-DD"}
+                    },
+                    preNumber: {
+                        name: "人均电话量", placeholder: "请输入电话数量", value: "", input: true, required: true
+                    },
+                    cycle: {
+                        name: "任务周期",
+                        value: "日",
+                        options: [{id: "日", text: "日"}, {id: "周", text: "周"}, {id: "月", text: "月"}]
+                    },
+                    repetitions: {
+                        name: "重复次数",
+                        value: "不重复",
+                        options: [{id: "不重复", text: "不重复"}, {id: "1", text: "1"}, {id: "2", text: "2"}, {
+                            id: "3",
+                            text: "3"
+                        }, {id: "4", text: "4"}, {id: "5", text: "5"}, {id: "6", text: "6"}, {
+                            id: "7",
+                            text: "7"
+                        }, {id: "8", text: "8"}, {id: "9", text: "9"}, {id: "10", text: "10"}, {
+                            id: "11",
+                            text: "11"
+                        }, {id: "12", text: "12"}]
+                    },
+                    data: {
+                        name: "数据来源",
+                        value: "0",
+                        optiondefault:true,
+                        options: []
+                    },
+                }
+            }
+        },
+        methods:{
+          submit:function () {
+              console.log("新建任务提交");
+          }
+        },
+        components: {
+            'inputRow': inputRow,
+            'inputTime': inputTime
+        }
+    });
+    Vue.component('taskAdd', taskAdd);
+</script>
+
+<script src="js/scripts.js"></script>
+<script src="js/task.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<template id="changeContact">
+    <div>
+
+        <staff-select></staff-select>
+    </div>
+</template>
+<script>
+    var changeContact =  Vue.extend({
+        template:'#changeContact',
+        props:['customer'],
+        data:function(){
+            return {}
+        },
+        methods:{
+            submit:function () {
+                console.log('sdfsfs')
+            }
+        },
+        components:{
+            'staffSelect':staffSelect
+        }
+    });
+    Vue.component('changeContact',changeContact);
+</script>

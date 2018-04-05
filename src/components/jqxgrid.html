@@ -1,0 +1,22 @@
+<template id="jqxgrid">
+    <div class="jqxtable" @jqxGrid="jqxGrid"></div>
+</template>
+
+<script>
+    var jqxgrid = Vue.extend({
+        template: 'jqxgrid',
+        props: ['table'],
+        data: function () {
+            return {}
+        },
+        methods:{
+            jqxGrid:function(){
+
+            }
+        },
+        created:function () {
+
+        }
+    });
+    Vue.component('jqxgrid', jqxgrid);
+</script>

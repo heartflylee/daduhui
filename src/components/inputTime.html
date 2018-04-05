@@ -1,0 +1,36 @@
+<template id="inputTime">
+    <div class="input-time">
+        <div class="input" v-time="date"></div>
+        <input type="hidden" v-model="date">
+        <!--<input type="text" class="input" :readonly="time.readonly"-->
+               <!--:placeholder="time.placeholder != undefined ? time.placeholder :''" />-->
+        <!--<i class="icon icon-time"></i>-->
+    </div>
+</template>
+<script>
+    var inputTime = Vue.extend({
+        template: '#inputTime',
+        props: ['time'],
+        data:function () {
+            return{
+                date:''
+            }
+        },
+        directives: {
+            time: {
+                inserted: function (el,date) {
+                    $(el).jqxDateTimeInput({
+                        width: '100%',
+                        height: '40px',
+                        culture: 'ch-CN',
+                        formatString: 'yyyy-MM-dd',
+                        min: new Date(new Date() - 24 * 60 * 60 * 1000)
+                    });
+                    $(el).on('valueChanged', function (event) {
+                        date.value = event.args.date.Format('yyyy-MM-dd');
+                    });
+                }
+            }
+        }
+    });
+</script>

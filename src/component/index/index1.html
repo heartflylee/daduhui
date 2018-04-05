@@ -1,0 +1,186 @@
+<div class="side-catalog-tree">
+        <div class="tree-content">
+          <!-- .row -->
+          <div class="white-box white-box-tree">
+              <h3 class="box-title">选择组员</h3>
+              <div id="treeview1" class="treeview"></div>  
+          </div>
+          <!--/.row -->
+        </div>
+      </div>
+      <!--/目录树-->
+      <!-- Page Content -->
+      <div id="page-wrapper">
+          <div class="container-fluid">
+              <!--折线-->
+              <div class="white-box">
+                  <div class="white-box-content">
+                      <!--header -->
+                      <div class="button-box dropdown-box">
+                          <!--客户增长量-->
+                          <div class="btn-group">
+                              <button aria-expanded="false" data-toggle="dropdown" class="" type="button">客户增长量<i class="fa fa-angle-down pull-right"></i></button>
+                              <ul role="menu" class="dropdown-menu">
+                                  <li class="active"><a href="#">客户增长量</a></li>
+                                  <li><a href="#">任务增长量</a></li>
+                                  <li><a href="#">任务完成增长量</a></li>
+                              </ul>
+                          </div>
+                          <!--/客户增长量--> 
+                          <!--时间-->
+                          <div class="btn-group pull-right choose-time">
+                              <button aria-expanded="false" data-toggle="dropdown" class="daydrop" type="button"> 最近7日 <i class="fa fa-angle-down pull-right"></i></button>
+                              <ul role="menu" class="dropdown-menu">
+                                  <li class="active"><a href="#">最近7日</a></li>
+                                  <li><a href="#">最近30日</a></li>
+                              </ul>
+                          </div>
+                          <!--/时间-->
+                      </div> 
+                      <!-- /header -->
+                      <!--second-content-->
+                      <div class="second-content clearfix">
+                        <div class="customer-num pull-left">
+                          <h5>客户总量</h5>
+                          <p>+124567</p>
+                        </div>
+                        <div class="customer-num customer-add pull-left">
+                          <h5>客户增长量</h5>
+                          <p>+124567</p>
+                        </div>
+                      </div>     
+                      <!--/second-content-->
+                      <!--chart--> 
+                      <div class="echart-box">
+                        <div id="line" style="height: 100%;width: 100%;"></div>
+                      </div>
+                      <!--/chart-->
+                  </div>    
+              </div>
+              <!--/折线-->
+              <!--柱状图-->
+              <div class="white-box">
+                  <div class="white-box-content">
+                      <!--header -->
+                      <div class="button-box dropdown-box">
+                          <!--坐席电话统计-->
+                          <div class="btn-group">
+                              <button type="button">坐席电话统计</button>
+                          </div>
+                          <!--/坐席电话统计--> 
+                          <!--时间-->
+                          <div class="btn-group pull-right choose-time">
+                              <button aria-expanded="false" data-toggle="dropdown" class="daydrop" type="button"> 最近7日 <i class="fa fa-angle-down pull-right"></i></button>
+                              <ul role="menu" class="dropdown-menu">
+                                  <li class="active"><a href="#">最近7日</a></li>
+                                  <li><a href="#">最近30日</a></li>
+                              </ul>
+                          </div>
+                          <!--/时间-->
+                      </div> 
+                      <!-- /header -->
+                      <!--chart--> 
+                      <div class="echart-box">
+                        <div id="bar" style="height: 100%;width: 100%;"></div>
+                      </div>
+                      <!--/chart-->
+                  </div>    
+              </div>
+              <!--柱状图-->
+              <!--饼图-->
+              <div class="white-box">
+                  <div class="white-box-content">
+                      <div class="row">
+                          <div class="col-sm-3 pie-box">
+                              <!--header -->
+                              <div class="button-box dropdown-box dropdown-pie">
+                                  <!--接通意向率-->
+                                  <div class="btn-group">
+                                      <button type="button">接通意向率</button>
+                                  </div>
+                                  <!--/接通意向率--> 
+                                  <!--时间-->
+                                  <div class="btn-group pull-right choose-time">
+                                      <button aria-expanded="false" data-toggle="dropdown" class="daydrop" type="button"> 最近7日 <i class="fa fa-angle-down pull-right"></i></button>
+                                      <ul role="menu" class="dropdown-menu">
+                                          <li class="active"><a href="#">最近7日</a></li>
+                                          <li><a href="#">最近30日</a></li>
+                                      </ul>
+                                  </div>
+                                  <!--/时间-->
+                              </div> 
+                              <!-- /header -->
+                              <!--chart--> 
+                              <div class="echart-box echart-box-pie">
+                                <div id="pie1" style="height: 100%;width: 100%;"></div> 
+                              </div>
+                              <!--/chart-->
+                          </div>
+                          <div class="col-sm-3 pie-box">
+                              <!--header -->
+                              <div class="button-box dropdown-box dropdown-pie">
+                                  <!--电话结果-->
+                                  <div class="btn-group">
+                                      <button type="button">电话结果</button>
+                                  </div>
+                                  <!--/电话结果--> 
+                                  <!--时间-->
+                                  <div class="btn-group pull-right choose-time">
+                                      <button  type="button" data-toggle="modal" data-target="#screen" class="daydrop">筛选</button>
+
+                                      <button aria-expanded="false" data-toggle="dropdown" class="daydrop" type="button"> 最近7日 <i class="fa fa-angle-down pull-right"></i></button>
+                                      <ul role="menu" class="dropdown-menu">
+                                          <li class="active"><a href="#">最近7日</a></li>
+                                          <li><a href="#">最近30日</a></li>
+                                      </ul>
+                                  </div>
+                                  <!--/时间-->
+                              </div> 
+                              <!-- /header -->
+                              <!--chart--> 
+                              <div class="echart-box echart-box-pie">
+                                <div id="pie2" style="height: 100%;width: 100%;"></div> 
+                              </div>
+                              <!--/chart-->
+                          </div>
+                          <div class="col-sm-3 pie-box">
+                              <!--header -->
+                              <div class="button-box dropdown-box dropdown-pie">
+                                  <!--销售进度-->
+                                  <div class="btn-group">
+                                      <button  type="button">销售进度</button>
+                                  </div>
+                                  <!--/销售进度--> 
+                              </div> 
+                              <!-- /header -->
+                              <!--chart--> 
+                              <div class="echart-box echart-box-pie">
+                                <div id="pie3" style="height: 100%;width: 100%;"></div> 
+                              </div>
+                              <!--/chart-->
+                          </div>
+                          <div class="col-sm-3 pie-box">
+                              <!--header -->
+                              <div class="button-box dropdown-box dropdown-pie">
+                                  <!--证件类型-->
+                                  <div class="btn-group">
+                                      <button type="button">证件类型</button>
+                                      <ul role="menu" class="dropdown-menu">
+                                          <li class="active"><a href="#">证件类型</a></li>
+                                          <li><a href="#">购房用途</a></li>
+                                      </ul>
+                                  </div>
+                                  <!--/证件类型--> 
+                              </div> 
+                              <!-- /header -->
+                              <!--chart--> 
+                              <div class="echart-box echart-box-pie">
+                                <div id="pie4" style="height: 100%;width: 100%;"></div> 
+                              </div>
+                              <!--/chart-->
+                          </div>
+                      </div> 
+                  </div>    
+              </div>
+              <!--饼图-->
+          </div>

@@ -1,0 +1,83 @@
+
+<div class="charts-wrap">
+    <div class="charts-right">
+        <charts-pie :charts="charts.pie1"></charts-pie>
+        <charts-pie :charts="charts.pie2"></charts-pie>
+        <charts-pie :charts="charts.pie3"></charts-pie>
+    </div>
+    <div class="charts-box">
+        <div class="charts-main">
+            <div class="charts-t-box">
+                <div class="right" id="count-list">
+                    <div class="count-list active">
+                        <div class="count-li">
+                            <i class="icon-count-num icon"></i>
+                            <label class="count-name">客户总量</label>
+                            <label class="count-num">158572</label>
+                        </div>
+                        <div class="count-li">
+                            <i class="icon-count-up icon"></i>
+                            <label class="count-name">客户增长总量</label>
+                            <label class="count-num">+15</label>
+                        </div>
+                    </div>
+                    <div class="count-list">
+                        <div class="count-li">
+                            <i class="icon-count-num icon"></i>
+                            <label class="count-name">任务总量</label>
+                            <label class="count-num">158572</label>
+                        </div>
+                        <div class="count-li">
+                            <i class="icon-count-up icon"></i>
+                            <label class="count-name">任务增长总量</label>
+                            <label class="count-num">+15</label>
+                        </div>
+                    </div>
+                    <div class="count-list">
+                        <div class="count-li">
+                            <i class="icon-count-num icon"></i>
+                            <label class="count-name">完成总量</label>
+                            <label class="count-num">158572</label>
+                        </div>
+                        <div class="count-li">
+                            <i class="icon-count-up icon"></i>
+                            <label class="count-name">完成增长总量</label>
+                            <label class="count-num">+15</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="charts-btn-box" id="lineChartBtn">
+                    <a class="charts-btn active" href="javascript:lineBtn(0);">客户增长量</a>
+                    <a class="charts-btn" href="javascript:lineBtn(1);">任务增长量</a>
+                    <a class="charts-btn" href="javascript:lineBtn(2);">任务完成增长量</a>
+                </div>
+            </div>
+            <div class="charts charts-big" id="charts-line"></div>
+        </div>
+        <div class="charts-main">
+            <div class="charts-t-box">
+                <div class="right">
+                    <div class="legend">
+                        <i class="icon-legend legend1"></i>
+                        <label class="legend-text">坐席电话量</label>
+                    </div>
+                    <div class="legend">
+                        <i class="icon-legend legend2"></i>
+                        <label class="legend-text">联系客户数</label>
+                    </div>
+                    <div class="legend">
+                        <i class="icon-legend legend3"></i>
+                        <label class="legend-text">通话时长</label>
+                    </div>
+                </div>
+                <div class="charts-btn-box" id="barChartBtn">
+                    <a class="charts-btn active" data-chart="0" href="javascript:barBtn(0);">坐席电话量</a>
+                    <a class="charts-btn" data-chart="1" href="javascript:barBtn(1);">联系客户数</a>
+                    <a class="charts-btn" data-chart="2" href="javascript:barBtn(2);">通话时长</a>
+                </div>
+            </div>
+            <div class="charts charts-big" id="charts-bar"></div>
+        </div>
+    </div>
+</div>
+

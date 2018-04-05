@@ -1,0 +1,24 @@
+<!-- 左侧菜单 -->
+<aside class="b-aside">
+    <div class="aside-head">
+        <a href="" class="a-logo">
+            <img src="img/h-logo.png" alt="">
+        </a>
+        <!--<div class="menu-btn-box toggle-btn">-->
+            <!--<i class="icon menu-icon"></i>-->
+        <!--</div>-->
+    </div>
+    <div class="menu-wrap">
+        <ul class="m-list">
+            @@loop('../menu/menu.html',[
+            {"asideMenu":"@@menu","menu":"index","icon":"1","title":"首页","href":"#","sub":[{"title":"数据统计","href":"index.html"},{"title":"考勤统计","href":""}]},
+            {"asideMenu":"@@menu","menu":"customer","icon":"2","title":"客户","href":"#","sub":[{"title":"客户","href":"customer.html"},{"title":"联系人","href":"contact.html"}]},
+            {"asideMenu":"@@menu","menu":"task","icon":"3","title":"任务","href":"","sub":[] },
+            {"asideMenu":"@@menu","menu":"setting","icon":"4","title":"设置","href":"","sub":[] }
+            ])
+        </ul>
+    </div>
+    <div class="aside-footer">
+        让销售更简单
+    </div>
+</aside>

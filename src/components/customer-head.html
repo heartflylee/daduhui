@@ -1,0 +1,70 @@
+<template id="customer-head">
+    <div class="small-nav-wrap">
+        <div class="nav-box">
+            <div class="index-select">
+                <div class="select-show">
+                    <label>全部客户</label>
+                    <i class="t-arrow icon"></i>
+                </div>
+                <div class="select-wrap">
+                    <div class="date-select-box">
+                        <ul>
+                            <li class="date-select selected">
+                                全部客户
+                            </li>
+                            <li class="date-select">
+                                我负责的客户
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="export">
+                    <i class="icon-export icon"></i> 导出
+                </div>
+                <div class="drop-button">
+                    <label class="drop-name" @click="customerAdd">新建客户</label>
+                    <i class="icon icon-drop-button"></i>
+                </div>
+            </div>
+        </div>
+        <div class="table-setting" v-if="">
+            <div class="table-nav-right">
+                <i class="table-nav-close icon" onclick="settingHide()">&times;</i>
+            </div>
+            <div class="table-nav-list">
+                <ul>
+                    <li class="table-nav">
+                        已选中<label class="count-select">1</label>项
+                    </li>
+                    <li class="table-nav">
+                        <i class="table-icon icon-change icon"></i>
+                        <div class="table-nav-main">变更负责人</div>
+                    </li>
+                    <li class="table-nav">
+                        <i class="table-icon icon-delete icon"></i>
+                        <div class="table-nav-main">删除</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</template>
+<script>
+    var customerHead = Vue.extend({
+        template:'#customer-head',
+        data:function () {
+            return{
+
+            }
+        },
+        methods:{
+            customerAdd:function () {
+                this.$emit('layer','customerAdd');
+            }
+        }
+    });
+    Vue.component('customerHead',customerHead);
+</script>

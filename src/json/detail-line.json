@@ -1,0 +1,53 @@
+[{
+  "time":"2017-02-23 17:44",
+  "type":"1",
+  "editor":"刘宇",
+  "customer":"白又亮",
+  "callTime":"1’ 11”",
+  "callDuration":"voice/demo.mp3",
+  "company":"北京蜜宝世纪科技有限公司",
+  "actionType":"有意向-索要线索",
+  "remark":"还行",
+  "messageName":"",
+  "messageState":""
+},
+  {
+    "time":"2017-02-23 17:44",
+    "type":"2",
+    "editor":"刘宇",
+    "customer":"白又亮",
+    "callTime":"",
+    "callDuration":"",
+    "company":"",
+    "actionType":"",
+    "remark":"",
+    "messageName":"第一季度拉新短信模板",
+    "messageState":"打开链接"
+  },
+  {
+    "time":"2017-02-23 17:44",
+    "type":"3",
+    "editor":"刘宇",
+    "customer":"白又亮",
+    "callTime":"",
+    "callDuration":"",
+    "company":"",
+    "actionType":"",
+    "remark":"",
+    "messageName":"",
+    "messageState":""
+  },
+  {
+    "time":"2017-02-23 17:44",
+    "type":"4",
+    "editor":"刘宇",
+    "customer":"",
+    "callTime":"",
+    "callDuration":"",
+    "company":"北京蜜宝世纪科技有限公司",
+    "actionType":"",
+    "remark":"",
+    "messageName":"",
+    "messageState":""
+  }
+]

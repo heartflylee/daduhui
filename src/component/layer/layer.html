@@ -1,0 +1,20 @@
+<div class="modal fade" v-if="layer.@@layer" data-backdrop="false" id="@@layer">
+    <div class="layer-bg" @@if(close == "false"){ data-dismiss="modal" aria-hidden="true"}@@if(close == "true"){ onclick="@@closeBtn"}></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header layer-head">
+                <button type="button" class="close" @@if(close == "false"){ data-dismiss="modal" aria-hidden="true"}@@if(close == "true"){ onclick="@@closeBtn"}>&times;</button>
+                <h4 class="modal-title">@@layerTitle</h4>
+            </div>
+            <div class="modal-body">
+                @@include('@@layerFrame')
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" @@if(close == "false"){ data-dismiss="modal" }@@if(close == "true"){ onclick="@@closeBtn"}>关闭</button>
+                @@if ( submit == "true"){
+                <button type="button" class="btn btn-primary" onclick="@@submitBtn">提交</button>
+                }
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>

@@ -1,0 +1,34 @@
+<template id="mainLeft">
+    <div class="left-wrap">
+        <div class="title">
+            {{data.title}}
+        </div>
+        <div class="left-list">
+            <div class="left-item" v-for="item in data.list" :class="item.id == data.active?'active':''">
+                <div class="item-number" :class="item.number>0?'count':''">{{item.number}}</div>
+                <div class="itme-text">{{item.text}}</div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var mainLeft = Vue.extend({
+        template:'#mainLeft',
+//        props:['data']
+        data:function () {
+            return{
+                data:{
+                    title:"电话任务",
+                    list:[
+                        {id:'1',text:"进行中",number:1},
+                        {id:'2',text:"未开始",number:0},
+                        {id:'3',text:"已完成",number:0},
+                        {id:'4',text:"已终止",number:0},
+                    ],
+                    active:'1'
+                }
+            }
+        }
+    });
+    Vue.component('mainLeft',mainLeft);
+</script>

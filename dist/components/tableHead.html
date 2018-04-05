@@ -1,0 +1,52 @@
+<template id="table-head">
+    <div class="list-wrap">
+        <div class="list-left">
+            <div class="list-t">
+                隐藏字段
+            </div>
+            <div id="list-left" v-listbox="left"></div>
+        </div>
+        <div class="move-list">
+            <a href="javascript:listMove(0);"><i class="icon-list icon icon-list-left"></i></a>
+            <a href="javascript:listMove(1);"><i class="icon-list icon icon-list-right"></i></a>
+        </div>
+        <div class="list-right">
+            <div class="list-t">
+                显示字段
+            </div>
+            <div id="list-right" v-listbox="right"></div>
+        </div>
+        <div class="move-list">
+            <a href="javascript:listMove(2);"><i class="icon-list icon icon-list-up"></i></a>
+            <a href="javascript:listMove(3);"><i class="icon-list icon icon-list-down"></i></a>
+        </div>
+    </div>
+</template>
+<script>
+
+
+    var tableHead = Vue.extend({
+        template: '#table-head',
+        data: function () {
+            return {
+                left: leftsource,
+                right: rightsource
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log('提交');
+                customSubmit();
+            }
+        },
+        directives: {
+            listbox: function (el, val) {
+                console.log(val);
+                $(el).jqxListBox({width: 200, height: 335, multiple: true, scrollBarSize: 7, source: val.value});
+            }
+
+        }
+    });
+
+    Vue.component('tableHead', tableHead);
+</script>

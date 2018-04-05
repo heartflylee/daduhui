@@ -1,47 +1,720 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/vue.min.js"></script>
-</head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <!--公共-->
+    <link type="image/x-icon" href="img/favicon.ico" rel="icon">
 
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/beAlert.css">
+<link rel="stylesheet" href="css/select2.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/jqxgrid.css">
+
+
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource@1.3.4.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/resize.js"></script>
+<script src="js/beAlert.js"></script>
+<script src="js/select2.js"></script>
+<script src="js/drag.js"></script>
+<!--<script src="js/jsDate/laydate.js"></script>-->
+<!--<script src="js/layDate/laydate.js"></script>-->
+<!---->
+
+<script src="js/audio.js"></script>
+
+<!--[if lt IE 10]>
+<script type="text/javascript" src="js/html5shiv.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script>
+<script type="text/javascript" src="js/placeholder.js"></script>
+<![endif]-->
+    <!--图表-->
+    <script src="js/echarts.min.js"></script>
+    <script src="js/macarons.js"></script>
+    <!-- 日历插件 -->
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcalendar.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
+</head>
 <body>
-    <div class="wrap" id="main">
-        <aside-wrap></aside-wrap>
+
+  <!-- Preloader -->
+  <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
     </div>
-    <template id="asideWrap">
-    <aside class="asideWrap">
-        123
+    
+<div id="app">
+     <!--header-->
+     <common-head></common-head>
+     <section class="b-main">
+         <!--左侧菜单-->
+         <menu-aside menu="index"></menu-aside>
+         <div class="b-panel">
+                <index-head></index-head>
+                
+<div class="charts-wrap">
+    <div class="charts-right">
+        <charts-pie :charts="charts.pie1"></charts-pie>
+        <charts-pie :charts="charts.pie2"></charts-pie>
+        <charts-pie :charts="charts.pie3"></charts-pie>
+    </div>
+    <div class="charts-box">
+        <div class="charts-main">
+            <div class="charts-t-box">
+                <div class="right" id="count-list">
+                    <div class="count-list active">
+                        <div class="count-li">
+                            <i class="icon-count-num icon"></i>
+                            <label class="count-name">客户总量</label>
+                            <label class="count-num">158572</label>
+                        </div>
+                        <div class="count-li">
+                            <i class="icon-count-up icon"></i>
+                            <label class="count-name">客户增长总量</label>
+                            <label class="count-num">+15</label>
+                        </div>
+                    </div>
+                    <div class="count-list">
+                        <div class="count-li">
+                            <i class="icon-count-num icon"></i>
+                            <label class="count-name">任务总量</label>
+                            <label class="count-num">158572</label>
+                        </div>
+                        <div class="count-li">
+                            <i class="icon-count-up icon"></i>
+                            <label class="count-name">任务增长总量</label>
+                            <label class="count-num">+15</label>
+                        </div>
+                    </div>
+                    <div class="count-list">
+                        <div class="count-li">
+                            <i class="icon-count-num icon"></i>
+                            <label class="count-name">完成总量</label>
+                            <label class="count-num">158572</label>
+                        </div>
+                        <div class="count-li">
+                            <i class="icon-count-up icon"></i>
+                            <label class="count-name">完成增长总量</label>
+                            <label class="count-num">+15</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="charts-btn-box" id="lineChartBtn">
+                    <a class="charts-btn active" href="javascript:lineBtn(0);">客户增长量</a>
+                    <a class="charts-btn" href="javascript:lineBtn(1);">任务增长量</a>
+                    <a class="charts-btn" href="javascript:lineBtn(2);">任务完成增长量</a>
+                </div>
+            </div>
+            <div class="charts charts-big" id="charts-line"></div>
+        </div>
+        <div class="charts-main">
+            <div class="charts-t-box">
+                <div class="right">
+                    <div class="legend">
+                        <i class="icon-legend legend1"></i>
+                        <label class="legend-text">坐席电话量</label>
+                    </div>
+                    <div class="legend">
+                        <i class="icon-legend legend2"></i>
+                        <label class="legend-text">联系客户数</label>
+                    </div>
+                    <div class="legend">
+                        <i class="icon-legend legend3"></i>
+                        <label class="legend-text">通话时长</label>
+                    </div>
+                </div>
+                <div class="charts-btn-box" id="barChartBtn">
+                    <a class="charts-btn active" data-chart="0" href="javascript:barBtn(0);">坐席电话量</a>
+                    <a class="charts-btn" data-chart="1" href="javascript:barBtn(1);">联系客户数</a>
+                    <a class="charts-btn" data-chart="2" href="javascript:barBtn(2);">通话时长</a>
+                </div>
+            </div>
+            <div class="charts charts-big" id="charts-bar"></div>
+        </div>
+    </div>
+</div>
+
+
+                <div class="side-catalog-tree">
+        <div class="tree-content">
+          <!-- .row -->
+          <div class="white-box white-box-tree">
+              <h3 class="box-title">选择组员</h3>
+              <div id="treeview1" class="treeview"></div>  
+          </div>
+          <!--/.row -->
+        </div>
+      </div>
+      <!--/目录树-->
+      <!-- Page Content -->
+      <div id="page-wrapper">
+          <div class="container-fluid">
+              <!--折线-->
+              <div class="white-box">
+                  <div class="white-box-content">
+                      <!--header -->
+                      <div class="button-box dropdown-box">
+                          <!--客户增长量-->
+                          <div class="btn-group">
+                              <button aria-expanded="false" data-toggle="dropdown" class="" type="button">客户增长量<i class="fa fa-angle-down pull-right"></i></button>
+                              <ul role="menu" class="dropdown-menu">
+                                  <li class="active"><a href="#">客户增长量</a></li>
+                                  <li><a href="#">任务增长量</a></li>
+                                  <li><a href="#">任务完成增长量</a></li>
+                              </ul>
+                          </div>
+                          <!--/客户增长量--> 
+                          <!--时间-->
+                          <div class="btn-group pull-right choose-time">
+                              <button aria-expanded="false" data-toggle="dropdown" class="daydrop" type="button"> 最近7日 <i class="fa fa-angle-down pull-right"></i></button>
+                              <ul role="menu" class="dropdown-menu">
+                                  <li class="active"><a href="#">最近7日</a></li>
+                                  <li><a href="#">最近30日</a></li>
+                              </ul>
+                          </div>
+                          <!--/时间-->
+                      </div> 
+                      <!-- /header -->
+                      <!--second-content-->
+                      <div class="second-content clearfix">
+                        <div class="customer-num pull-left">
+                          <h5>客户总量</h5>
+                          <p>+124567</p>
+                        </div>
+                        <div class="customer-num customer-add pull-left">
+                          <h5>客户增长量</h5>
+                          <p>+124567</p>
+                        </div>
+                      </div>     
+                      <!--/second-content-->
+                      <!--chart--> 
+                      <div class="echart-box">
+                        <div id="line" style="height: 100%;width: 100%;"></div>
+                      </div>
+                      <!--/chart-->
+                  </div>    
+              </div>
+              <!--/折线-->
+              <!--柱状图-->
+              <div class="white-box">
+                  <div class="white-box-content">
+                      <!--header -->
+                      <div class="button-box dropdown-box">
+                          <!--坐席电话统计-->
+                          <div class="btn-group">
+                              <button type="button">坐席电话统计</button>
+                          </div>
+                          <!--/坐席电话统计--> 
+                          <!--时间-->
+                          <div class="btn-group pull-right choose-time">
+                              <button aria-expanded="false" data-toggle="dropdown" class="daydrop" type="button"> 最近7日 <i class="fa fa-angle-down pull-right"></i></button>
+                              <ul role="menu" class="dropdown-menu">
+                                  <li class="active"><a href="#">最近7日</a></li>
+                                  <li><a href="#">最近30日</a></li>
+                              </ul>
+                          </div>
+                          <!--/时间-->
+                      </div> 
+                      <!-- /header -->
+                      <!--chart--> 
+                      <div class="echart-box">
+                        <div id="bar" style="height: 100%;width: 100%;"></div>
+                      </div>
+                      <!--/chart-->
+                  </div>    
+              </div>
+              <!--柱状图-->
+              <!--饼图-->
+              <div class="white-box">
+                  <div class="white-box-content">
+                      <div class="row">
+                          <div class="col-sm-3 pie-box">
+                              <!--header -->
+                              <div class="button-box dropdown-box dropdown-pie">
+                                  <!--接通意向率-->
+                                  <div class="btn-group">
+                                      <button type="button">接通意向率</button>
+                                  </div>
+                                  <!--/接通意向率--> 
+                                  <!--时间-->
+                                  <div class="btn-group pull-right choose-time">
+                                      <button aria-expanded="false" data-toggle="dropdown" class="daydrop" type="button"> 最近7日 <i class="fa fa-angle-down pull-right"></i></button>
+                                      <ul role="menu" class="dropdown-menu">
+                                          <li class="active"><a href="#">最近7日</a></li>
+                                          <li><a href="#">最近30日</a></li>
+                                      </ul>
+                                  </div>
+                                  <!--/时间-->
+                              </div> 
+                              <!-- /header -->
+                              <!--chart--> 
+                              <div class="echart-box echart-box-pie">
+                                <div id="pie1" style="height: 100%;width: 100%;"></div> 
+                              </div>
+                              <!--/chart-->
+                          </div>
+                          <div class="col-sm-3 pie-box">
+                              <!--header -->
+                              <div class="button-box dropdown-box dropdown-pie">
+                                  <!--电话结果-->
+                                  <div class="btn-group">
+                                      <button type="button">电话结果</button>
+                                  </div>
+                                  <!--/电话结果--> 
+                                  <!--时间-->
+                                  <div class="btn-group pull-right choose-time">
+                                      <button  type="button" data-toggle="modal" data-target="#screen" class="daydrop">筛选</button>
+
+                                      <button aria-expanded="false" data-toggle="dropdown" class="daydrop" type="button"> 最近7日 <i class="fa fa-angle-down pull-right"></i></button>
+                                      <ul role="menu" class="dropdown-menu">
+                                          <li class="active"><a href="#">最近7日</a></li>
+                                          <li><a href="#">最近30日</a></li>
+                                      </ul>
+                                  </div>
+                                  <!--/时间-->
+                              </div> 
+                              <!-- /header -->
+                              <!--chart--> 
+                              <div class="echart-box echart-box-pie">
+                                <div id="pie2" style="height: 100%;width: 100%;"></div> 
+                              </div>
+                              <!--/chart-->
+                          </div>
+                          <div class="col-sm-3 pie-box">
+                              <!--header -->
+                              <div class="button-box dropdown-box dropdown-pie">
+                                  <!--销售进度-->
+                                  <div class="btn-group">
+                                      <button  type="button">销售进度</button>
+                                  </div>
+                                  <!--/销售进度--> 
+                              </div> 
+                              <!-- /header -->
+                              <!--chart--> 
+                              <div class="echart-box echart-box-pie">
+                                <div id="pie3" style="height: 100%;width: 100%;"></div> 
+                              </div>
+                              <!--/chart-->
+                          </div>
+                          <div class="col-sm-3 pie-box">
+                              <!--header -->
+                              <div class="button-box dropdown-box dropdown-pie">
+                                  <!--证件类型-->
+                                  <div class="btn-group">
+                                      <button type="button">证件类型</button>
+                                      <ul role="menu" class="dropdown-menu">
+                                          <li class="active"><a href="#">证件类型</a></li>
+                                          <li><a href="#">购房用途</a></li>
+                                      </ul>
+                                  </div>
+                                  <!--/证件类型--> 
+                              </div> 
+                              <!-- /header -->
+                              <!--chart--> 
+                              <div class="echart-box echart-box-pie">
+                                <div id="pie4" style="height: 100%;width: 100%;"></div> 
+                              </div>
+                              <!--/chart-->
+                          </div>
+                      </div> 
+                  </div>    
+              </div>
+              <!--饼图-->
+          </div>
+
+         </div>
+     </section>
+    </common-body>
+</div>
+
+<!--左侧导航-->
+<template id="aside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <menu-content :content="index" index="1"></menu-content>
+                <menu-content :content="customer" index="2"></menu-content>
+                <menu-content :content="task" index="3"></menu-content>
+            </ul>
+        </div>
     </aside>
 </template>
 <script>
-    var AsideWrap = Vue.extend({
-        template: '#asideWrap',
+    var menuContent = Vue.extend({
+        template: '<li class="m-nav menu-list" :class=" \'nav-left\' + index" v-if="content.subShow">\n' +
+        '    <a class="nav-info" href="javascript:void(0)">\n' +
+        '        <i class="icon m-icon" :class="content.icon" ></i>\n' +
+        '        <label>{{content.title}}</label>\n' +
+        '        <i v-if="content.sub.length>0" class="icon-sign"></i>\n' +
+        '    </a>\n' +
+        '    <ul class="m-second-list child-list" v-if="content.sub.length>0" >\n' +
+        '        <li class="m-second" v-for="sub in content.sub">\n' +
+        '            <a :href="sub.href">\n' +
+        '                <i></i>\n' +
+        '                <label>{{sub.title}}</label>\n' +
+        '            </a>\n' +
+        '        </li>\n' +
+        '    </ul>\n' +
+        '</li>' +
+        '<li class="m-nav " v-else>\n' +
+        '    <a class=\'nav-info\' :href="content.href">\n' +
+        '        <i class="icon m-icon" :class="content.icon"></i>\n' +
+        '        <label>{{content.title}}</label>\n' +
+        '        <i class="icon-sign"></i>\n' +
+        '    </a>\n' +
+        '</li>',
+        props: ['content','index']
+    });
+
+    var aside = Vue.extend({
+        template: '#aside',
         data: function () {
             return {
+                index: {
+                    title: "首页",
+                    icon: "icon-m1",
+                    subShow: true,
+                    active: "",
+                    sub: []
+                },
+                customer: {
+                    title: "客户",
+                    icon: "icon-m2",
+                    subShow: true,
+                    active: "",
+                    sub: [
+                        {
+                            title: "客户列表",
+                            href: "customer.html"
+                        },
+                        {
+                            title: "企业公海",
+                            href: "contact.html"
+                        }
+                    ]
+                },
+                task: {
+                    title: "任务",
+                    icon: "icon-m3",
+                    href: "",
+                    subShow: true,
+                    active: "",
+                    sub: [{
+                        title: "电话任务",
+                        href: "task.html"
+                    }, {
+                        title: "短信任务",
+                        href: ""
+                    }, {
+                        title: "邮件任务",
+                        href: ""
+                    }]
+                }
+            }
+        },
+        methods: {
+            // menu: function () {
+            //     $("body").toggleClass('side-open');
+            //     tableResize();
+            // }
+        },
+        components: {
+            'menuContent': menuContent
+        }
+    });
+    Vue.component('menuAside', aside);
+</script>
+<!--顶部-->
+<template id="head">
+    <header class="b-header">
+        <div class="h-right">
+            <div class="h-search">
+                <form @submit.prevent="Hsearch">
+                    <div class="search-input-box">
+                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息"/>
+                    </div>
+                    <div class="search-btn-box">
+                        <input type="submit" value="&#xe616" class="search-btn"/>
+                    </div>
+                </form>
+            </div>
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-href" href="#">
+                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left"
+                           title="在线客服"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href info-number" href="javascript:void(0);">
+                        <i class="nav-icon nav-news" data-toggle="tooltip" data-placement="auto left" title="消息"></i>
+                        <span class="badge bg-danger">555</span>
+                    </a>
+                </div>
+                <div class="nav-li dropdown">
+                    <a class="nav-href" href="javascript:void(0);" data-toggle="dropdown">
+                        <i class="nav-icon nav-help" data-toggle="tooltip" data-placement="auto left" title="帮助"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-box">
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-new"></i>
+                            <label>新手引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-help"></i>
+                            <label>帮助中心</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-video"></i>
+                            <label>视频引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-return"></i>
+                            <label>意见反馈</label>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-setup" data-toggle="tooltip" data-placement="auto left" title="设置"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout" data-toggle="tooltip" data-placement="auto left" title="退出登录"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var head = Vue.extend({
+        template: '#head',
+        data: function () {
+            return {
+                search: "",
+                user:{
+                    company:"北京蜜宝世纪科技有限公司",
+                    headImg:"img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+                if (this.search.trim() == "") {
+                    alert("", "搜索内容不能为空");
+                    return false;
+                }
+                window.location.href = "customer.html";
+            }
+        }
+    });
+    Vue.component('commonHead', head);
+</script>
+<!--首页顶部筛选-->
+<template id="indexHead">
+    <div class="index-select-box">
+        <div class="index-select">
+            <div class="select-show">
+                <label id="select-time">过去7日</label>
+                <i class="t-arrow icon"></i>
+            </div>
+            <div class="select-wrap">
+                <div class="date-select-box">
+                    <ul>
+                        <li v-for="date in list" class="date-select" :class="{'selected':date.select}">
+                            {{date.value}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="date-box">
+                    <div class="datetime" v-Calendar></div>
+                    <input type="hidden" id="startTime"/>
+                    <input type="hidden" id="endTime"/>
+                    <div class="date-btn-box">
+                        <a href="javascript:dateShow();" class="btn btn-primary date-btn">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" select2-wrap index-select">
+            <staff-list></staff-list>
+        </div>
+    </div>
+
+</template>
+<script>
+    var indexHead = Vue.extend({
+        template: "#indexHead",
+        data: function () {
+            return {
+                list: [
+                    {value: "过去7日", select: true},
+                    {value: "过去30日", select: false},
+                    {value: "今日", select: false},
+                    {value: "昨日", select: false},
+                    {value: "全部", select: false}
+                ],
+                selection: {}
+            }
+        },
+        directives: {
+            Calendar: function (el) {
+                $(el).jqxCalendar('setRange', new Date(), new Date());
+                $(el).jqxCalendar({width: 220, height: 220, selectionMode: 'range', culture: 'ch-CN'});
+                $(el).jqxCalendar({firstDayOfWeek: 1});
+                $(el).jqxCalendar('setMaxDate', new Date());
+                $(el).on('change', function (event) {
+                    console.log(event);
+                    var selection = event.args.range;
+                    $("#startTime").val(selection.from.toLocaleDateString());
+                    $("#endTime").val(selection.to.toLocaleDateString());
+                });
 
             }
         }
     });
-    Vue.component("AsideWrap", AsideWrap);
+    Vue.component('indexHead', indexHead);
 </script>
-    <script>
-        var vm = new Vue({
-            el: '#main',
-            data: function () {
-                return {
+<!--员工列表-->
+<template id="staffList">
+    <select class="select-head" v-selectstaff>
+        <option data-img="img/head-all.png" data-manage="false">全部员工</option>
+        <option v-for="staff in staffs" :data-img="staff.img" :data-manage="staff.manage">{{staff.value}}</option>
+        <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+        <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+    </select>
+</template>
+<script>
+    var staffList = Vue.extend({
+        template: '#staffList',
+        data: function () {
+            return {
+                staffs: []
+            }
+        },
+        created: function () {
+            var url = "json/staffList.json";
 
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                this.staffs = json;
+            }, function (response) {
+                console.info(response);
+            })
+//            var staffsJson = [
+//                {
+//                    "id":"1",
+//                    "value":"艾云鹤",
+//                    "manage":true,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"2",
+//                    "value":"刘宇",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"3",
+//                    "value":"王佳印",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"4",
+//                    "value":"刘晓辉",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"5",
+//                    "value":"艾云鹤1",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                },
+//                {
+//                    "id":"6",
+//                    "value":"刘宇1",
+//                    "manage":false,
+//                    "img":"img/head-list.png"
+//                }
+//            ];
+//            this.staffs=staffsJson;
+        },
+        directives: {
+            selectstaff:
+                {
+                    update: function (el) {
+                        console.log(el);
+                        selectStaff(el);
+                    }
+                }
+        }
+    });
+    Vue.component('staffList', staffList);
+</script>
+<!--首页右侧环形图-->
+<template id="chartsPie">
+    <div class="charts-li">
+        <div class="charts-t">{{charts.title}}</div>
+        <div class="charts" v-chart="data"></div>
+    </div>
+</template>
+<script>
+    var chartsPie = Vue.extend({
+        template: '#chartsPie',
+        props: ['charts'],
+        data: function () {
+            return {
+                data: []
+            }
+        },
+        created: function () {
+            var url = this.$props.charts.url;
+
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                this.data = json;
+            }, function (response) {
+                console.info(response);
+            })
+        },
+        directives: {
+            chart: {
+                update: function (el, data) {
+                    chartsPie(el, data.value);
                 }
             }
-        });
-    </script>
-</body>
+        }
+    });
+    Vue.component('chartsPie', chartsPie);
+</script>
 
+<script src="js/scripts.js"></script>
+<script src="js/index.js"></script>
+
+</body>
 </html>

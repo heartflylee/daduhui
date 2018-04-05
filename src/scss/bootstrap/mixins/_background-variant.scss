@@ -1,0 +1,13 @@
+// Contextual backgrounds
+
+// [converter] $parent hack
+//设置背景颜色 样式名称，颜色
+@mixin bg-variant($parent, $color) {
+  #{$parent} {
+    background-color: $color;
+  }
+  a#{$parent}:hover,
+  a#{$parent}:focus {
+    background-color: darken($color, 10%);
+  }
+}

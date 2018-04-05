@@ -1,16 +1,97 @@
-<template id="asideWrap">
-    <aside class="asideWrap">
-        123
+<template id="aside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <menu-content :content="index" index="1"></menu-content>
+                <menu-content :content="customer" index="2"></menu-content>
+                <menu-content :content="task" index="3"></menu-content>
+            </ul>
+        </div>
     </aside>
 </template>
 <script>
-    var AsideWrap = Vue.extend({
-        template: '#asideWrap',
+    var menuContent = Vue.extend({
+        template: '<li class="m-nav menu-list" :class=" \'nav-left\' + index" v-if="content.subShow">\n' +
+        '    <a class="nav-info" href="javascript:void(0)">\n' +
+        '        <i class="icon m-icon" :class="content.icon" ></i>\n' +
+        '        <label>{{content.title}}</label>\n' +
+        '        <i v-if="content.sub.length>0" class="icon-sign"></i>\n' +
+        '    </a>\n' +
+        '    <ul class="m-second-list child-list" v-if="content.sub.length>0" >\n' +
+        '        <li class="m-second" v-for="sub in content.sub">\n' +
+        '            <a :href="sub.href">\n' +
+        '                <i></i>\n' +
+        '                <label>{{sub.title}}</label>\n' +
+        '            </a>\n' +
+        '        </li>\n' +
+        '    </ul>\n' +
+        '</li>' +
+        '<li class="m-nav " v-else>\n' +
+        '    <a class=\'nav-info\' :href="content.href">\n' +
+        '        <i class="icon m-icon" :class="content.icon"></i>\n' +
+        '        <label>{{content.title}}</label>\n' +
+        '        <i class="icon-sign"></i>\n' +
+        '    </a>\n' +
+        '</li>',
+        props: ['content','index']
+    });
+
+    var aside = Vue.extend({
+        template: '#aside',
         data: function () {
             return {
-
+                index: {
+                    title: "首页",
+                    icon: "icon-m1",
+                    subShow: true,
+                    active: "",
+                    sub: []
+                },
+                customer: {
+                    title: "客户",
+                    icon: "icon-m2",
+                    subShow: true,
+                    active: "",
+                    sub: [
+                        {
+                            title: "客户列表",
+                            href: "customer.html"
+                        },
+                        {
+                            title: "企业公海",
+                            href: "contact.html"
+                        }
+                    ]
+                },
+                task: {
+                    title: "任务",
+                    icon: "icon-m3",
+                    href: "",
+                    subShow: true,
+                    active: "",
+                    sub: [{
+                        title: "电话任务",
+                        href: "task.html"
+                    }, {
+                        title: "短信任务",
+                        href: ""
+                    }, {
+                        title: "邮件任务",
+                        href: ""
+                    }]
+                }
             }
+        },
+        methods: {
+            // menu: function () {
+            //     $("body").toggleClass('side-open');
+            //     tableResize();
+            // }
+        },
+        components: {
+            'menuContent': menuContent
         }
     });
-    Vue.component("AsideWrap", AsideWrap);
+    Vue.component('menuAside', aside);
 </script>
