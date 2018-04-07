@@ -28,6 +28,50 @@ for (var i = 0; i < datalength; i++) {
 /*制作假数据结束*/
 
 
+
+var vm = new Vue({
+    el: '#app',
+    data: function () {
+        return {
+            audio: {
+                name: "",
+                company: "",
+                show: false,
+                url: ""
+            },
+            layers: {
+                customerDetail: {
+                    show: false,
+                    message: {}
+                },
+                taskAdd: {
+                    title: "新建任务",
+                    show: false,
+                    submit: true,
+                    layerName: "taskAdd"
+                },
+                stopTask: {
+                    title: "终止任务",
+                    show: false,
+                    submit: true,
+                    layerName: "stopTask",
+                }
+            },
+        }
+    },
+    methods: {
+        closeLayer: function (layer) {
+            console.log(layer);
+            this.layers[layer].show = false;
+        },
+        layer: function (layer) {
+            this.layers[layer].show = true;
+        }
+    }
+});
+
+
+
 //全部表头
 
 $(document).ready(function () {
@@ -121,33 +165,30 @@ $(document).ready(function () {
             },
             {
                 text:'操作',datafield:'setup',width:150,editable: false, sortable: !1, filterable: !1,
-        cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
-            // console.log(rowData)
-            // if (rowData.lock == 1) {
-                // if (rows.indexOf(row) < 0) {
-                //     rows.push(row);
-                // }
-            //     return '<i class="icon-lock"></i><div class="jqx-grid-cell-left-align">' + value + '</div>';
-            // }
-            if (rowData.taskType == "进行中" || rowData.taskType == '过期未完成') {
-                return '<a class="btn btn-link">查看详情</a> <a class="btn  btn-link btn-link-danger">终止任务</a>';
-            }
-            else if(rowData.taskType == '已完成'){
-                return '<a class="btn btn-link btn-link-danger ">终止任务</a>';
-            }
-            else{
-                return '';
-            }
-        },
+                cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
+            
+                    if (rowData.taskType == "进行中" || rowData.taskType == '过期未完成') {
+                        return '<a class="btn btn-link" href="linkHref()">查看详情</a> <a class="btn  btn-link btn-link-danger" href="javascript:stopTaskBtn()">终止任务</a>';
+                    }
+                    else if(rowData.taskType == '已完成'){
+                        return '<a class="btn btn-link btn-link-danger " href="javascript:stopTaskBtn()">终止任务</a>';
+                    }
+                    else{
+                        return '';
+                    }
+                },
             }
         ]
     });
 
 });
 
-//显示客户详情
-function customerShow(data) {
-    console.log(data);
-    console.log(vm);
+//查看详情，跳转页面
+function linkHref(){
 
 }
+//终止任务，弹框
+function stopTaskBtn(){
+    vm.layer('stopTask');
+}
+

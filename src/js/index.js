@@ -1,6 +1,40 @@
 /**
  * Created by lixin on 2017/4/27.
  */
+
+ 
+var vm = new Vue({
+    el: '#app',
+    data: function () {
+        return {
+            charts: {
+                pie1: {
+                    title: '接通意向率',
+                    url: 'json/chartsPie1.json'
+                },
+                pie2: {
+                    title: '电话结果标签',
+                    url: 'json/chartsPie2.json'
+                },
+                pie3: {
+                    title: '销售进度标签',
+                    url: 'json/chartsPie3.json'
+                }
+            }
+        }
+    },
+    methods: {
+        closeLayer: function (layer) {
+            console.log(layer);
+            this.layers[layer].show = false;
+        },
+        layer: function (layer) {
+            this.layers[layer].show = true;
+        }
+    }
+});
+
+
 //初始化环形图option
 var optionPie = {
     tooltip: {

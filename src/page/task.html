@@ -53,8 +53,30 @@
             <task-add ref="taskAdd"></task-add>
         </layer>
     </transition>
+    <transition name="layer">
+        <layer :layer="layers.stopTask" >
+            <stop-task ref=stopTask></stop-task>
+        </layer>
+    </transition>
 </div>
 
+<template id="stopTask">
+    <div class="layer-text-content">终止任务后将无法恢复，是否继续</div>
+</template>
+<script>
+    var stopTask = Vue.extend({
+            template:'#stopTask',
+            methods:{
+                submit:function(){
+                    console.log('终止任务');
+                }
+            }
+    });
+    Vue.component('stopTask',stopTask);
+</script>
+
+
+@@include('../components/staffSelect.html')
 <!--左侧导航-->
 @@include('../components/aside.html')
 <!--顶部-->

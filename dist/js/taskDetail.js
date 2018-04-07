@@ -29,9 +29,34 @@ for (var i = 0; i < datalength; i++) {
 
 }
 /*制作假数据结束*/
-vm.$data.taskTitle = '2月26日';
-vm.$data.taskNum = 2;
-vm.$data.taskCount = 12;
+
+
+
+var vm = new Vue({
+    el: '#app',
+    data: function () {
+        return {
+            audio: {
+                name: "",
+                company: "",
+                show: false,
+                url: ""
+            },
+            layers: {
+            }
+        }
+    },
+    methods: {
+        closeLayer: function (layer) {
+            console.log(layer);
+            this.layers[layer].show = false;
+        },
+        layer: function (layer) {
+            this.layers[layer].show = true;
+        }
+    }
+});
+
 
 //全部表头
 

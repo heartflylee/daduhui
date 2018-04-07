@@ -1,6 +1,15 @@
 <template id="staffSelect">
     <div class="staff-select-wrap">
-        <select v-selectstaff  :multiple="multiple == 'true' ?'multiple': 'false'">
+        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'">
+            <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
+            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+        </select>
+        <select v-selectstaff v-else>
             <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
             <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->

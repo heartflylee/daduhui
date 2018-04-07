@@ -241,7 +241,7 @@ $listicon: list-left list-right list-up list-down;
 //  padding:10px 15px;
 //  line-height: 1.5;
 //}
-$enterBtn: (qixinbao:649, EnterSearch:616);
+$enterBtn: (qixinbao:'\e649', EnterSearch:'\e616');
 
 .enter-btn {
   position: absolute;
@@ -268,7 +268,7 @@ $enterBtn: (qixinbao:649, EnterSearch:616);
   }
   @each $icon, $content in $enterBtn {
     &.#{$icon} i:after {
-      content: "\e#{$content}";
+      content: "#{$content}";
     }
   }
 }

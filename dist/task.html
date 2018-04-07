@@ -83,8 +83,85 @@
             <task-add ref="taskAdd"></task-add>
         </layer>
     </transition>
+    <transition name="layer">
+        <layer :layer="layers.stopTask" >
+            <stop-task ref=stopTask></stop-task>
+        </layer>
+    </transition>
 </div>
 
+<template id="stopTask">
+    <div class="layer-text-content">终止任务后将无法恢复，是否继续</div>
+</template>
+<script>
+    var stopTask = Vue.extend({
+            template:'#stopTask',
+            methods:{
+                submit:function(){
+                    console.log('终止任务');
+                }
+            }
+    });
+    Vue.component('stopTask',stopTask);
+</script>
+
+
+<template id="staffSelect">
+    <div class="staff-select-wrap">
+        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'">
+            <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
+            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+        </select>
+        <select v-selectstaff v-else>
+            <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
+            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+        </select>
+    </div>
+</template>
+<script>
+    var staffSelect = Vue.extend({
+        template: '#staffSelect',
+        props:["multiple"],
+        data: function () {
+            return {
+                staffs: []
+            }
+        },
+        created: function () {
+            var url = "json/staffList.json";
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                console.log(json);
+                this.$data.staffs = json;
+            }, function (response) {
+                console.info(response);
+            })
+//
+        },
+        directives: {
+            selectstaff:
+                {
+                    update: function (el) {
+                        console.log(el);
+//                        $(el).select2();
+//                        selectStaff(el);
+                        staffSelect(el);
+                    }
+                }
+        }
+    });
+       Vue.component('staffSelect', staffSelect);
+</script>
 <!--左侧导航-->
 <template id="aside">
     <!-- 左侧菜单 -->
@@ -523,7 +600,7 @@
                 执行坐席
             </div>
             <div class="m-info m-input">
-
+                <staff-select multiple="false"></staff-select>
             </div>
         </div>
         <div class="m-row">
@@ -534,7 +611,7 @@
                 <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
                 </select2>
                 <div class="m-tip tip-row">
-                    如果不添加数据来源，坐席将通过 “企业公海” “云客推荐” 等来源查找数据。
+                    如果不添加数据来源，坐席将通过 “企业公海” “我的客户” 等来源查找数据。
                 </div>
             </div>
         </div>
@@ -590,7 +667,8 @@
         },
         components: {
             'inputRow': inputRow,
-            'inputTime': inputTime
+            'inputTime': inputTime,
+            'staffSelect':staffSelect
         }
     });
     Vue.component('taskAdd', taskAdd);

@@ -151,7 +151,7 @@ $column: (sortascbutton:"asc", sortdescbutton:"desc"); //, filterbutton:"635");
 //    line-height: 1.5;
 //  }
 //}
-$sorts: (sortasc:"65c", sortdesc:"65b", sortremove:"642");
+$sorts: (sortasc:"\e65c", sortdesc:"\e65b", sortremove:"\e642");
 @each $sort, $sorticon in $sorts {
   .jqx-grid-#{$sort}-icon {
     //background-image: url("../img/#{$sort}.png");
@@ -178,7 +178,7 @@ $sorts: (sortasc:"65c", sortdesc:"65b", sortremove:"642");
       top: 50%;
       left: 50%;
       transform: translate3d(-50%, -50%, 0);
-      content: "\e#{$sorticon}";
+      content: "#{$sorticon}";
       font-size: 20px;
       line-height: 1;
     }

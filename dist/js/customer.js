@@ -73,6 +73,63 @@ for (var i = 0; i < datalength; i++) {
 /*制作假数据结束*/
 
 
+
+var vm = new Vue({
+    el: '#app',
+    data: function () {
+        return {
+            audio: {
+                name: "",
+                company: "",
+                show: false,
+                url: ""
+            },
+            layers: {
+                customerDetail: {
+                    show: false,
+                    message: {}
+                },
+                customerAdd: {
+                    title: "新建客戶",
+                    show: false,
+                    submit: true,
+                    layerName: 'customerAdd'
+                },
+                customerModify: {
+                    title: "编辑客戶",
+                    show: false,
+                    submit: true,
+                    layerName: 'customerModify',
+                    customerId:""
+                },
+                tableHead: {
+                    title: '编辑显示字段',
+                    show: false,
+                    submit: true,
+                    layerName: 'tableHead'
+                },
+                changeContact: {
+                    title: '变更跟进人',
+                    show: false,
+                    submit: true,
+                    layerName: 'changeContact'
+                },
+            },
+        }
+    },
+    methods: {
+        closeLayer: function (layer) {
+            console.log(layer);
+            this.layers[layer].show = false;
+        },
+        layer: function (layer) {
+            this.layers[layer].show = true;
+        }
+    }
+});
+
+
+
 //默认显示表头
 var tablehead = 'cellphone,position,progress,createdTime,lastActionTime,userName,company,comAdress,comType,mainProduce,operName,registCapi,customerSource,isDistribution';
 if ($.trim(tablehead) == "null" || $.trim(tablehead) == "" || tablehead == "0") {

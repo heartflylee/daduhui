@@ -210,12 +210,12 @@ body {
 
 a {
   text-decoration: none;
-  color: #007aff;
+  // color: #007aff;
 }
 
-a:active {
-  color: #0062cc;
-}
+// a:active {
+//   color: #0062cc;
+// }
 
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, legend, button
 form, fieldset, input, textarea, p, blockquote, th, td {
@@ -302,13 +302,13 @@ del, ins, a {
   text-decoration: none;
 }
 
-a:link {
-  color: #009;
-}
+// a:link {
+//   color: #009;
+// }
 
-a:visited {
-  color: #800080;
-}
+// a:visited {
+//   color: #800080;
+// }
 
 //a:hover,a:active,a:focus {color:#c00; text-decoration:underline;}
 
