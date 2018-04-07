@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
-    <title>电话任务</title>
+    <title>电话任务详情</title>
     <!--公共-->
     @@include("../component/common.html",{"style":"normal"})
 
@@ -43,31 +43,25 @@
          <!--左侧菜单-->
     <menu-aside menu="index"></menu-aside>
         <div class="b-panel">
-            <!-- <main-left></main-left> -->
-            <main-task></main-task>
+            <task-detail ></task-detail>
         </div>
     </section>
 
-    <transition name="layer">
-        <layer :layer="layers.taskAdd" >
-            <task-add ref="taskAdd"></task-add>
-        </layer>
-    </transition>
+        <!--通话录音-->
+        <transition name="audio">
+            <my-audio :layer="audio"></my-audio>
+        </transition>
 </div>
 
 <!--左侧导航-->
 @@include('../components/aside.html')
 <!--顶部-->
 @@include('../components/head.html')
-@@include('../components/mainTask.html')
-@@include('../components/inputRow.html')
-@@include('../components/inputTime.html')
-@@include('../components/select2.html')
-@@include('../components/layer.html')
-@@include('../components/taskAdd.html')
-
+@@include('../components/TaskDetail.html')
+    <!-- 语音播放 -->
+    @@include('../components/audio.html') 
 <script src="js/scripts.js"></script>
-<script src="js/task.js"></script>
+<script src="js/taskDetail.js"></script>
 
 </body>
 </html>

@@ -10,7 +10,7 @@ for (var i = 0; i < datalength; i++) {
         "createdTime": "2017-03-31",
         "comAdress": "建外SOHO西区",
         "progress": "",
-        "lastActionTime": "",
+        "lastActionTime": "3\"",
         "comType": "",
         "customerSource": "企业导入-客户 (3)",
         "actionType": "",
@@ -74,9 +74,9 @@ for (var i = 0; i < datalength; i++) {
 
 
 //默认显示表头
-var tablehead = 'cellphone,position,progress,callDuration,createdTime,lastActionTime,userName,company,comAdress,comType,mainProduce,operName,registCapi,customerSource,isDistribution';
+var tablehead = 'cellphone,position,progress,createdTime,lastActionTime,userName,company,comAdress,comType,mainProduce,operName,registCapi,customerSource,isDistribution';
 if ($.trim(tablehead) == "null" || $.trim(tablehead) == "" || tablehead == "0") {
-    tablehead = "cellphone,position,progress,createdTime,lastActionTime,company,customerSource,email,wechat,qq,callDuration";
+    tablehead = "cellphone,position,progress,createdTime,lastActionTime,company,customerSource,email,wechat,qq";
 }
 
 //自定义表头全部
@@ -102,8 +102,8 @@ var defaultHead = {
     email: {label: '邮箱', value: 'email'},
     wechat: {label: '微信', value: 'wechat'},
     qq: {label: 'QQ', value: 'qq'},
-    callDuration: {label: '通话录音', value: 'callDuration'},
-    callDownload: {label: '录音下载', value: 'callDownload'},
+    // callDuration: {label: '通话录音', value: 'callDuration'},
+    // callDownload: {label: '录音下载', value: 'callDownload'},
     msgState: {label: '短信状态', value: 'msgState'},
     mailState: {label: '邮件状态', value: 'mailState'},
     endcallMsgStatus: {label: '挂机短信状态', value: 'endcallMsgStatus'},
@@ -468,12 +468,13 @@ var defaultCulumns = {
     },
     cusname: {
         text: '客户名称', datafield: 'cusname', width: 80, pinned: true,
-        cellbeginedit: function () {
-            return false;
-        },
-        cellendedit: function () {
-            return false;
-        },
+        cellbeginedit: cellbeginedit,
+        // cellbeginedit: function () {
+            // return false;
+        // },
+        // cellendedit: function () {
+            // return false;
+        // },
         cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
             // console.log(rowData)
             if (rowData.lock == 1) {
@@ -532,7 +533,7 @@ var defaultCulumns = {
         // }
     },
     lastActionTime: {
-        text: '联系时间', datafield: 'lastActionTime', minwidth: 120,
+        text: '最后一次通话时间', datafield: 'lastActionTime', minwidth: 130,
         cellbeginedit: cellbeginedit,
         // cellsformat: "yyyy-MM-dd",
         // columntype: 'datetimeinput',
@@ -541,6 +542,14 @@ var defaultCulumns = {
             filerDate(filterPanel, datafield);
         },
         filtertype: "custom",
+        cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
+            
+            if (value == "")
+                return "";
+            else{
+                return '通话时长：'+value+' <i class="icon v-icon video play" onclick="audioPlay(this,event);" data-url="' + rowData.callDuration + '" data-name ="' + rowData.cusname + '" data-company="' + rowData.company + '"  data-id="' + rowData.cusid + '"></i>'+'<i class="icon v-icon download" onclick="audioDownload(this,event);" data-url="' + rowData.callDownload + '"  data-id="' + rowData.cusid + '"></i>';
+            }
+        }
         // createfilterpanel: function (datafield, filterPanel) {
         //     buildFilterPanel(filterPanel, datafield);
         // }
@@ -580,10 +589,10 @@ var defaultCulumns = {
             buildFilterPanel(filterPanel, datafield);
         },
         cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
-            var mainProduce = '<div class="jqx-grid-cell-text" style="margin-right: 30px;overflow: hidden;text-overflow: ellipsis">' + value + '</div>';
-            if (value != "") {
-                mainProduce += '<a href="javascript:void(0);" onclick="showDetail(this,event)" data-title="' + value + '" style="position: absolute;right:0;top:0;line-height: 40px;">详情</a>';
-            }
+            var mainProduce = '<div class="jqx-grid-cell-text" style="margin-right: 30px;overflow: hidden;text-overflow: ellipsis" title="'+value+'">' + value + '</div>';
+            // if (value != "") {
+            //     mainProduce += '<a href="javascript:void(0);" onclick="showDetail(this,event)" data-title="' + value + '" style="position: absolute;right:0;top:0;line-height: 40px;">详情</a>';
+            // }
             return mainProduce;
         }
     },
@@ -785,24 +794,7 @@ var defaultCulumns = {
         text: '备用5', datafield: 'spare5', minwidth: 120,
         cellbeginedit: cellbeginedit, filterable: !1,
     },
-    callDuration: {
-        text: ' ', datafield: 'callDuration', width: 35, editable: false, sortable: !1, filterable: !1,resizable: false,
-        cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
-            if (value == "")
-                return "";
-            else
-                return '<i class="icon v-icon video play" onclick="audioPlay(this,event);" data-url="' + rowData.callDuration + '" data-name ="' + rowData.cusname + '" data-company="' + rowData.company + '"  data-id="' + rowData.cusid + '"></i>';
-        }
-    },
-    callDownload: {
-        text: ' ', datafield: 'callDownload', width: 35, editable: false, sortable: !1, filterable: !1,resizable: false,
-        cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
-            if (value == "")
-                return "";
-            else
-                return '<i class="icon v-icon download" onclick="audioDownload(this,event);" data-url="' + rowData.callDownload + '"  data-id="' + rowData.cusid + '"></i>';
-        }
-    }
+   
 
 };
 var columns = [];
@@ -942,12 +934,12 @@ $(document).ready(function () {
         var source = [];
         var records = $("#jqxtable").jqxGrid("columns").records;
         for (var i = 3; i < records.length; i++) {
-            if (records[i].text.trim() == "") {
-                var text = records[i].datafield == "callDuration" ? "通话录音" : records[i].datafield == "callDownload" ? "录音下载" : "";
-                source.push({value: records[i].datafield, label: text});
-            } else {
+            // if (records[i].text.trim() == "") {
+            //     var text = records[i].datafield == "callDuration" ? "通话录音" : records[i].datafield == "callDownload" ? "录音下载" : "";
+            //     source.push({value: records[i].datafield, label: text});
+            // } else {
                 source.push({value: records[i].datafield, label: records[i].text});
-            }
+            // }
         }
         console.log(source);
         rightsource = source;

@@ -5,9 +5,9 @@
   display: block;
 
   //height: 28px;
-  height: $normalHeight;
+  // height: $normalHeight;
   .m-info & {
-    height: $bigHeight;
+    // height: $bigHeight;
   }
   user-select: none;
   -webkit-user-select: none;
@@ -24,6 +24,15 @@
 
   .select2-selection__clear {
     position: relative;
+  }
+
+  .staff-head{
+    display: inline-block;
+  }
+  .staff-name{
+    display: inline-block;
+    line-height: 40px;
+    vertical-align: top;
   }
 }
 

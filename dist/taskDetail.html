@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
-    <title>电话任务</title>
+    <title>电话任务详情</title>
     <!--公共-->
     <link type="image/x-icon" href="img/favicon.ico" rel="icon">
 
@@ -73,16 +73,14 @@
          <!--左侧菜单-->
     <menu-aside menu="index"></menu-aside>
         <div class="b-panel">
-            <!-- <main-left></main-left> -->
-            <main-task></main-task>
+            <task-detail ></task-detail>
         </div>
     </section>
 
-    <transition name="layer">
-        <layer :layer="layers.taskAdd" >
-            <task-add ref="taskAdd"></task-add>
-        </layer>
-    </transition>
+        <!--通话录音-->
+        <transition name="audio">
+            <my-audio :layer="audio"></my-audio>
+        </transition>
 </div>
 
 <!--左侧导航-->
@@ -278,16 +276,13 @@
     });
     Vue.component('commonHead', head);
 </script>
-<template id="mainTask">
+<template id="taskDetail">
     <div class="main-box">
         <div class="small-nav-wrap">
             <div class="nav-box">
                 <label class="nav-title">
-                    全部电话任务
+                    电话任务<span> - {{taskTitle}}({{taskNum}}/{{taskTotal}})</span>
                 </label>
-                <div class="nav-right">
-                <label class="nav-btn" @click="taskAdd">新建任务</label>
-                </div>
             </div>
         </div>
         <div class="table-wrap">
@@ -296,308 +291,72 @@
     </div>
 </template>
 <script>
-    var mainTask = Vue.extend({
-        template: '#mainTask',
+    var taskDetail = Vue.extend({
+        template: '#taskDetail',
         data: function () {
             return {
+                taskTitle:'2月26日任务',
+                taskNum:'2',
+                taskTotal:'12'
             }
         },
         methods: {
-            taskAdd: function () {
-                console.log("123");
-                vm.$data.layers.taskAdd.show = true;
-            }
         }
     });
-    Vue.component('mainTask', mainTask);
+    Vue.component('taskDetail', taskDetail);
 </script>
-<template id="inputRow">
-    <div class="m-row">
-        <div class="m-name " :class="{required:rows.required}">
-            {{rows.name}}
-        </div>
-        <div class="m-info m-input" v-if="rows.input">
-            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"/>
-            <div v-if="rows.enter" class="enter-btn" :class="rows.icon"><i></i>{{rows.text}}</div>
-        </div>
-        <div class="m-info" v-else>
-            {{rows.value}}
+    <!-- 语音播放 -->
+    <template id="audio">
+    <div v-if="layer.show" class="audio-wrap">
+        <div class="audio ">
+            <a class="close" @click="close">&times;</a>
+            <div class="audio-title">{{layer.name}}</div>
+            <div class="audio-company">{{layer.company}}</div>
+            <audio preload="none" v-audio :audio="layer.url"></audio>
+            <a :href="layer.url" class="audio-download">&#xe614;</a>
         </div>
     </div>
 </template>
 <script>
-    var inputRow = Vue.extend({
-        template: '#inputRow',
-        props: ['rows']
-    });
-//    Vue.component('inputRow',inputRow);
-</script>
-<template id="inputTime">
-    <div class="input-time">
-        <div class="input" v-time="date"></div>
-        <input type="hidden" v-model="date">
-        <!--<input type="text" class="input" :readonly="time.readonly"-->
-               <!--:placeholder="time.placeholder != undefined ? time.placeholder :''" />-->
-        <!--<i class="icon icon-time"></i>-->
-    </div>
-</template>
-<script>
-    var inputTime = Vue.extend({
-        template: '#inputTime',
-        props: ['time'],
-        data:function () {
-            return{
-                date:''
-            }
-        },
-        directives: {
-            time: {
-                inserted: function (el,date) {
-                    $(el).jqxDateTimeInput({
-                        width: '100%',
-                        height: '40px',
-                        culture: 'ch-CN',
-                        formatString: 'yyyy-MM-dd',
-                        min: new Date(new Date() - 24 * 60 * 60 * 1000)
-                    });
-                    $(el).on('valueChanged', function (event) {
-                        date.value = event.args.date.Format('yyyy-MM-dd');
-                    });
-                }
-            }
-        }
-    });
-</script>
-<template id="select2-template">
-    <select>
-        <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
-        <slot></slot>
-    </select>
-</template>
-
-<script>
-    Vue.component('select2', {
-        props: ['options', 'value','name','optiondefault'],
-        template: '#select2-template',
-        mounted: function () {
-            var vm = this
-            $(this.$el)
-            // init select2
-                .select2({ data: this.options })
-                .val(this.value)
-                .trigger('change')
-                // emit event on change.
-                .on('change', function () {
-                    vm.$emit('input', this.value)
-                })
-        },
-        watch: {
-            value: function (value) {
-                // update value
-                $(this.$el).val(value).trigger('change');
-            },
-            options: function (options) {
-                console.log(options);
-                // update options
-                $(this.$el).select2({ data: options })
-            }
-        },
-        destroyed: function () {
-            $(this.$el).off().select2('destroy')
-        }
-    })
-
-</script>
-<template id="layer">
-    <div class="modal" v-if="layer.show">
-        <div class="layer-bg"></div>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form @submit.prevent="submit" autocomplete="off">
-                    <div class="modal-header layer-head">
-                        <button type="button" class="close" @click="close">&times;</button>
-                        <h4 class="modal-title">{{layer.title}}</h4>
-                    </div>
-                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
-                        <slot></slot>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" @click="close">关闭</button>
-                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</template>
-<script>
-    var layer = Vue.extend({
-        template: '#layer',
+    var audio;
+    var myAudio = Vue.extend({
+        template: '#audio',
         props: ['layer'],
         data: function () {
             return {
-                maxHeight: document.body.clientHeight - 200
-            }
-        },
-        methods: {
-            close: function (layer) {
-                console.log(this.$props);
-                this.$props.layer.show = false;
-                return false;
-            },
-            submit: function () {
-                console.log("彈框提交");
-                console.log(vm.$refs[this.$props.layer.layerName]);
-                vm.$refs[this.$props.layer.layerName].submit();
-                return false;
-            }
-        },
-        mounted: function () {
-            var _self = this;
-            window.onresize = function () {
-                _self.maxHeight = document.body.clientHeight - 200;
-            }
-        },
-        watch: {
-            maxHeight: function (val) {
-                var modalBody = document.getElementsByClassName('modal-body');
-                for (var i = 0; i < modalBody.length; i++) {
-                    modalBody[i].style.maxHeight = val + 'px';
-                }
-            }
-        },
-        updated: function () {
-            var modalDialog = $(this.$el).find(".modal-dialog")[0];
-            $(modalDialog).css({
-                top: ($("body").height() - $(modalDialog).height()) / 2,
-                left: ($("body").width() - $(modalDialog).width()) / 2
-            });
-            $(modalDialog).bg_move({
-                    move: '.modal-header',
-                    closed: '.close'
-                });
-        }
-    });
 
-    Vue.component('layer', layer);
-</script>
-<template id="taskAdd">
-    <div class="task-wrap">
-        <input-row :rows="rows.taskName"></input-row>
-        <div class="task-row">
-            <!--<input-row :rows="rows.startTime"></input-row>-->
-            <div class="m-row">
-                <div class="m-name required">
-                    开始时间
-                </div>
-                <div class="m-info m-input">
-                    <input-time :time="rows.startTime.time"></input-time>
-                    <!--<select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">-->
-                    <!--</select2>-->
-                </div>
-            </div>
-            <div class="m-row">
-                <div class="m-name required">
-                    任务周期
-                </div>
-                <div class="m-info m-input">
-                    <select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">
-                    </select2>
-                </div>
-            </div>
-        </div>
-        <div class="task-row">
-            <input-row :rows="rows.preNumber"></input-row>
-            <div class="m-row">
-                <div class="m-name required">
-                    重复次数
-                </div>
-                <div class="m-info m-input">
-                    <select2 :options="rows.repetitions.options" v-model="rows.repetitions.value" name="重复次数">
-                    </select2>
-                </div>
-            </div>
-        </div>
-        <div class="m-row">
-            <div class="m-name required">
-                执行坐席
-            </div>
-            <div class="m-info m-input">
-
-            </div>
-        </div>
-        <div class="m-row">
-            <div class="m-name">
-                数据来源
-            </div>
-            <div class="m-info m-input">
-                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
-                </select2>
-                <div class="m-tip tip-row">
-                    如果不添加数据来源，坐席将通过 “企业公海” “云客推荐” 等来源查找数据。
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-<script>
-    var taskAdd = Vue.extend({
-        template: '#taskAdd',
-        data: function () {
-            return {
-                rows: {
-                    taskName: {
-                        name: "任务名称", value: "", input: true, required: true
-                    },
-                    startTime: {
-                        name: "开始时间", value: "", input: true, required: true,time:{readonly:true,icon:"time",placeholder:"请选择开始时间",istime:false,format:"YYYY-MM-DD"}
-                    },
-                    preNumber: {
-                        name: "人均电话量", placeholder: "请输入电话数量", value: "", input: true, required: true
-                    },
-                    cycle: {
-                        name: "任务周期",
-                        value: "日",
-                        options: [{id: "日", text: "日"}, {id: "周", text: "周"}, {id: "月", text: "月"}]
-                    },
-                    repetitions: {
-                        name: "重复次数",
-                        value: "不重复",
-                        options: [{id: "不重复", text: "不重复"}, {id: "1", text: "1"}, {id: "2", text: "2"}, {
-                            id: "3",
-                            text: "3"
-                        }, {id: "4", text: "4"}, {id: "5", text: "5"}, {id: "6", text: "6"}, {
-                            id: "7",
-                            text: "7"
-                        }, {id: "8", text: "8"}, {id: "9", text: "9"}, {id: "10", text: "10"}, {
-                            id: "11",
-                            text: "11"
-                        }, {id: "12", text: "12"}]
-                    },
-                    data: {
-                        name: "数据来源",
-                        value: "0",
-                        optiondefault:true,
-                        options: []
-                    },
-                }
             }
         },
         methods:{
-          submit:function () {
-              console.log("新建任务提交");
+          close:function(){
+              console.log('121');
+              audio.pause();
+              vm.$data.audio.show = false;
           }
         },
-        components: {
-            'inputRow': inputRow,
-            'inputTime': inputTime
+        directives: {
+            audio: {
+                inserted:function (el) {
+                    console.log(el);
+                    console.log(this);
+                    audio = audiojs.create(el);
+                    audio.load(vm.$data.audio.url);
+                    audio.play();
+                },
+                update: function (el) {
+                    console.log(el);
+                    console.log(this);
+//                    audio = audiojs.create(el);
+                    audio.load(vm.$data.audio.url);
+                    audio.play();
+                }
+            }
         }
     });
-    Vue.component('taskAdd', taskAdd);
-</script>
-
+    Vue.component('myAudio', myAudio);
+</script> 
 <script src="js/scripts.js"></script>
-<script src="js/task.js"></script>
+<script src="js/taskDetail.js"></script>
 
 </body>
 </html>

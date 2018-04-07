@@ -1,6 +1,6 @@
 <template id="staffSelect">
     <div class="staff-select-wrap">
-        <select v-selectstaff multiple="multiple">
+        <select v-selectstaff  :multiple="multiple == 'true' ?'multiple': 'false'">
             <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
             <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
@@ -14,6 +14,7 @@
 <script>
     var staffSelect = Vue.extend({
         template: '#staffSelect',
+        props:["multiple"],
         data: function () {
             return {
                 staffs: []
@@ -42,5 +43,5 @@
                 }
         }
     });
-    //    Vue.component('staffSelect', staffSelect);
+       Vue.component('staffSelect', staffSelect);
 </script>

@@ -16,7 +16,7 @@
                                 <div class="h-r-li">
                                     <div class="h-r-btn" @click="customerAdd">
                                         <i class="h-r-icon icon-add icon"></i>
-                                        <label class="h-r-main">添加联系人</label>
+                                        <label class="h-r-main">新建客户</label>
                                     </div>
                                 </div>
                                 <div class="h-r-li dropdown">
@@ -31,30 +31,29 @@
                                             <a class="h-d-li" @click="changeContactBtn">
                                                 变更负责人
                                             </a>
-                                            <a class="h-d-li" href="javascript:void(0)">
-                                                锁定
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="detail-h-m">
+                            <i class="title-icon icon-contact icon"></i>
                             <div class="h-m-company">
-                                {{messages.company.value}}
+                                {{messages.userName.value}}
                             </div>
-                            <div class="qixin-btn" @click="businessShow">
+                            <!-- <div class="qixin-btn" @click="businessShow">
                                 <i class="icon"></i> 工商信息
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="d-message">
-                        <head-message :message="messages.userName"></head-message>
                         <head-message :message="messages.cellphone"></head-message>
                         <head-message :message="messages.createdTime"></head-message>
                         <head-message :message="messages.lastActionTime"></head-message>
                         <head-message :message="messages.progress"></head-message>
                         <head-message :message="messages.lastAction"></head-message>
+                        <head-message :message="messages.userName"></head-message>
+
                         <!--include("../detail/detail-head-message.html")-->
                     </div>
                 </div>
@@ -62,178 +61,66 @@
                     <div class="detail-left">
                         <div class="tags">
                             <div class="tags-li active">
-                                <a href="javascript:void(0)" onclick="tags(this)">相关</a>
+                                <a href="javascript:void(0)" onclick="tags(this)">详细信息</a>
                             </div>
                             <div class="tags-li">
-                                <a href="javascript:void(0)" onclick="tags(this)">详细信息</a>
+                                <a href="javascript:void(0)" onclick="tags(this)">时间轴</a>
                             </div>
                         </div>
                         <div class="tags-main">
                             <div class="tags-con-li active">
-                                <div class="list-li">
-                                    <div class="list-title">
-                                        <div class="title-right">
-                                            <div class="title-btn">
-                                                <i class="icon-t icon-t-arrow icon" onclick="detail(this)"></i>
+                                    <div class="message-box">
+                                            <div class="message-t">
+                                                跟进信息
                                             </div>
-                                            <div class="title-btn dropdown">
-                                                <i class="icon-t icon-t-set icon" data-toggle="dropdown"></i>
-                                                <div class="h-r-drop dropdown-menu">
-                                                    <div class="h-d-list">
-                                                        <a class="h-d-li" href="javascript:void(0)">
-                                                            删除
-                                                        </a>
-                                                        <a class="h-d-li" href="javascript:void(0)">
-                                                            变更跟进人
-                                                        </a>
-                                                    </div>
-                                                </div>
+                                            <div class="message-content">
+                                                <detail-message :message="messages.remark" name="remark" row="true"></detail-message>
+                                                <detail-message :message="messages.fllowPerson" name="fllowPerson"></detail-message>
+                                                <detail-message :message="messages.createdTime" name="createdTime"></detail-message>
+                                                <detail-message :message="messages.progress" name="progress"></detail-message>
+                                               
                                             </div>
                                         </div>
-                                        <div class="title-left">
-                                            <i class="title-icon icon-contact icon"></i> 联系人（2）
-                                        </div>
-                                    </div>
-                                    <div class="list-main">
-                                        <div class="list-table">
-                                            <ul class="table-row table-head">
-                                                <li class="table-li table-li1">
-                                                    <div class="checkbox">
-                                                        <label><input type="checkbox" class="checkAll"
-                                                                      onclick="checkboxAll(this)"><i></i></label>
-                                                    </div>
-                                                </li>
-                                                <li class="table-li table-li2">
-                                                    客户姓名
-                                                </li>
-                                                <li class="table-li table-li3">
-                                                    手机号
-                                                </li>
-                                                <li class="table-li table-li4">
-                                                    跟进人
-                                                </li>
-                                                <li class="table-li table-li5">
-                                                    最后一次沟通结果
-                                                </li>
-                                                <li class="table-li table-li6">
-                                                    最后一次通话录音
-                                                </li>
-                                                <li class="table-li table-li7">
-
-                                                </li>
-                                            </ul>
-                                            <contact-table-list :list="contactlist"></contact-table-list>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-li">
-                                    <div class="list-title">
-                                        <!--<div class="title-right">
-                                            <div class="title-btn">
-                                                <i class="icon-t icon-t-arrow"></i>
-                                            </div>
-                                            <div class="title-btn">
-                                                <i class="icon-t icon-t-upload"></i>
-                                            </div>
-                                        </div>-->
-                                        <div class="title-left">
-                                            <i class="title-icon icon-history icon"></i> 任务历史（2）
-                                        </div>
-                                    </div>
-                                    <div class="list-main">
-                                        <div class="list-table list-task">
-                                            <ul class="table-row table-head">
-                                                <li class="table-li">
-                                                    任务名称
-                                                </li>
-                                                <li class="table-li">
-                                                    人均电话量
-                                                </li>
-                                                <li class="table-li">
-                                                    任务状态
-                                                </li>
-                                                <li class="table-li">
-                                                    任务详情
-                                                </li>
-                                            </ul>
-                                            <task-history-list :list="taskHistory"></task-history-list>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tags-con-li">
                                 <div class="message-box">
                                     <div class="message-t">
                                         基本信息
                                     </div>
-                                    <detail-message :message="messages.company" name="company"></detail-message>
-                                    <detail-message :message="messages.userName" name="userName"></detail-message>
-                                    <detail-message :message="messages.progress" name="progress"></detail-message>
-                                    <detail-message :message="messages.comType" name="comType"></detail-message>
-                                    <detail-message :message="messages.registCapi" name="registCapi"></detail-message>
-                                    <detail-message :message="messages.comType" name="comType"></detail-message>
-
-                                    <!--loop("../detail/detail-message.html",[-->
-                                    <!--{"id":"company","name":"公司名称","value":"北京联云天下科技有限公司","type":"input"},-->
-                                    <!--{"id":"userName","name":"客户负责人","value":"刘宇","type":"input"},-->
-                                    <!--{"id":"progress","name":"销售进度","value":"初步沟通","type":"select","option":"初步沟通,确认需求,报价,面谈,成单,无需求,输单"},-->
-                                    <!--{"id":"comType","name":"所属行业","value":"IT-互联网","type":"input"},-->
-                                    <!--{"id":"registCapi","name":"注册资金","value":"&#45;&#45;","type":"input"},-->
-                                    <!--{"id":"comType","name":"公司类型","value":"有限责任公司（自然人投资或控股）","type":"input"}-->
-                                    <!--])-->
+                                    <div class="message-content">
+                                        <detail-message :message="messages.userName" name="userName"></detail-message>
+                                        <detail-message :message="messages.gender" name="gender"></detail-message>
+                                        <detail-message :message="messages.email" name="email"></detail-message>
+                                        <detail-message :message="messages.channel" name="channel"></detail-message>
+                                        <detail-message :message="messages.DecorationAdress" name="DecorationAdress"></detail-message>
+                                        <detail-message :message="messages.DecorationWeek" name="DecorationWeek"></detail-message>
+                                        <detail-message :message="messages.IntentionalCategory" name="IntentionalCategory"></detail-message>
+                                        <detail-message :message="messages.QQ" name="QQ"></detail-message>
+                                        <detail-message :message="messages.wechat" name="wechat"></detail-message>
+                                        <detail-message :message="messages.phone" name="phone"></detail-message>
+                                        <detail-message :message="messages.cellphone" name="cellphone"></detail-message>
+                                    </div>
                                 </div>
                                 <div class="message-box">
-                                    <div class="message-t">
-                                        联系信息
-                                    </div>
-                                    <detail-message :message="messages.cellphone" name="cellphone"></detail-message>
-                                    <detail-message :message="messages.comAdress" name="comAdress"></detail-message>
-                                    <detail-message :message="messages.postcode" nam="postcode"></detail-message>
-
-                                    <!--loop("../detail/detail-message.html",[-->
-                                    <!--{"id":"cellphone","name":"电话号码","value":"010-8888 8888","type":"input"},-->
-                                    <!--{"id":"comAdress","name":"公司地址","value":"点击填写","type":"input"},-->
-                                    <!--{"id":"comAdress","name":"公司地址","value":"北京市朝阳区建外soho西区12号楼2704室","type":"input"},-->
-                                    <!--{"id":"company","name":"邮政编码","value":"点击填写","type":"input"}-->
-                                    <!--])-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="detail-right">
-                        <div class="tags">
-                            <div class="tags-li active">
-                                <a href="javascript:void(0)" onclick="tags(this)">时间轴</a>
-                            </div>
-                            <div class="tags-li">
-                                <a href="javascript:void(0)" onclick="tags(this)">团队成员</a>
-                            </div>
-                        </div>
-                        <div class="tags-main">
-                            <div class="tags-con-li active">
-                                <div class="note-form">
-                                    <form @submit.prevent="remarkSubmit">
-                                        <textarea class="textarea" placeholder="请输入客户备注" v-model="remark"></textarea>
-                                        <div class="btn-right-box">
-                                            <input type="button" class="btn btn-default" @click="remarkReset" value="取消"/>
-                                            <input type="submit" class="btn btn-primary" value="确定"/>
+                                        <div class="message-t">
+                                            其他
                                         </div>
-                                    </form>
-                                </div>
+                                        <div class="message-content">
+    
+                                            <detail-message :message="messages.dataSources" name="dataSources"></detail-message>
+                                        </div>
+                                    </div>
+                                <div class="message-box">
+                                    <div class="message-t">
+                                        其他
+                                    </div>
+                                    <div class="message-content">
 
-                                <detail-line :list="detailLineList"></detail-line>
-                                <!--loop("../detail/detail-line.html",[-->
-                                <!--{"time":"2017-02-23 17:44","editor":"刘宇","type":"video","customer":"白又亮"},-->
-                                <!--{"time":"2017-02-22 17:44","editor":"刘宇","type":"message","customer":"白又亮"},-->
-                                <!--{"time":"2017-02-21 17:44","editor":"刘宇","type":"create","customer":"白又亮"},-->
-                                <!--{"time":"2017-02-20 17:44","editor":"刘宇","type":"company","customer":"北京蜜宝世纪科技有限公司"}-->
-                                <!--])-->
+                                        <detail-message :message="messages.dataSources" name="dataSources"></detail-message>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tags-con-li">
-                                <detail-member :list="detailMemberList"></detail-member>
-                                <!--<div class="member">-->
-                                <!--&lt;!&ndash;loop("../detail/detail-member.html",[{},{},{},{}])&ndash;&gt;-->
-                                <!--</div>-->
+                                <detail-line :list="detailLineList"></detail-line>
+
                             </div>
                         </div>
                     </div>
@@ -247,115 +134,43 @@
 
     var headMessage = Vue.extend({
         template: '<div class="d-m-li">\n' +
-        '    <div class="d-m-name">\n' +
-        '        {{message.name}}\n' +
-        '    </div>\n' +
-        '    <div class="d-m-main">\n' +
-        ' <i class="d-m-head" v-if="message.photo != null && message.photo!= undefined && message.photo != \'\'" :style="\'background-image: url(\'+message.photo+\');\'"></i>' +
-        '        <label :class="message.photo != null && message.photo!= undefined && message.photo != \'\'?\'d-m-con\':\'\'">{{message.value}}</label>\n' +
-        '    </div>\n' +
-        '</div>',
+            '    <div class="d-m-name">\n' +
+            '        {{message.name}}\n' +
+            '    </div>\n' +
+            '    <div class="d-m-main">\n' +
+            ' <i class="d-m-head" v-if="message.photo != null && message.photo!= undefined && message.photo != \'\'" :style="\'background-image: url(\'+message.photo+\');\'"></i>' +
+            '        <label :class="message.photo != null && message.photo!= undefined && message.photo != \'\'?\'d-m-con\':\'\'">{{message.value}}</label>\n' +
+            '    </div>\n' +
+            '</div>',
         props: ['message']
     });
 
-    var contactTableList = Vue.extend({
-        template: '<div><ul class="table-row" v-for="message in list">\n' +
-        '    <li class="table-li table-li1">\n' +
-        '        <div class="checkbox">\n' +
-        '            <label><input type="checkbox" class="check" onclick="checkbox(this)"><i></i></label>\n' +
-        '        </div>\n' +
-        '    </li>\n' +
-        '    <li class="table-li table-li2">\n' +
-        '        {{message.name}}\n' +
-        '    </li>\n' +
-        '    <li class="table-li table-li3">\n' +
-        '        {{message.cellphone}}\n' +
-        '    </li>\n' +
-        '    <li class="table-li table-li4">\n' +
-        '        {{message.userName}}\n' +
-        '    </li>\n' +
-        '    <li class="table-li table-li5">\n' +
-        '        {{message.actionType}}\n' +
-        '    </li>\n' +
-        '    <li class="table-li table-li6">\n' +
-        '        通话时长：{{message.callTime}}\n' +
-        '    </li>\n' +
-        '    <li class="table-li table-li7">\n' +
-        '        <i class="icon video" :data-url="message.callDuration" :data-name="message.name" :data-company="message.company" onclick="audioPlay(this,event)"></i>\n' +
-        '        <i class="icon download" :data-url="message.callDownload" onclick="audioDownload(this,event)"></i>\n' +
-        '    </li>\n' +
-        '</ul>\n</div>',
-//        template:'<ul><li>{{list}}</li></ul>',
-        props: ['list']
-    });
-
-    var taskHistoryList = Vue.extend({
-        template: '<div><ul class="table-row" v-for="task in list">\n' +
-        '    <li class="table-li table-color">\n' +
-        '        {{task.name}}\n' +
-        '    </li>\n' +
-        '    <li class="table-li">\n' +
-        '        {{task.number}}\n' +
-        '    </li>\n' +
-        '    <li class="table-li">\n' +
-        '        {{task.state}}\n' +
-        '    </li>\n' +
-        '    <li class="table-li">\n' +
-        '        <a href="javascript:void(0)">查看详情</a>\n' +
-        '    </li>\n' +
-        '</ul></div>',
-        props: ['list']
-    });
-
     var detailMessage = Vue.extend({
-        template: '<div class="message-li" v-modify data-toggle="MessageEditor"  data-target=".message-li"  data-backdrop="true">\n' +
-        '    <div class="icon edit-icon"></div>\n' +
-        '    <div class="message-name">\n' +
-        '        {{message.name}}\n' +
-        '    </div>\n' +
-        '    <div class="message-main" >\n' +
-//        '        <div class="message-text" v-if="editor">' +
-//        '           <input type="text" v-model="message.value"  />' +
-//        '       </div>' +
-        '        <div class="message-text" :data-name="name"  :data-value="message.value == \'\'?\'\':message.value" :data-type="message.type" :data-nametext="message.name" :data-option="message.options == null || message.options == \'\' || message.options == undefined ? \'\' :message.options ">\n' +
-        '                {{message.value == ""?"点击填写":message.value}}\n' +
-        '        </div>\n' +
-        '    </div>\n' +
-        '</div>\n',
-        props: ['message','name'],
+        template: '<div class="message-li" :class="row == \'true\'?\'message-row\':\'\'" v-modify data-toggle="MessageEditor"  data-target=".message-li"  data-backdrop="true">\n' +
+            '    <div class="icon edit-icon"></div>\n' +
+            '    <div class="message-name">\n' +
+            '        {{message.name}}\n' +
+            '    </div>\n' +
+            '    <div class="message-main" >\n' +
+            '        <div class="message-text" :data-name="name"  :data-value="message.value == \'\'?\'\':message.value" :data-type="message.type" :data-nametext="message.name" :data-option="message.options == null || message.options == \'\' || message.options == undefined ? \'\' :message.options ">\n' +
+            '                {{message.value == ""?"点击填写":message.value}}\n' +
+            '        </div>\n' +
+            '    </div>\n' +
+            '</div>\n',
+        props: ['message', 'name','row'],
         data: function () {
             return {
-//                editor: false
             }
         },
         directives: {
             modify: {
                 bind: function (el) {
-                    console.log(el);
                     $(el).click(function (e) {
-                        console.log(this);
                         if ($(e.target).isChildAndSelfOf(".message-li")) {
-                            $(this).MessageEditor({editor: true}, this)
+                            $(this).MessageEditor({ editor: true }, this)
                         }
-//                        $(this).MessageEditor({editor: true}, this)
-//                    _self.$data.editor = true;
                     });
 
-//                    $(".layer-detail-wrap .modal-dialog").click(function (e) {
-//                        console.log(e);
-//                        if ($(e.target).isChildAndSelfOf(".message-li")) {
-//                            $(".editor[data-toggle='MessageEditor']").each(function () {
-//                                if (!$(e.target).isChildAndSelfOf(this)) {
-//                                    $(this).MessageEditor({editor: false, callback: changed(this)}, this)
-//                                }
-//                            })
-//                        }
-//                        else {
-//                            $(".editor[data-toggle='MessageEditor']").each(function () {
-//                                $(this).MessageEditor({editor: false, callback: changed(this)}, this)
-//                            })
-//                        }
-//                    })
                 }
             }
         }
@@ -364,66 +179,53 @@
 
     var detailLine = Vue.extend({
         template: '<div class="time-line">' +
-        '<div class="line-box" v-for="line in list">\n' +
-        '    <div class="line-time">{{line.time}}</div>\n' +
-        '<div class="line-main" v-if="line.type == 1">' +
-        '        <div class="line-t">\n' +
-        '            <label class="color color-big">{{line.editor}}</label> 与\n' +
-        '            <label class="color">{{line.customer}}</label> 进行电话沟通\n' +
-        '        </div>\n' +
-        '        <div class="talk-time">\n' +
-        '            通话时长：{{line.callTime}}<label class="video-box"><i class="icon video" :data-url="line.callDuration" :data-name="line.customer" :data-company="line.company" onclick="audioPlay(this,event)"></i> <i class="icon download" data-url="voice/demo.mp3" onclick="audioDownload(this,event)"></i></label>\n' +
-        '        </div>\n' +
-        '        <div class="line-block">\n' +
-        '            沟通结果：{{line.actionType}}\n' +
-        '        </div>\n' +
-        '        <div class="line-block">\n' +
-        '            电话备注：{{line.remark}}\n' +
-        '        </div>\n' +
-        '</div>' +
-        '    <div class="line-main" v-if="line.type == 2">\n' +
-        '        <div class="line-t">\n' +
-        '            <label class="color color-big">{{line.editor}}</label> 给\n' +
-        '            <label class="color">{{line.customer}}</label> 发送挂机短信\n' +
-        '        </div>\n' +
-        '        <div class="line-block">\n' +
-        '            短信模板：{{line.messageName}}\n' +
-        '        </div>\n' +
-        '        <div class="line-block">\n' +
-        '            短信状态：<label class="color">{{line.messageState}}</label>\n' +
-        '        </div>\n' +
-        '</div>' +
-        '<div class="line-main" v-if="line.type == 3">\n' +
-        '        <div class="line-t">\n' +
-        '            <label class="color color-big">{{line.editor}}</label> 创建了联系人\n' +
-        '            <label class="color">{{line.customer}}</label>\n' +
-        '        </div>\n' +
-        '</div>' +
-        '    <div class="line-main" v-if="line.type == 4">\n' +
-        '        <div class="line-t">\n' +
-        '            <label class="color color-big">{{line.editor}}</label> 创建了客户\n' +
-        '            <a class="line-href" href="javascript:void(0)">{{line.company}}</a>\n' +
-        '        </div>\n' +
-        '    </div>\n' +
-        '</div>' +
-        '</div>\n',
+            '<div class="line-box" v-for="line in list">\n' +
+            '    <div class="line-time">{{line.time}}</div>\n' +
+            '<div class="line-main" v-if="line.type == 1">' +
+            '        <div class="line-t">\n' +
+            '            <label class="color color-big">{{line.editor}}</label> 与\n' +
+            '            <label class="color">{{line.customer}}</label> 进行电话沟通\n' +
+            '        </div>\n' +
+            '        <div class="talk-time">\n' +
+            '            通话时长：{{line.callTime}}<label class="video-box"><i class="icon video" :data-url="line.callDuration" :data-name="line.customer" :data-company="line.company" onclick="audioPlay(this,event)"></i> <i class="icon download" data-url="voice/demo.mp3" onclick="audioDownload(this,event)"></i></label>\n' +
+            '        </div>\n' +
+            '        <div class="line-block">\n' +
+            '            沟通结果：{{line.actionType}}\n' +
+            '        </div>\n' +
+            '        <div class="line-block">\n' +
+            '            电话备注：{{line.remark}}\n' +
+            '        </div>\n' +
+            '</div>' +
+            '    <div class="line-main" v-if="line.type == 2">\n' +
+            '        <div class="line-t">\n' +
+            '            <label class="color color-big">{{line.editor}}</label> 给\n' +
+            '            <label class="color">{{line.customer}}</label> 发送挂机短信\n' +
+            '        </div>\n' +
+            '        <div class="line-block">\n' +
+            '            短信模板：{{line.messageName}}\n' +
+            '        </div>\n' +
+            '        <div class="line-block">\n' +
+            '            短信状态：<label class="color">{{line.messageState}}</label>\n' +
+            '        </div>\n' +
+            '</div>' +
+            '<div class="line-main" v-if="line.type == 3">\n' +
+            '        <div class="line-t">\n' +
+            '            <label class="color color-big">{{line.editor}}</label> 创建了联系人\n' +
+            '            <label class="color">{{line.customer}}</label>\n' +
+            '        </div>\n' +
+            '</div>' +
+            '    <div class="line-main" v-if="line.type == 4">\n' +
+            '        <div class="line-t">\n' +
+            '            <label class="color color-big">{{line.editor}}</label> 创建了客户\n' +
+            '            <a class="line-href" href="javascript:void(0)">{{line.company}}</a>\n' +
+            '        </div>\n' +
+            '    </div>\n' +
+            '</div>' +
+            '</div>\n',
         props: ['list']
     });
 
 
-    var detailMember = Vue.extend({
-        template: ' <div class="member">' +
-        '<div class="member-li" v-for="member in list">\n' +
-        '    <a href="javascript:void(0)" class="change-btn">\n' +
-        '        <i class="icon icon-change"></i>\n' +
-        '    </a>\n' +
-        '    <i class="member-head" :style="\'background-image: url(\'+member.headImg+\');\'"></i>\n' +
-        '    <label class="color color-big">{{member.customer}}</label> 对接联系人\n' +
-        '    <label class="color">{{member.contact}}</label>\n' +
-        '</div>' +
-        '</div>',
-        props: ['list']
-    });
 
     var customerDetail = Vue.extend({
         template: '#customerDetail',
@@ -432,25 +234,25 @@
             return {
 
                 messages: {
-                    customerId:"",
-                    company: {name: "公司名称", value: "", type: "input"},
-                    userName: {name: "客户负责人", value: "", photo: "img/head.png", type: "input"},
-                    cellphone: {name: "电话号码", value: "", type: "input"},
-                    createdTime: {name: "创建时间", value: ""},
-                    lastActionTime: {name: "最后联系时间", value: ""},
-                    progress: {name: "销售进度", value: "", type: "select", options: '初步沟通,确认需求,报价,面谈,成单,无需求,输单,未标记'},
-                    lastAction: {name: "最后一次通话结果", value: ""},
-                    comIndustry: {name: "所属行业", value: "", type: "input"},
-                    registCapi: {name: "注册资金", value: "", type: "input"},
-                    comType: {name: "公司类型", value: "", type: "input"},
-                    comAdress: {name: "公司地址", value: "", type: "input"},
-                    postcode: {name: "邮政编码", value: "", type: "input"}
+                    customerId: "",
+                    remark: { name: "客户备注", value: "", type: "input"},
+                    fllowPerson: { name: "跟进人", value: "", type: "input" },
+                    createdTime: { name: "创建时间", value: "" },
+                    progress: { name: "销售进度", value: "", type: "select", options: '初步沟通,确认需求,报价,面谈,成单,无需求,输单,未标记' },
+                    userName: { name: "客户姓名", value: "",  type: "input" },
+                    gender: { name: "性别", value: "", type: "select",options:'男,女' },
+                    email: { name: "邮箱地址", value: "",  type: "input" },
+                    channel:{name: "渠道来源", value: "",  type: "input"},
+                    DecorationAdress:{name: "装修地址", value: "",  type: "input"},
+                    DecorationWeek:{name: "装修周期", value: "",  type: "input"},
+                    IntentionalCategory:{name: "意向品类", value: "",  type: "input"},
+                    QQ:{name: "QQ", value: "",  type: "input"},
+                    wechat:{name: "微信", value: "",  type: "input"},
+                    phone:{name: "微信", value: "",  type: "input"},
+                    cellphone: { name: "座机号码", value: "", type: "input" },
+                    dataSources: { name: "数据来源", value: "" },
                 },
-                contactlist: [],
-                taskHistory: [],
                 detailLineList: [],
-                detailMemberList: [],
-                remark:""
             }
         },
         methods: {
@@ -465,94 +267,53 @@
             customerAdd: function () {
                 this.$emit('layer', 'customerAdd');
             },
-            customerModify:function () {
-              this.$emit('layer','customerModify');
+            customerModify: function () {
+                this.$emit('layer', 'customerModify');
             },
-            remarkReset:function () {
-              this.$data.remark = "";
-            },
-            remarkSubmit:function () {
-                console.log(this.$data.remark);
-                if(this.$data.remark == ""){
-                    return false;
+         
+            modifyDefault: function (e) {
+                if ($(e.target).isChildAndSelfOf(".message-li")) {
+                    $(".editor[data-toggle='MessageEditor']").each(function () {
+                        if (!$(e.target).isChildAndSelfOf(this)) {
+                            $(this).MessageEditor({ editor: false, callback: 'changed(data)' }, this)
+                        }
+                    })
                 }
-                alert("","备注添加成功");
-                this.$data.remark = "";
+                else {
+                    $(".editor[data-toggle='MessageEditor']").each(function () {
+                        $(this).MessageEditor({ editor: false, callback: 'changed(data)' }, this)
+                    })
+                }
             },
-            modifyDefault:function (e) {
-//                $(".layer-detail-wrap .modal-dialog").click(function (e) {
-                    console.log(e);
-                    if ($(e.target).isChildAndSelfOf(".message-li")) {
-                        $(".editor[data-toggle='MessageEditor']").each(function () {
-                            if (!$(e.target).isChildAndSelfOf(this)) {
-                                $(this).MessageEditor({editor: false, callback: 'changed(data)'}, this)
-                            }
-                        })
-                    }
-                    else {
-                        $(".editor[data-toggle='MessageEditor']").each(function () {
-                            $(this).MessageEditor({editor: false, callback: 'changed(data)'}, this)
-                        })
-                    }
-//                })
-            },
-            changeContactBtn:function () {
+            changeContactBtn: function () {
                 //变更跟进人
-                vm.$data.layers.changeContact.show = true ;
+                vm.$data.layers.changeContact.show = true;
             }
         },
         components: {
             "headMessage": headMessage,
-            "contactTableList": contactTableList,
-            "taskHistoryList": taskHistoryList,
             "detailMessage": detailMessage,
             "detailLine": detailLine,
-            "detailMember": detailMember
         },
         activated: function () {
-//            var _self = this;
-            console.log(this);
-            var message = this.$props.layer.message;
-var $messages = this.$data.messages;
-console.log($messages);
-            $messages.customerId = message.cusid;
-            $messages.company.value = message.company;
-            $messages.userName.value = message.cusname;
-            $messages.cellphone.value = message.cellphone;
-            $messages.createdTime.value = message.createdTime;
-            $messages.lastActionTime.value = message.lastActionTime;
-            $messages.progress.value = message.progress;
-            $messages.lastAction.value = message.lastAction;
+            // var message = this.$props.layer.message;
+            // var $messages = this.$data.messages;
+            // $messages.customerId = message.cusid;
+            // $messages.userName.value = message.cusname;
+            // $messages.cellphone.value = message.cellphone;
+            // $messages.createdTime.value = message.createdTime;
+            // $messages.lastActionTime.value = message.lastActionTime;
+            // $messages.progress.value = message.progress;
+            // $messages.lastAction.value = message.lastAction;
 
-//            this.$data.messages.comIndustry.value = message.comIndustry;
-            $messages.registCapi.value = message.registCapi;
-            $messages.comType.value = message.comType;
-            $messages.comAdress.value = message.comAdress;
-//            this.$data.messages.postcode.value = message.postcode;
-            //查询联系人列表
-            var contactUrl = "json/detail-contact.json";
+            // //            this.$data.messages.comIndustry.value = message.comIndustry;
+            // $messages.registCapi.value = message.registCapi;
+            // $messages.comType.value = message.comType;
+            // $messages.comAdress.value = message.comAdress;
+            //            this.$data.messages.postcode.value = message.postcode;
+       
 
 
-            this.$http.get(contactUrl, {}).then(function (data) {
-                var json = JSON.parse(data.bodyText);
-                this.$data.contactlist = json;
-                console.log(this);
-            }, function (response) {
-                console.info(response);
-            });
-
-
-            //查询任务历史列表
-            var taskHistoryUrl = "json/detail-taskHistory.json";
-
-//
-            this.$http.get(taskHistoryUrl, {}).then(function (data) {
-                var json = JSON.parse(data.bodyText);
-                this.$data.taskHistory = json;
-                console.log(this);
-            }, function (response) {
-                console.info(response);
-            });
 
             //时间轴列表
             var detailLineUrl = "json/detail-line.json";
@@ -564,32 +325,8 @@ console.log($messages);
             }, function (response) {
                 console.info(response);
             });
-            //团队成员列表
-            var detailMemberUrl = "json/detail-member.json";
-
-
-            this.$http.get(detailMemberUrl, {}).then(function (data) {
-                var json = JSON.parse(data.bodyText);
-                this.$data.detailMemberList = json;
-                console.log(this);
-            }, function (response) {
-                console.info(response);
-            });
-        },
-//        deactivated:function () {
-//            this.$data.messages.company.value = "";
-//            this.$data.messages.userName.value = "";
-//            this.$data.messages.cellphone.value = "";
-//            this.$data.messages.createdTime.value = "";
-//            this.$data.messages.lastActionTime.value = "";
-//            this.$data.messages.progress.value = "";
-//            this.$data.messages.lastAction.value = "";
-//            this.$data.contactlist = [];
-//            this.$data.taskHistory = [];
-//            this.$data.detailLineList = [];
-//            this.$data.detailMemberList = [];
-//
-//        }
+        
+        }
     });
     Vue.component('customerDetail', customerDetail);
 </script>

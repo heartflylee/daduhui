@@ -38,7 +38,7 @@
                     <li class="table-nav">
                         已选中<label class="count-select">1</label>项
                     </li>
-                    <li class="table-nav">
+                    <li class="table-nav" @click="change">
                         <i class="table-icon icon-change icon"></i>
                         <div class="table-nav-main">变更负责人</div>
                     </li>
@@ -63,7 +63,11 @@
         methods:{
             customerAdd:function () {
                 this.$emit('layer','customerAdd');
-            }
+            },
+            change:function(){
+                this.$emit('layer','changeContact');
+                
+            }        
         }
     });
     Vue.component('customerHead',customerHead);

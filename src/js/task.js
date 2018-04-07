@@ -11,13 +11,13 @@ for (var i = 0; i < datalength; i++) {
     };
 
     var cycle = ["日", "周", "月"];
-    var taskType = ["进行中", "过期未完成"];
+    var taskType = ["进行中", "过期未完成",'已完成','已终止'];
     var source = ["--", "不提供数据"];
     var repetitions = ["不重复", "1","2","3","4","5","6","7","8","9","10","11","12"];
 
     dataRow.taskId = parseInt(Math.random() * datalength);
     dataRow.cycle = cycle[parseInt(Math.random() * 3)];
-    dataRow.taskType = taskType[parseInt(Math.random() * 2)];
+    dataRow.taskType = taskType[parseInt(Math.random() * 4)];
     dataRow.source = source[parseInt(Math.random() * 2)];
     dataRow.repetitions = repetitions[parseInt(Math.random() * 13)];
 
@@ -84,35 +84,61 @@ $(document).ready(function () {
         pagerheight: 50,
         columns: [
             {
-                text: '任务名称', datafield: 'taskName', width: 150, pinned: true
+                text: '任务名称', datafield: 'taskName', width: 150, pinned: true,
             },
             {
-                text: '开始时间', datafield: 'startTime', minwidth: 70
+                text: '开始时间', datafield: 'startTime', width: 110
             },
             {
-                text: '任务周期', datafield: 'cycle', minwidth: 50
+                text: '任务周期', datafield: 'cycle', width: 100
             },
             {
-                text: '人均电话量', datafield: 'preNumber', minwidth: 50
+                text: '人均电话量', datafield: 'preNumber', width: 100
             },
             {
-                text: '任务状态', datafield: 'taskType', minwidth: 50,
+                text: '任务状态', datafield: 'taskType', width: 100,
                 cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
                     // console.log(rowData)
                     if (value == "进行中") {
                         return '<div class="btn btn-primary">' + value + '</div>';
                     }
-                    return '<div class="btn btn-danger">' + value + '</div>';
+                    else if(value == '过期未完成'){
+                        return '<div class="btn btn-danger">' + value + '</div>';
+                    }
+                    else{
+                        return '<div class="btn btn-cancle">' + value + '</div>';
+                    }
                 },
             },
             {
-                text: '任务进度', datafield: 'progress', minwidth: 50
+                text: '任务进度', datafield: 'progress', width: 100
             },
             {
                 text: '数据来源', datafield: 'source', minwidth: 50
             },
             {
-                text: '重复次数', datafield: 'repetitions', minwidth: 50
+                text: '重复次数', datafield: 'repetitions', width: 90
+            },
+            {
+                text:'操作',datafield:'setup',width:150,editable: false, sortable: !1, filterable: !1,
+        cellsrenderer: function (row, column, value, defaultHtml, style, rowData) {
+            // console.log(rowData)
+            // if (rowData.lock == 1) {
+                // if (rows.indexOf(row) < 0) {
+                //     rows.push(row);
+                // }
+            //     return '<i class="icon-lock"></i><div class="jqx-grid-cell-left-align">' + value + '</div>';
+            // }
+            if (rowData.taskType == "进行中" || rowData.taskType == '过期未完成') {
+                return '<a class="btn btn-link">查看详情</a> <a class="btn  btn-link btn-link-danger">终止任务</a>';
+            }
+            else if(rowData.taskType == '已完成'){
+                return '<a class="btn btn-link btn-link-danger ">终止任务</a>';
+            }
+            else{
+                return '';
+            }
+        },
             }
         ]
     });

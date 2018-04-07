@@ -1,13 +1,10 @@
-<template id="mainTask">
+<template id="taskDetail">
     <div class="main-box">
         <div class="small-nav-wrap">
             <div class="nav-box">
                 <label class="nav-title">
-                    全部电话任务
+                    电话任务<span> - {{taskTitle}}({{taskNum}}/{{taskTotal}})</span>
                 </label>
-                <div class="nav-right">
-                <label class="nav-btn" @click="taskAdd">新建任务</label>
-                </div>
             </div>
         </div>
         <div class="table-wrap">
@@ -16,18 +13,17 @@
     </div>
 </template>
 <script>
-    var mainTask = Vue.extend({
-        template: '#mainTask',
+    var taskDetail = Vue.extend({
+        template: '#taskDetail',
         data: function () {
             return {
+                taskTitle:'2月26日任务',
+                taskNum:'2',
+                taskTotal:'12'
             }
         },
         methods: {
-            taskAdd: function () {
-                console.log("123");
-                vm.$data.layers.taskAdd.show = true;
-            }
         }
     });
-    Vue.component('mainTask', mainTask);
+    Vue.component('taskDetail', taskDetail);
 </script>

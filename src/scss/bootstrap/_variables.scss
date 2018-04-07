@@ -19,7 +19,7 @@ $brand-success: #5cb85c !default;
 $brand-info: #5bc0de !default;
 $brand-warning: #f0ad4e !default;
 $brand-danger: #d9534f !default;
-
+$brand-cancle: #d4d4d4 !default;
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
@@ -167,6 +167,11 @@ $btn-warning-border: darken($btn-warning-bg, 5%) !default;
 $btn-danger-color: #fff !default;
 $btn-danger-bg: $brand-danger !default;
 $btn-danger-border: darken($btn-danger-bg, 5%) !default;
+
+$btn-cancle-color: #fff !default;
+$btn-cancle-bg: $brand-cancle !default;
+$btn-cancle-border: darken($btn-cancle-bg, 5%) !default;
+
 
 $btn-link-disabled-color: $gray-light !default;
 

@@ -10,3 +10,14 @@
   }
 }
 
+.main-box{
+  position: absolute;
+  top: 0;
+  right: 20px;
+  left: 20px;
+  bottom: 0;
+  .table-wrap{
+    left: 0;
+    right:0;
+  }
+}

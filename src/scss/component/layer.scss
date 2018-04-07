@@ -32,8 +32,8 @@
 
 .layer-detail-wrap .modal-dialog {
   position: absolute;
-  // top: $header-h;
-  top:0;
+  top: $header-h;
+  // top:0;
   right: 0;
   left:auto;
   bottom: 0;
@@ -65,29 +65,29 @@ cursor: move;
 .modal-body{
   overflow-y: auto;
 }
-.layer-leave, .layer-enter {
-  .modal-dialog {
-    // transform: translate3d(-50%, -50%, 0);
-  }
-}
+// .layer-leave, .layer-enter {
+//   .modal-dialog {
+//     // transform: translate3d(-50%, -50%, 0);
+//   }
+// }
 
-.layer-leave-active, .layer-enter-active {
-  .modal-dialog {
-    // transform: translate3d(-50%, -100%, 0);
-  }
-}
+// .layer-leave-active, .layer-enter-active {
+//   .modal-dialog {
+//     // transform: translate3d(-50%, -100%, 0);
+//   }
+// }
 
-.detail-leave, .detail-enter {
-  .modal-dialog {
-    // transform: translate3d(0, 0, 0);
-  }
-}
+// .detail-leave, .detail-enter {
+//   .modal-dialog {
+//     // transform: translate3d(0, 0, 0);
+//   }
+// }
 
-.detail-leave-active, .detail-enter-active {
-  .modal-dialog {
-    // transform: translate3d(100%, 0, 0);
-  }
-}
+// .detail-leave-active, .detail-enter-active {
+//   .modal-dialog {
+//     // transform: translate3d(100%, 0, 0);
+//   }
+// }
 
 
 
