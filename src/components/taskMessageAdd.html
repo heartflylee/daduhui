@@ -1,0 +1,87 @@
+<template id="taskAdd">
+    <div class="task-wrap">
+        <input-row :rows="rows.taskName"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                短信模板
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.message.options" v-model="rows.message.value" name="短信模板">
+                </select2>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                短信内容
+            </div>
+            <div class="m-info m-input">
+                <textarea class="textarea"  v-model="rows.messageContent.value"></textarea>
+            </div>
+        </div>
+       
+        <div class="m-row">
+            <div class="m-name">
+                数据来源
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
+                </select2>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                绑定执行人
+            </div>
+            <div class="m-info m-input">
+                <staff-select multiple="false"></staff-select>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskAdd = Vue.extend({
+        template: '#taskAdd',
+        data: function () {
+            return {
+                rows: {
+                    taskName: {
+                        name: "任务名称", value: "", input: true, required: true
+                    },
+                   message:{
+                    name: "短信模板", value: "不重复", required: true,
+                        options: [{id: "不重复", text: "不重复"}, {id: "1", text: "1"}, {id: "2", text: "2"}, {
+                            id: "3",
+                            text: "3"
+                        }, {id: "4", text: "4"}, {id: "5", text: "5"}, {id: "6", text: "6"}, {
+                            id: "7",
+                            text: "7"
+                        }, {id: "8", text: "8"}, {id: "9", text: "9"}, {id: "10", text: "10"}, {
+                            id: "11",
+                            text: "11"
+                        }, {id: "12", text: "12"}]
+                   },
+                   messageContent:{
+                    name: "短信内容", value: "", input: true
+                   },
+                    data: {
+                        name: "数据来源",
+                        value: "0",
+                        optiondefault:true,
+                        options: []
+                    },
+                }
+            }
+        },
+        methods:{
+          submit:function () {
+              console.log("新建任务提交");
+          }
+        },
+        components: {
+            'inputRow': inputRow,
+            'inputTime': inputTime,
+            'staffSelect':staffSelect
+        }
+    });
+    Vue.component('taskAdd', taskAdd);
+</script>

@@ -77,10 +77,6 @@
         </div>
     </section>
 
-        <!--通话录音-->
-        <transition name="audio">
-            <my-audio :layer="audio"></my-audio>
-        </transition>
 </div>
 
 <!--左侧导航-->
@@ -305,56 +301,6 @@
     });
     Vue.component('taskDetail', taskDetail);
 </script>
-    <!-- 语音播放 -->
-    <template id="audio">
-    <div v-if="layer.show" class="audio-wrap">
-        <div class="audio ">
-            <a class="close" @click="close">&times;</a>
-            <div class="audio-title">{{layer.name}}</div>
-            <div class="audio-company">{{layer.company}}</div>
-            <audio preload="none" v-audio :audio="layer.url"></audio>
-            <a :href="layer.url" class="audio-download">&#xe614;</a>
-        </div>
-    </div>
-</template>
-<script>
-    var audio;
-    var myAudio = Vue.extend({
-        template: '#audio',
-        props: ['layer'],
-        data: function () {
-            return {
-
-            }
-        },
-        methods:{
-          close:function(){
-              console.log('121');
-              audio.pause();
-              vm.$data.audio.show = false;
-          }
-        },
-        directives: {
-            audio: {
-                inserted:function (el) {
-                    console.log(el);
-                    console.log(this);
-                    audio = audiojs.create(el);
-                    audio.load(vm.$data.audio.url);
-                    audio.play();
-                },
-                update: function (el) {
-                    console.log(el);
-                    console.log(this);
-//                    audio = audiojs.create(el);
-                    audio.load(vm.$data.audio.url);
-                    audio.play();
-                }
-            }
-        }
-    });
-    Vue.component('myAudio', myAudio);
-</script> 
 <script src="js/scripts.js"></script>
 <script src="js/taskDetail.js"></script>
 

@@ -57,7 +57,7 @@
     <script type="text/javascript" src="js/jqx/jqxtooltip.js"></script>
     <script type="text/javascript" src="js/jqx/globalize.js"></script>
     <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
-
+ 
 </head>
 <body>
      <!-- Preloader -->
@@ -82,28 +82,8 @@
         <layer :layer="layers.taskAdd" >
             <task-add ref="taskAdd"></task-add>
         </layer>
-    </transition>
-    <transition name="layer">
-        <layer :layer="layers.stopTask" >
-            <stop-task ref=stopTask></stop-task>
-        </layer>
-    </transition>
+</transition>
 </div>
-
-<template id="stopTask">
-    <div class="layer-text-content">终止任务后将无法恢复，是否继续</div>
-</template>
-<script>
-    var stopTask = Vue.extend({
-            template:'#stopTask',
-            methods:{
-                submit:function(){
-                    console.log('终止任务');
-                }
-            }
-    });
-    Vue.component('stopTask',stopTask);
-</script>
 
 
 <template id="staffSelect">
@@ -360,7 +340,7 @@
         <div class="small-nav-wrap">
             <div class="nav-box">
                 <label class="nav-title">
-                    全部电话任务
+                    短信任务
                 </label>
                 <div class="nav-right">
                 <label class="nav-btn" @click="taskAdd">新建任务</label>
@@ -561,48 +541,24 @@
 <template id="taskAdd">
     <div class="task-wrap">
         <input-row :rows="rows.taskName"></input-row>
-        <div class="task-row">
-            <!--<input-row :rows="rows.startTime"></input-row>-->
-            <div class="m-row">
-                <div class="m-name required">
-                    开始时间
-                </div>
-                <div class="m-info m-input">
-                    <input-time :time="rows.startTime.time"></input-time>
-                    <!--<select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">-->
-                    <!--</select2>-->
-                </div>
+        <div class="m-row">
+            <div class="m-name required">
+                短信模板
             </div>
-            <div class="m-row">
-                <div class="m-name required">
-                    任务周期
-                </div>
-                <div class="m-info m-input">
-                    <select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">
-                    </select2>
-                </div>
-            </div>
-        </div>
-        <div class="task-row">
-            <input-row :rows="rows.preNumber"></input-row>
-            <div class="m-row">
-                <div class="m-name required">
-                    重复次数
-                </div>
-                <div class="m-info m-input">
-                    <select2 :options="rows.repetitions.options" v-model="rows.repetitions.value" name="重复次数">
-                    </select2>
-                </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.message.options" v-model="rows.message.value" name="短信模板">
+                </select2>
             </div>
         </div>
         <div class="m-row">
-            <div class="m-name required">
-                执行坐席
+            <div class="m-name">
+                短信内容
             </div>
             <div class="m-info m-input">
-                <staff-select multiple="false"></staff-select>
+                <textarea class="textarea"  v-model="rows.messageContent.value"></textarea>
             </div>
         </div>
+       
         <div class="m-row">
             <div class="m-name">
                 数据来源
@@ -610,9 +566,14 @@
             <div class="m-info m-input">
                 <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
                 </select2>
-                <div class="m-tip tip-row">
-                    如果不添加数据来源，坐席将通过 “企业公海” “我的客户” 等来源查找数据。
-                </div>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                绑定执行人
+            </div>
+            <div class="m-info m-input">
+                <staff-select multiple="false"></staff-select>
             </div>
         </div>
     </div>
@@ -626,20 +587,8 @@
                     taskName: {
                         name: "任务名称", value: "", input: true, required: true
                     },
-                    startTime: {
-                        name: "开始时间", value: "", input: true, required: true,time:{readonly:true,icon:"time",placeholder:"请选择开始时间",istime:false,format:"YYYY-MM-DD"}
-                    },
-                    preNumber: {
-                        name: "人均电话量", placeholder: "请输入电话数量", value: "", input: true, required: true
-                    },
-                    cycle: {
-                        name: "任务周期",
-                        value: "日",
-                        options: [{id: "日", text: "日"}, {id: "周", text: "周"}, {id: "月", text: "月"}]
-                    },
-                    repetitions: {
-                        name: "重复次数",
-                        value: "不重复",
+                   message:{
+                    name: "短信模板", value: "不重复", required: true,
                         options: [{id: "不重复", text: "不重复"}, {id: "1", text: "1"}, {id: "2", text: "2"}, {
                             id: "3",
                             text: "3"
@@ -650,7 +599,10 @@
                             id: "11",
                             text: "11"
                         }, {id: "12", text: "12"}]
-                    },
+                   },
+                   messageContent:{
+                    name: "短信内容", value: "", input: true
+                   },
                     data: {
                         name: "数据来源",
                         value: "0",
@@ -675,7 +627,7 @@
 </script>
 
 <script src="js/scripts.js"></script>
-<script src="js/task.js"></script>
+<script src="js/taskMessage.js"></script>
 
 </body>
 </html>
