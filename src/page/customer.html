@@ -35,21 +35,21 @@
 </head>
 
 <body>
-     <!-- Preloader -->
-  <div class="preloader">
+    <!-- Preloader -->
+    <div class="preloader">
         <div class="cssload-speeding-wheel"></div>
     </div>
     <div id="app">
-         <!--header-->
-     <common-head></common-head>
-     <section class="b-main">
-         <!--左侧菜单-->
-         <menu-aside menu="index"></menu-aside>
-         <div class="b-panel">
+        <!--header-->
+        <common-head></common-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="index"></menu-aside>
+            <div class="b-panel">
                 <customer-head @layer="layer"></customer-head>
                 <customer-table></customer-table>
-         </div>
-     </section>
+            </div>
+        </section>
 
         <!-- 表格内详情显示 -->
         <div class="panels" id="panels-detail"></div>
@@ -58,6 +58,13 @@
         <transition name="detail">
             <keep-alive v-if="layers.customerDetail.show">
                 <customer-detail :layer="layers.customerDetail" @layer="layer"></customer-detail>
+            </keep-alive>
+        </transition>
+
+        <!--拨打电话-->
+        <transition name="detail">
+            <keep-alive v-if="layers.callDetail.show">
+                <call-detail :layer="layers.callDetail" @layer="layer"></call-detail>
             </keep-alive>
         </transition>
 
@@ -117,6 +124,8 @@
     @@include('../components/customer-table.html')
     <!--客户详情-->
     @@include('../components/customerDetail.html')
+    <!--拨打电话-->
+    @@include('../components/callDetail.html')
     <!--弹框-->
     @@include('../components/layer.html')
     <!--工商信息（企信宝）-->
@@ -128,9 +137,9 @@
     <!--自定义表头-->
     @@include('../components/tableHead.html')
     <!-- 语音播放 -->
-    @@include('../components/audio.html') 
+    @@include('../components/audio.html')
     <!--selected-->
-    @@include('../components/select2.html') 
+    @@include('../components/select2.html')
 
     <script src="js/scripts.js"></script>
     <script src="js/customer.js"></script>

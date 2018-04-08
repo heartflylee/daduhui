@@ -8,7 +8,7 @@
 }
 
 .v-icon.icon {
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
 .table-setting {
@@ -53,16 +53,25 @@
 
 .icon-change {
   &:after {
-    content: "\e619";
+    content: '\e619';
     font-size: 25px;
     color: #999;
   }
 }
 
 .icon-delete:after {
-  content: "\e60e";
+  content: '\e60e';
   font-size: 20px;
   color: #999;
+}
+.v-icon.icon-phone {
+  display: inline-block;
+  margin-top: 8px;
+  &:after {
+    content: '\e617';
+    font-size: 20px;
+    color: #4e606e;
+  }
 }
 
 .table-nav-main {
@@ -128,25 +137,25 @@ $listicon: list-left list-right list-up list-down;
 
 .icon-list-left {
   &:after {
-    content: "\e62e";
+    content: '\e62e';
   }
 }
 
 .icon-list-right {
   &:after {
-    content: "\e62f";
+    content: '\e62f';
   }
 }
 
 .icon-list-up {
   &:after {
-    content: "\e630";
+    content: '\e630';
   }
 }
 
 .icon-list-down {
   &:after {
-    content: "\e631";
+    content: '\e631';
   }
 }
 
@@ -194,7 +203,7 @@ $listicon: list-left list-right list-up list-down;
   width: 90px;
   line-height: 40px;
   &.required:before {
-    content: "*";
+    content: '*';
     position: absolute;
     top: 14px;
     left: -20px;
@@ -221,16 +230,16 @@ $listicon: list-left list-right list-up list-down;
     select {
       width: 100%;
     }
-    textarea{
-      width:100%
+    textarea {
+      width: 100%;
     }
   }
 }
-.m-tip{
+.m-tip {
   display: inline-block;
   font-size: 12px;
-  color:#ba3440;
-  &.tip-row{
+  color: #ba3440;
+  &.tip-row {
     display: block;
     margin-top: 5px;
   }
@@ -244,7 +253,10 @@ $listicon: list-left list-right list-up list-down;
 //  padding:10px 15px;
 //  line-height: 1.5;
 //}
-$enterBtn: (qixinbao:'\e649', EnterSearch:'\e616');
+$enterBtn: (
+  qixinbao: '\e649',
+  EnterSearch: '\e616'
+);
 
 .enter-btn {
   position: absolute;
@@ -271,7 +283,7 @@ $enterBtn: (qixinbao:'\e649', EnterSearch:'\e616');
   }
   @each $icon, $content in $enterBtn {
     &.#{$icon} i:after {
-      content: "#{$content}";
+      content: '#{$content}';
     }
   }
 }
@@ -288,7 +300,7 @@ $enterBtn: (qixinbao:'\e649', EnterSearch:'\e616');
   word-wrap: break-word;
   line-height: 2;
   background: #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .audio-box {
