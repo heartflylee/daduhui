@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
+    <title>邮件任务</title>
+    <!--公共-->
+    <link type="image/x-icon" href="img/favicon.ico" rel="icon">
+
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/beAlert.css">
+<link rel="stylesheet" href="css/select2.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/jqxgrid.css">
+
+
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource@1.3.4.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/resize.js"></script>
+<script src="js/beAlert.js"></script>
+<script src="js/select2.js"></script>
+<script src="js/drag.js"></script>
+<!--<script src="js/jsDate/laydate.js"></script>-->
+<!--<script src="js/layDate/laydate.js"></script>-->
+<!---->
+
+<script src="js/audio.js"></script>
+
+<!--[if lt IE 10]>
+<script type="text/javascript" src="js/html5shiv.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script>
+<script type="text/javascript" src="js/placeholder.js"></script>
+<![endif]-->
+
+
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+
+    <!-- 日历插件 -->
+    <script type="text/javascript" src="js/jqx/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcalendar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxtooltip.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="js/kindeditor/themes/default/default.css" />
+    <link rel="stylesheet" href="js/kindeditor/plugins/code/prettify.css" />
+    <script charset="utf-8" src="js/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="js/kindeditor/lang/zh-CN.js"></script>
+    <script charset="utf-8" src="js/kindeditor/plugins/code/prettify.js"></script>
+
+
+    <script src="js/kindeditor/kindeditor-all.js"></script>
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+
+        <!--header-->
+        <common-head></common-head>
+
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="index"></menu-aside>
+            <div class="b-panel">
+                <!-- <main-left></main-left> -->
+                <main-task></main-task>
+            </div>
+        </section>
+
+        <transition name="layer">
+            <layer :layer="layers.taskAdd">
+                <task-add ref="taskAdd"></task-add>
+            </layer>
+        </transition>
+    </div>
+
+
+    <template id="staffSelect">
+    <div class="staff-select-wrap">
+        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'">
+            <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
+            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+        </select>
+        <select v-selectstaff v-else>
+            <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
+            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+        </select>
+    </div>
+</template>
+<script>
+    var staffSelect = Vue.extend({
+        template: '#staffSelect',
+        props:["multiple"],
+        data: function () {
+            return {
+                staffs: []
+            }
+        },
+        created: function () {
+            var url = "json/staffList.json";
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                console.log(json);
+                this.$data.staffs = json;
+            }, function (response) {
+                console.info(response);
+            })
+//
+        },
+        directives: {
+            selectstaff:
+                {
+                    update: function (el) {
+                        console.log(el);
+//                        $(el).select2();
+//                        selectStaff(el);
+                        staffSelect(el);
+                    }
+                }
+        }
+    });
+       Vue.component('staffSelect', staffSelect);
+</script> <template id="editor">
+    <div class="kindeditor">
+        <textarea :id="id" name="content" content="outContent"></textarea>
+    </div>
+</template>
+
+<script>
+    var editor = Vue.extend({
+        template: '#editor',
+        data: function () {
+            return {
+                outContent: this.content
+            }
+        },
+        props: {
+            content: {
+                type: String,
+                default: ''
+            },
+            id: {
+                type: String,
+                required: true
+            },
+            width: {
+                type: String
+            },
+            height: {
+                type: String
+            },
+            minWidth: {
+                type: Number,
+                default: 650
+            },
+            minHeight: {
+                type: Number,
+                default: 100
+            },
+            items: {
+                type: Array,
+                default: function () {
+                    return [
+                        'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+                        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                        'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                        'anchor', 'link', 'unlink', '|', 'about'
+                    ]
+                }
+            },
+            noDisableItems: {
+                type: Array,
+                default: function () {
+                    return ['source', 'fullscreen']
+                }
+            },
+            filterMode: {
+                type: Boolean,
+                default: true
+            },
+            htmlTags: {
+                type: Object,
+                default: function () {
+                    return {
+                        font: ['color', 'size', 'face', '.background-color'],
+                        span: ['style'],
+                        div: ['class', 'align', 'style'],
+                        table: ['class', 'border', 'cellspacing', 'cellpadding', 'width', 'height', 'align', 'style'],
+                        'td,th': ['class', 'align', 'valign', 'width', 'height', 'colspan', 'rowspan', 'bgcolor', 'style'],
+                        a: ['class', 'href', 'target', 'name', 'style'],
+                        embed: ['src', 'width', 'height', 'type', 'loop', 'autostart', 'quality',
+                            'style', 'align', 'allowscriptaccess', '/'],
+                        img: ['src', 'width', 'height', 'border', 'alt', 'title', 'align', 'style', '/'],
+                        hr: ['class', '/'],
+                        br: ['/'],
+                        'p,ol,ul,li,blockquote,h1,h2,h3,h4,h5,h6': ['align', 'style'],
+                        'tbody,tr,strong,b,sub,sup,em,i,u,strike': []
+                    }
+                }
+            },
+            wellFormatMode: {
+                type: Boolean,
+                default: true
+            },
+            resizeType: {
+                type: Number,
+                default: 2
+            },
+            themeType: {
+                type: String,
+                default: 'default'
+            },
+            langType: {
+                type: String,
+                default: 'zh-CN'
+            },
+            designMode: {
+                type: Boolean,
+                default: true
+            },
+            fullscreenMode: {
+                type: Boolean,
+                default: false
+            },
+            basePath: {
+                type: String
+            },
+            themesPath: {
+                type: String
+            },
+            pluginsPath: {
+                type: String,
+                default: ''
+            },
+            langPath: {
+                type: String
+            },
+            minChangeSize: {
+                type: Number,
+                default: 5
+            },
+            loadStyleMode: {
+                type: Boolean,
+                default: true
+            },
+            urlType: {
+                type: String,
+                default: ''
+            },
+            newlineTag: {
+                type: String,
+                default: 'p'
+            },
+            pasteType: {
+                type: Number,
+                default: 2
+            },
+            dialogAlignType: {
+                type: String,
+                default: 'page'
+            },
+            shadowMode: {
+                type: Boolean,
+                default: true
+            },
+            zIndex: {
+                type: Number,
+                default: 811213
+            },
+            useContextmenu: {
+                type: Boolean,
+                default: true
+            },
+            syncType: {
+                type: String,
+                default: 'form'
+            },
+            indentChar: {
+                type: String,
+                default: '\t'
+            },
+            cssPath: {
+                type: [String, Array]
+            },
+            cssData: {
+                type: String
+            },
+            bodyClass: {
+                type: String,
+                default: 'ke-content'
+            },
+            colorTable: {
+                type: Array
+            },
+            afterCreate: {
+                type: Function
+            },
+            afterChange: {
+                type: Function
+            },
+            afterTab: {
+                type: Function
+            },
+            afterFocus: {
+                type: Function
+            },
+            afterBlur: {
+                type: Function
+            },
+            afterUpload: {
+                type: Function
+            },
+            uploadJson: {
+                type: String
+            },
+            fileManagerJson: {
+                type: Function
+            },
+            allowPreviewEmoticons: {
+                type: Boolean,
+                default: true
+            },
+            allowImageUpload: {
+                type: Boolean,
+                default: true
+            },
+            allowFlashUpload: {
+                type: Boolean,
+                default: true
+            },
+            allowMediaUpload: {
+                type: Boolean,
+                default: true
+            },
+            allowFileUpload: {
+                type: Boolean,
+                default: true
+            },
+            allowFileManager: {
+                type: Boolean,
+                default: false
+            },
+            fontSizeTable: {
+                type: Array,
+                default: function () {
+                    return ['9px', '10px', '12px', '14px', '16px', '18px', '24px', '32px']
+                }
+            },
+            imageTabIndex: {
+                type: Number,
+                default: 0
+            },
+            formatUploadUrl: {
+                type: Boolean,
+                default: true
+            },
+            fullscreenShortcut: {
+                type: Boolean,
+                default: false
+            },
+            extraFileUploadParams: {
+                type: Array,
+                default: function () {
+                    return []
+                }
+            },
+            filePostName: {
+                type: String,
+                default: 'imgFile'
+            },
+            fillDescAfterUploadImage: {
+                type: Boolean,
+                default: false
+            },
+            afterSelectFile: {
+                type: Function
+            },
+            pagebreakHtml: {
+                type: String,
+                default: '<hr style=”page-break-after: always;” class=”ke-pagebreak” />'
+            },
+            allowImageRemote: {
+                type: Boolean,
+                default: true
+            },
+            autoHeightMode: {
+                type: Boolean,
+                default: false
+            },
+            fixToolBar: {
+                type: Boolean,
+                default: false
+            },
+            tabIndex: {
+                type: Number
+            }
+        },
+        watch: {
+            content: function (val) {
+                this.outContent = val
+            },
+            outContent: function (val) {
+                this.$emit('on-content-change', val)
+            }
+        },
+        mounted: function () {
+            var _this = this
+            window.editor = window.KindEditor.create('#' + this.id, {
+                width: _this.width,
+                height: _this.height,
+                minWidth: _this.minWidth,
+                minHeight: _this.minHeight,
+                items: _this.items,
+                noDisableItems: _this.noDisableItems,
+                filterMode: _this.filterMode,
+                htmlTags: _this.htmlTags,
+                wellFormatMode: _this.wellFormatMode,
+                resizeType: _this.resizeType,
+                themeType: _this.themeType,
+                langType: _this.langType,
+                designMode: _this.designMode,
+                fullscreenMode: _this.fullscreenMode,
+                basePath: _this.basePath,
+                themesPath: _this.cssPath,
+                pluginsPath: _this.pluginsPath,
+                langPath: _this.langPath,
+                minChangeSize: _this.minChangeSize,
+                loadStyleMode: _this.loadStyleMode,
+                urlType: _this.urlType,
+                newlineTag: _this.newlineTag,
+                pasteType: _this.pasteType,
+                dialogAlignType: _this.dialogAlignType,
+                shadowMode: _this.shadowMode,
+                zIndex: _this.zIndex,
+                useContextmenu: _this.useContextmenu,
+                syncType: _this.syncType,
+                indentChar: _this.indentChar,
+                cssPath: _this.cssPath,
+                cssData: _this.cssData,
+                bodyClass: _this.bodyClass,
+                colorTable: _this.colorTable,
+                afterCreate: _this.afterCreate,
+                afterChange: function () {
+                    _this.afterChange
+                    _this.outContent = this.html()
+                },
+                afterTab: _this.afterTab,
+                afterFocus: _this.afterFocus,
+                afterBlur: _this.afterBlur,
+                afterUpload: _this.afterUpload,
+                uploadJson: _this.uploadJson,
+                fileManagerJson: _this.fileManagerJson,
+                allowPreviewEmoticons: _this.allowPreviewEmoticons,
+                allowImageUpload: _this.allowImageUpload,
+                allowFlashUpload: _this.allowFlashUpload,
+                allowMediaUpload: _this.allowMediaUpload,
+                allowFileUpload: _this.allowFileUpload,
+                allowFileManager: _this.allowFileManager,
+                fontSizeTable: _this.fontSizeTable,
+                imageTabIndex: _this.imageTabIndex,
+                formatUploadUrl: _this.formatUploadUrl,
+                fullscreenShortcut: _this.fullscreenShortcut,
+                extraFileUploadParams: _this.extraFileUploadParams,
+                filePostName: _this.filePostName,
+                fillDescAfterUploadImage: _this.fillDescAfterUploadImage,
+                afterSelectFile: _this.afterSelectFile,
+                pagebreakHtml: _this.pagebreakHtml,
+                allowImageRemote: _this.allowImageRemote,
+                autoHeightMode: _this.autoHeightMode,
+                fixToolBar: _this.fixToolBar,
+                tabIndex: _this.tabIndex
+            })
+        }
+    });
+    Vue.component('editor', editor);
+</script>
+    <!--左侧导航-->
+    <template id="aside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <menu-content :content="index" index="1"></menu-content>
+                <menu-content :content="customer" index="2"></menu-content>
+                <menu-content :content="task" index="3"></menu-content>
+            </ul>
+        </div>
+    </aside>
+</template>
+<script>
+    var menuContent = Vue.extend({
+        template: '<li class="m-nav menu-list" :class=" \'nav-left\' + index" v-if="content.subShow">\n' +
+            '    <a class="nav-info" href="javascript:void(0)">\n' +
+            '        <i class="icon m-icon" :class="content.icon" ></i>\n' +
+            '        <label>{{content.title}}</label>\n' +
+            '        <i v-if="content.sub.length>0" class="icon-sign"></i>\n' +
+            '    </a>\n' +
+            '    <ul class="m-second-list child-list" v-if="content.sub.length>0" >\n' +
+            '        <li class="m-second" v-for="sub in content.sub">\n' +
+            '            <a :href="sub.href">\n' +
+            '                <i></i>\n' +
+            '                <label>{{sub.title}}</label>\n' +
+            '            </a>\n' +
+            '        </li>\n' +
+            '    </ul>\n' +
+            '</li>' +
+            '<li class="m-nav " v-else>\n' +
+            '    <a class=\'nav-info\' :href="content.href">\n' +
+            '        <i class="icon m-icon" :class="content.icon"></i>\n' +
+            '        <label>{{content.title}}</label>\n' +
+            '        <i class="icon-sign"></i>\n' +
+            '    </a>\n' +
+            '</li>',
+        props: ['content', 'index']
+    });
+
+    var aside = Vue.extend({
+        template: '#aside',
+        data: function () {
+            return {
+                index: {
+                    title: "首页",
+                    icon: "icon-m1",
+                    subShow: true,
+                    active: "",
+                    sub: []
+                },
+                customer: {
+                    title: "客户",
+                    icon: "icon-m2",
+                    subShow: true,
+                    active: "",
+                    sub: [
+                        {
+                            title: "客户列表",
+                            href: "customer.html"
+                        },
+                        {
+                            title: "企业公海",
+                            href: "contact.html"
+                        }
+                    ]
+                },
+                task: {
+                    title: "任务",
+                    icon: "icon-m3",
+                    href: "",
+                    subShow: true,
+                    active: "",
+                    sub: [{
+                        title: "电话任务",
+                        href: "task.html"
+                    }, {
+                        title: "短信任务",
+                        href: "taskMessage.html"
+                    }, {
+                        title: "邮件任务",
+                        href: "taskEmail.html"
+                    }]
+                }
+            }
+        },
+        methods: {
+            // menu: function () {
+            //     $("body").toggleClass('side-open');
+            //     tableResize();
+            // }
+        },
+        components: {
+            'menuContent': menuContent
+        }
+    });
+    Vue.component('menuAside', aside);
+</script>
+    <!--顶部-->
+    <template id="head">
+    <header class="b-header">
+        <div class="h-right">
+            <div class="h-search">
+                <form @submit.prevent="Hsearch">
+                    <div class="search-input-box">
+                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息"/>
+                    </div>
+                    <div class="search-btn-box">
+                        <input type="submit" value="&#xe616" class="search-btn"/>
+                    </div>
+                </form>
+            </div>
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-href" href="#">
+                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left"
+                           title="在线客服"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href info-number" href="javascript:void(0);">
+                        <i class="nav-icon nav-news" data-toggle="tooltip" data-placement="auto left" title="消息"></i>
+                        <span class="badge bg-danger">555</span>
+                    </a>
+                </div>
+                <div class="nav-li dropdown">
+                    <a class="nav-href" href="javascript:void(0);" data-toggle="dropdown">
+                        <i class="nav-icon nav-help" data-toggle="tooltip" data-placement="auto left" title="帮助"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-box">
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-new"></i>
+                            <label>新手引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-help"></i>
+                            <label>帮助中心</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-video"></i>
+                            <label>视频引导</label>
+                        </a>
+                        <a class="dropli" href="javascript:void(0);">
+                            <i class="drop-icon drop-return"></i>
+                            <label>意见反馈</label>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-setup" data-toggle="tooltip" data-placement="auto left" title="设置"></i>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout" data-toggle="tooltip" data-placement="auto left" title="退出登录"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var head = Vue.extend({
+        template: '#head',
+        data: function () {
+            return {
+                search: "",
+                user:{
+                    company:"北京蜜宝世纪科技有限公司",
+                    headImg:"img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+                if (this.search.trim() == "") {
+                    alert("", "搜索内容不能为空");
+                    return false;
+                }
+                window.location.href = "customer.html";
+            }
+        }
+    });
+    Vue.component('commonHead', head);
+</script> <template id="mainTask">
+    <div class="main-box">
+        <div class="small-nav-wrap">
+            <div class="nav-box">
+                <label class="nav-title">
+                    邮件任务
+                </label>
+                <div class="nav-right">
+                    <label class="nav-btn" @click="taskAdd">新建任务</label>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="jqxtable task" id="jqxtable"></div>
+        </div>
+    </div>
+</template>
+<script>
+    var mainTask = Vue.extend({
+        template: '#mainTask',
+        data: function () {
+            return {
+            }
+        },
+        methods: {
+            taskAdd: function () {
+                console.log("123");
+                vm.$data.layers.taskAdd.show = true;
+            }
+        }
+    });
+    Vue.component('mainTask', mainTask);
+</script> <template id="inputRow">
+    <div class="m-row">
+        <div class="m-name " :class="{required:rows.required}">
+            {{rows.name}}
+        </div>
+        <div class="m-info m-input" v-if="rows.input">
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"/>
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon"><i></i>{{rows.text}}</div>
+        </div>
+        <div class="m-info" v-else>
+            {{rows.value}}
+        </div>
+    </div>
+</template>
+<script>
+    var inputRow = Vue.extend({
+        template: '#inputRow',
+        props: ['rows']
+    });
+//    Vue.component('inputRow',inputRow);
+</script>
+    <template id="inputTime">
+    <div class="input-time">
+        <div class="input" v-time="date"></div>
+        <input type="hidden" v-model="date">
+        <!--<input type="text" class="input" :readonly="time.readonly"-->
+               <!--:placeholder="time.placeholder != undefined ? time.placeholder :''" />-->
+        <!--<i class="icon icon-time"></i>-->
+    </div>
+</template>
+<script>
+    var inputTime = Vue.extend({
+        template: '#inputTime',
+        props: ['time'],
+        data:function () {
+            return{
+                date:''
+            }
+        },
+        directives: {
+            time: {
+                inserted: function (el,date) {
+                    $(el).jqxDateTimeInput({
+                        width: '100%',
+                        height: '40px',
+                        culture: 'ch-CN',
+                        formatString: 'yyyy-MM-dd',
+                        min: new Date(new Date() - 24 * 60 * 60 * 1000)
+                    });
+                    $(el).on('valueChanged', function (event) {
+                        date.value = event.args.date.Format('yyyy-MM-dd');
+                    });
+                }
+            }
+        }
+    });
+</script> <template id="select2-template">
+    <select>
+        <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
+        <slot></slot>
+    </select>
+</template>
+
+<script>
+    Vue.component('select2', {
+        props: ['options', 'value','name','optiondefault'],
+        template: '#select2-template',
+        mounted: function () {
+            var vm = this
+            $(this.$el)
+            // init select2
+                .select2({ data: this.options })
+                .val(this.value)
+                .trigger('change')
+                // emit event on change.
+                .on('change', function () {
+                    vm.$emit('input', this.value)
+                })
+        },
+        watch: {
+            value: function (value) {
+                // update value
+                $(this.$el).val(value).trigger('change');
+            },
+            options: function (options) {
+                console.log(options);
+                // update options
+                $(this.$el).select2({ data: options })
+            }
+        },
+        destroyed: function () {
+            $(this.$el).off().select2('destroy')
+        }
+    })
+
+</script> <template id="layer">
+    <div class="modal" v-if="layer.show">
+        <div class="layer-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="submit" autocomplete="off">
+                    <div class="modal-header layer-head">
+                        <button type="button" class="close" @click="close">&times;</button>
+                        <h4 class="modal-title">{{layer.title}}</h4>
+                    </div>
+                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
+                        <slot></slot>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click="close">关闭</button>
+                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var layer = Vue.extend({
+        template: '#layer',
+        props: ['layer'],
+        data: function () {
+            return {
+                maxHeight: document.body.clientHeight - 200
+            }
+        },
+        methods: {
+            close: function (layer) {
+                console.log(this.$props);
+                this.$props.layer.show = false;
+                return false;
+            },
+            submit: function () {
+                console.log("彈框提交");
+                console.log(vm.$refs[this.$props.layer.layerName]);
+                vm.$refs[this.$props.layer.layerName].submit();
+                return false;
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            window.onresize = function () {
+                _self.maxHeight = document.body.clientHeight - 200;
+            }
+        },
+        watch: {
+            maxHeight: function (val) {
+                var modalBody = document.getElementsByClassName('modal-body');
+                for (var i = 0; i < modalBody.length; i++) {
+                    modalBody[i].style.maxHeight = val + 'px';
+                }
+            }
+        },
+        updated: function () {
+            var modalDialog = $(this.$el).find(".modal-dialog")[0];
+            $(modalDialog).css({
+                top: ($("body").height() - $(modalDialog).height()) / 2,
+                left: ($("body").width() - $(modalDialog).width()) / 2
+            });
+            $(modalDialog).bg_move({
+                    move: '.modal-header',
+                    closed: '.close'
+                });
+        }
+    });
+
+    Vue.component('layer', layer);
+</script>
+    <template id="taskAdd">
+    <div class="task-wrap">
+        <input-row :rows="rows.taskName"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                邮件模板
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.email.options" v-model="rows.email.value" name="短信模板">
+                </select2>
+            </div>
+        </div>
+        <input-row :rows="rows.emailTitle"></input-row>
+
+        <div class="m-row">
+            <div class="m-name required">
+                邮件内容
+            </div>
+            <div class="m-info m-input">
+                <!-- <textarea id="emailContent"></textarea> -->
+                <editor id="editor_id" height="500px" width="100%" :content="rows.emailContent.value" :afterChange="afterChange()" pluginsPath="js/kindeditor/plugins/"
+                    :loadStyleMode="false" @on-content-change="onContentChange"></editor>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                数据来源
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
+                </select2>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskAdd = Vue.extend({
+        template: '#taskAdd',
+        data: function () {
+            return {
+                rows: {
+                    taskName: {
+                        name: "任务名称", value: "", input: true, required: true
+                    },
+                    email: {
+                        name: "邮件模板", value: "不重复", required: true,
+                        options: [{ id: "不重复", text: "不重复" }, { id: "1", text: "1" }, { id: "2", text: "2" }, {
+                            id: "3",
+                            text: "3"
+                        }, { id: "4", text: "4" }, { id: "5", text: "5" }, { id: "6", text: "6" }, {
+                            id: "7",
+                            text: "7"
+                        }, { id: "8", text: "8" }, { id: "9", text: "9" }, { id: "10", text: "10" }, {
+                            id: "11",
+                            text: "11"
+                        }, { id: "12", text: "12" }]
+                    },
+
+                    emailTitle: {
+                        name: "邮件标题", value: "", input: true, required: true
+                    },
+                    emailContent: {
+                        name: "邮件内容", value: "", input: true, required: true
+                    },
+                    data: {
+                        name: "数据来源",
+                        value: "0",
+                        optiondefault: true, required: true,
+                        options: []
+                    },
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("新建任务提交");
+            },
+            onContentChange: function (val) {
+                this.$data.rows.emailContent.value = val;
+                console.log(this.$data.rows.emailContent.value);
+            },
+            afterChange: function () {
+            }
+        },
+        components: {
+            'inputRow': inputRow,
+            'inputTime': inputTime,
+            // 'editor':editor
+        }
+    });
+    Vue.component('taskAdd', taskAdd);
+</script>
+
+    <script src="js/scripts.js"></script>
+    <script src="js/taskEmail.js"></script>
+
+</body>
+
+</html>

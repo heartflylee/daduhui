@@ -1,0 +1,30 @@
+<template id="taskDetail">
+    <div class="main-box">
+        <div class="small-nav-wrap">
+            <div class="nav-box">
+                <label class="nav-title">
+                    短信任务
+                    <span> - {{taskTitle}}({{taskNum}}/{{taskTotal}})</span>
+                </label>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="jqxtable task" id="jqxtable"></div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskDetail = Vue.extend({
+        template: '#taskDetail',
+        data: function () {
+            return {
+                taskTitle: '2月26日任务',
+                taskNum: '2',
+                taskTotal: '12'
+            }
+        },
+        methods: {
+        }
+    });
+    Vue.component('taskDetail', taskDetail);
+</script>

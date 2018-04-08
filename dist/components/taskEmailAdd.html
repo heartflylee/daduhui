@@ -1,0 +1,92 @@
+<template id="taskAdd">
+    <div class="task-wrap">
+        <input-row :rows="rows.taskName"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                邮件模板
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.email.options" v-model="rows.email.value" name="短信模板">
+                </select2>
+            </div>
+        </div>
+        <input-row :rows="rows.emailTitle"></input-row>
+
+        <div class="m-row">
+            <div class="m-name required">
+                邮件内容
+            </div>
+            <div class="m-info m-input">
+                <!-- <textarea id="emailContent"></textarea> -->
+                <editor id="editor_id" height="500px" width="100%" :content="rows.emailContent.value" :afterChange="afterChange()" pluginsPath="js/kindeditor/plugins/"
+                    :loadStyleMode="false" @on-content-change="onContentChange"></editor>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                数据来源
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
+                </select2>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskAdd = Vue.extend({
+        template: '#taskAdd',
+        data: function () {
+            return {
+                rows: {
+                    taskName: {
+                        name: "任务名称", value: "", input: true, required: true
+                    },
+                    email: {
+                        name: "邮件模板", value: "不重复", required: true,
+                        options: [{ id: "不重复", text: "不重复" }, { id: "1", text: "1" }, { id: "2", text: "2" }, {
+                            id: "3",
+                            text: "3"
+                        }, { id: "4", text: "4" }, { id: "5", text: "5" }, { id: "6", text: "6" }, {
+                            id: "7",
+                            text: "7"
+                        }, { id: "8", text: "8" }, { id: "9", text: "9" }, { id: "10", text: "10" }, {
+                            id: "11",
+                            text: "11"
+                        }, { id: "12", text: "12" }]
+                    },
+
+                    emailTitle: {
+                        name: "邮件标题", value: "", input: true, required: true
+                    },
+                    emailContent: {
+                        name: "邮件内容", value: "", input: true, required: true
+                    },
+                    data: {
+                        name: "数据来源",
+                        value: "0",
+                        optiondefault: true, required: true,
+                        options: []
+                    },
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("新建任务提交");
+            },
+            onContentChange: function (val) {
+                this.$data.rows.emailContent.value = val;
+                console.log(this.$data.rows.emailContent.value);
+            },
+            afterChange: function () {
+            }
+        },
+        components: {
+            'inputRow': inputRow,
+            'inputTime': inputTime,
+            // 'editor':editor
+        }
+    });
+    Vue.component('taskAdd', taskAdd);
+</script>
