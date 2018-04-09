@@ -3,28 +3,30 @@
         <div class="layer-bg"></div>
         <div class="modal-dialog" @click="modifyDefault($event)">
             <div class="layer-detail">
-                <div class="detail-h">
+                <!-- <div class="detail-h ">
                     <div class="detail-title">
                         <div class="detail-h-r">
-                            <div class="h-r-box">
-                                <div class="h-r-li">
-                                    <div class="h-r-btn" @click="customerAdd">
-                                        <i class="h-r-icon icon-add icon"></i>
-                                        <label class="h-r-main">新建客户</label>
-                                    </div>
-                                </div>
+
+                        </div>
+                    </div>
+                </div> -->
+                <div class="detail-main call-detail-main">
+                    <div class="h-r-box detail-top-Btn">
+                        <div class="h-r-li">
+                            <div class="h-r-btn " @click="customerAdd">
+                                <i class="h-r-icon icon-add icon"></i>
+                                <label class="h-r-main">新建客户</label>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="detail-main call-detail-main">
+
                     <div class="detail-left">
                         <div class="tags">
                             <div class="tags-li active">
-                                <a href="javascript:void(0)">呼出电话</a>
+                                <a href="javascript:void(0)" @click="tagChange($event)">呼出电话</a>
                             </div>
                             <div class="tags-li">
-                                <a href="javascript:void(0)">电话标记</a>
+                                <a href="javascript:void(0)" @click="tagChange($event)">电话标记</a>
                             </div>
                         </div>
                         <div class="tags-main">
@@ -36,7 +38,17 @@
                                     <div class="message-content">
                                         <detail-message :message="messages.remark" name="remark" row="true"></detail-message>
                                         <detail-message :message="messages.fllowPerson" name="fllowPerson"></detail-message>
-                                        <detail-message :message="messages.createdTime" name="createdTime"></detail-message>
+                                        <!-- <detail-message :message="messages.createdTime" name="createdTime"></detail-message> -->
+                                        <div class="message-li">
+                                            <div class="message-name">
+                                                创建时间
+                                            </div>
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    {{messages.createdTime.value}}
+                                                </div>
+                                            </div>
+                                        </div>
                                         <detail-message :message="messages.progress" name="progress"></detail-message>
 
                                     </div>
@@ -77,20 +89,109 @@
                                         <detail-message :message="messages.dataSources" name="dataSources"></detail-message>
                                     </div>
                                 </div>
-                                <div class="call-bottom-box">
-                                    通话中：0'33"
-                                    <button class="btn btn-primary">挂断电话</button>
-                                </div>
+
                             </div>
                             <div class="tags-con-li">
-                                <div>
-
+                                <div class="call-main">
+                                    <div class="message-li message-row bor-b-dashed message-noHover">
+                                        <div class="message-name required">
+                                            销售进度
+                                        </div>
+                                        <div class="message-main">
+                                            <div class="progress-tag" v-for="item in progress" @click="setProgress(item)" :class="item == callSubmit.progress?'active':''">{{item}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-li message-row message-noHover">
+                                        <div class="message-name required">
+                                            沟通意向
+                                        </div>
+                                        <div class="message-main">
+                                            <div class="tag-main">
+                                                <div class="tag-main-name">
+                                                    有意向
+                                                </div>
+                                                <div class="tag-radius-box">
+                                                    <div class="tag-radius" v-for="item in calltips.intentions" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="tag-main">
+                                                <div class="tag-main-name">
+                                                    无意向
+                                                </div>
+                                                <div class="tag-radius-box">
+                                                    <div class="tag-radius" v-for="item in calltips.noIntentions" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="tag-main">
+                                                <div class="tag-main-name">
+                                                    资料错误
+                                                </div>
+                                                <div class="tag-radius-box">
+                                                    <div class="tag-radius" v-for="item in calltips.dataErrors" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="tag-main">
+                                                <div class="tag-main-name">
+                                                    二次外呼
+                                                </div>
+                                                <div class="tag-radius-box">
+                                                    <div class="tag-radius" v-for="item in calltips.twiceCalls" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <detail-message :message="messages.remark" name="remark" row="true"></detail-message>
                                 </div>
-                                <div class="call-bottom-box">
-                                    通话总时长：01'33"
-                                    <button class="btn btn-primary">提交电话结果</button>
+                                <div class="message-box">
+                                    <div class="message-t">
+                                        发送挂机短信
+                                    </div>
+                                    <div class="message-content">
+                                        <detail-message :message="callMessage.modal" name="callMessage" row="true"></detail-message>
+                                        <div class="message-li message-row">
+                                            <div class="message-name">
+                                                短信内容
+                                            </div>
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    {{callMessage.content.value}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary">发送</button>
+                                    </div>
+                                </div>
+                                <div class="message-box">
+                                    <div class="message-t">
+                                        发送挂机邮件
+                                    </div>
+                                    <div class="message-content">
+                                        <detail-message :message="callEmail.modal" name="callEmail" row="true"></detail-message>
+                                        <detail-message :message="callEmail.title" name="callEmailTitle" row="true"></detail-message>
+
+                                        <div class="message-li message-row">
+                                            <div class="message-name">
+                                                邮件内容
+                                            </div>
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    <editor id="editor_id" height="200px" width="100%" :content="callEmail.content.value" :afterChange="afterChange()" pluginsPath="js/kindeditor/plugins/"
+                                                        :loadStyleMode="false" @on-content-change="onContentChange"></editor>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary">发送</button>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="call-bottom-box" v-if="callStatus">
+                            通话中：0'33"
+                            <button class="btn btn-primary" @click="stopCall">挂断电话</button>
+                        </div>
+                        <div class="call-bottom-box" v-if="!callStatus">
+                            通话总时长：01'33"
+                            <button class="btn btn-primary" @click="submitCall">提交电话结果</button>
                         </div>
                     </div>
                 </div>
@@ -151,7 +252,7 @@
         props: ['layer'],
         data: function () {
             return {
-
+                callStatus: true,
                 messages: {
                     customerId: "",
                     remark: { name: "客户备注", value: "", type: "input" },
@@ -172,6 +273,38 @@
                     dataSources: { name: "数据来源", value: "" },
                 },
                 detailLineList: [],
+
+                progress: ['无需求', '初步沟通', '确认需求', '报价', '面谈', '成单', '输单'],
+                calltips: {
+                    intentions: ['有意向', '有意向1'],
+                    noIntentions: ['无意向', '无意向1'],
+                    dataErrors: ['资料错误', '资料错误1'],
+                    twiceCalls: ['二次外呼', '二次外呼1'],
+                },
+                callSubmit: {
+                    calltips: '',
+                    progress: ''
+                },
+                callMessage: {
+                    modal: {
+                        name: '短信模板', value: '选择模板', type: 'select', options: '选择模板,'
+                    },
+                    content: {
+                        name: '短信内容', value: '', type: 'input'
+                    }
+                },
+                callEmail: {
+                    modal: {
+                        name: '邮件模板', value: '选择模板', type: 'select', options: '选择模板,'
+                    },
+                    content: {
+                        name: '邮件内容', value: '', type: 'input'
+                    },
+                    title: {
+                        name: '邮件标题', value: '', type: 'input'
+                    }
+                }
+
             }
         },
         methods: {
@@ -183,6 +316,7 @@
             //     console.log('客户详情工商信息（企信宝）');
             //     this.$emit('layer', 'business');
             // },
+            //新建客户
             customerAdd: function () {
                 this.$emit('layer', 'customerAdd');
             },
@@ -200,6 +334,37 @@
                         $(this).MessageEditor({ editor: false, callback: 'changed(data)' }, this)
                     })
                 }
+            },
+            //设置沟通结果
+            setProgress: function (val) {
+                this.$data.callSubmit.progress = val;
+            },
+            //设置电话标签
+            setcalltips: function (val) {
+                this.$data.callSubmit.calltips = val;
+            },
+            //挂断电话按钮
+            stopCall: function () {
+                this.$data.callStatus = false;
+                $('.call-detail-main .tags-li,.call-detail-main .tags-con-li').removeClass("active");
+                $('.call-detail-main .tags-li:eq(1),.call-detail-main .tags-con-li:eq(1)').addClass("active");
+            },
+            //判断是否客户切换
+            tagChange: function (event) {
+                if (this.$data.callStatus == true) {
+                    return false;
+                }
+                tags(event.target);
+            },
+            //提交电话结果
+            submitCall: function () {
+                this.close();
+            },
+            onContentChange: function (val) {
+                this.$data.callEmail.content.value = val;
+                console.log(this.$data.callEmail.content.value);
+            },
+            afterChange: function () {
             }
         },
         components: {
@@ -207,7 +372,7 @@
             "detailMessage": detailMessage,
         },
         activated: function () {
-
+            //组件激活调用，初始绑定数据
 
         }
     });

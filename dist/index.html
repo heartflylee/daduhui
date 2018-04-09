@@ -441,18 +441,17 @@
             <div class="h-search">
                 <form @submit.prevent="Hsearch">
                     <div class="search-input-box">
-                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息"/>
+                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息" />
                     </div>
                     <div class="search-btn-box">
-                        <input type="submit" value="&#xe616" class="search-btn"/>
+                        <input type="submit" value="&#xe616" class="search-btn" />
                     </div>
                 </form>
             </div>
             <div class="h-nav-box">
                 <div class="nav-li">
                     <a class="nav-href" href="#">
-                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left"
-                           title="在线客服"></i>
+                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left" title="在线客服"></i>
                     </a>
                 </div>
                 <div class="nav-li">
@@ -485,7 +484,7 @@
                     </div>
                 </div>
                 <div class="nav-li">
-                    <a class="nav-href" href="javascript:void(0);">
+                    <a class="nav-href" href="setupDepartment.html">
                         <i class="nav-icon nav-setup" data-toggle="tooltip" data-placement="auto left" title="设置"></i>
                     </a>
                 </div>
@@ -510,9 +509,9 @@
         data: function () {
             return {
                 search: "",
-                user:{
-                    company:"北京蜜宝世纪科技有限公司",
-                    headImg:"img/head.png"
+                user: {
+                    company: "北京蜜宝世纪科技有限公司",
+                    headImg: "img/head.png"
                 }
             }
         },

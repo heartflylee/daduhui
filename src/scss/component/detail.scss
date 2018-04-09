@@ -247,21 +247,22 @@ a.h-d-li,
     top: 41px;
     left: 0;
     right: 0;
+    bottom: 50px;
   }
 }
 
 .tags-con-li {
   display: none;
   position: relative;
-  .call-detail-main & {
-    padding-bottom: 50px;
-  }
+  // .call-detail-main & {
+  //   padding-bottom: 50px;
+  // }
   &.active {
     display: block;
   }
 }
 .call-bottom-box {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 10px;
@@ -548,7 +549,6 @@ a.line-href {
 .message-box {
   @include clearfix;
   padding: 15px;
-  line-height: 28px;
   border-top: 1px dashed $borderC;
   &:first-child {
     border-top: none;
@@ -567,12 +567,20 @@ a.line-href {
   float: left;
   padding: 2px 10px;
   margin: 12px 0;
+  line-height: 28px;
   &:hover {
     background: #f5f5f5;
+    // .call-main & {
+    //   background: transparent;
+    // }
   }
   &.message-row {
     width: 100%;
   }
+  &.message-noHover:hover {
+    background: transparent;
+  }
+
   input,
   select,
   textarea {
@@ -594,6 +602,10 @@ a.line-href {
     //  background-color: #fff;
     //  color: #383838;
     //}
+  }
+  select {
+    height: 26px;
+    line-height: 26px;
   }
 }
 
@@ -626,8 +638,27 @@ a.line-href {
 .message-name {
   float: left;
   width: 100px;
+  color: #999;
+  &.message-noHover {
+    line-height: 32px;
+    position: relative;
+    &.required:before {
+      content: '*';
+      position: absolute;
+      top: 10px;
+      left: 0px;
+      color: #d43131;
+      line-height: 1;
+      font-size: 200%;
+    }
+  }
+  .call-main & {
+    padding-left: 15px;
+  }
 }
-
+.call-main {
+  @include clearfix;
+}
 .message-main {
   margin-left: 100px;
   font-size: 14px;
@@ -667,4 +698,51 @@ a.line-href {
     top: 5px;
     left: 0;
   }
+}
+
+.progress-tag,
+.tag-radius {
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  padding: 0 5px;
+  min-width: 90px;
+  line-height: 32px;
+  // background-color: #ffffff;
+  border: solid 1px #efefef;
+  text-align: center;
+  box-sizing: border-box;
+  color: #4e606e;
+  &.active,
+  &:hover {
+    background: #4e606e;
+    color: #fff;
+  }
+}
+.detail-top-Btn {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  z-index: 999;
+}
+.bor-b-dashed {
+  border-bottom: 1px dashed #efefee;
+}
+
+//borer-radius
+.tag-radius-box {
+  min-height: 44px;
+}
+.tag-radius {
+  border-radius: 16px;
+}
+.tag-main-name {
+  float: left;
+  width: 90px;
+  font-weight: bold;
+  color: #383838;
+  line-height: 32px;
+}
+.tag-radius-box {
+  margin-left: 95px;
 }

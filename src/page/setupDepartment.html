@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>部门设置</title>
+    <!--公共-->
+    @@include("../component/common.html",{"style":"normal"})
+    <!--表格-->
+
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
+
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
+
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+        <!--header-->
+        <setup-head></setup-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="index"></menu-aside>
+            <div class="b-panel">
+                <customer-head @layer="layer"></customer-head>
+                <customer-table></customer-table>
+            </div>
+        </section>
+
+
+    </div>
+
+    @@include('../components/inputRow.html')
+    <!--左侧导航-->
+    @@include('../components/aside.html')
+    <!--顶部-->
+    @@include('../components/setupHead.html')
+    <!--弹框-->
+    @@include('../components/layer.html') @@include('../components/autocomplete.html')
+    <!--selected-->
+    @@include('../components/select2.html')
+
+    <script src="js/scripts.js"></script>
+    <script src="js/setupDepartment.js"></script>
+
+</body>
+
+</html>

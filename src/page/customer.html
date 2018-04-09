@@ -32,6 +32,16 @@
     <script src="js/jqx/globalize.js"></script>
 
     <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="js/kindeditor/themes/default/default.css" />
+    <link rel="stylesheet" href="js/kindeditor/plugins/code/prettify.css" />
+    <script charset="utf-8" src="js/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="js/kindeditor/lang/zh-CN.js"></script>
+    <script charset="utf-8" src="js/kindeditor/plugins/code/prettify.js"></script>
+
+
+    <script src="js/kindeditor/kindeditor-all.js"></script>
 </head>
 
 <body>
@@ -112,7 +122,13 @@
     <!--include('../component/layer/layer.html',{"layer":"business","layerTitle":"工商信息","layerFrame":"../qixin/qixin.html","submit":"false","submitBtn":"","close":"false","closeBtn":""})-->
     <!--&lt;!&ndash; 音频播放 &ndash;&gt;-->
     <!--include('../component/layer/layer.html',{"layer":"audio","layerTitle":"通话录音","layerFrame":"../audio/audio.html","submit":"false","submitBtn":"","close":"true","closeBtn":"audioClose()"})-->
-    @@include('../components/inputRow.html') @@include('../components/staffSelect.html') @@include('../components/changeContact.html')
+    @@include('../components/inputRow.html')
+    <!-- 选择跟进人 -->
+    @@include('../components/staffSelect.html')
+    <!-- 修改跟进人 -->
+    @@include('../components/changeContact.html')
+    <!-- 富文本编辑器 -->
+    @@include('../components/editor.html')
 
     <!--左侧导航-->
     @@include('../components/aside.html')

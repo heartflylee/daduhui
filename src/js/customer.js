@@ -628,7 +628,7 @@ var defaultCulumns = {
       else {
         return (
           value +
-          ' <i class="icon v-icon icon-phone" onclick="callDetail();" ></i>'
+          ' <i class="icon v-icon icon-phone" onclick="callDetailBtn();" ></i>'
         );
       }
     },
@@ -1373,7 +1373,7 @@ $('#panels-detail').click(function(e) {
 });
 
 //拨打电话
-function callDetail() {
+function callDetailBtn() {
   console.log('拨打电话');
   vm.$data.layers.callDetail.message = data;
   vm.$data.layers.callDetail.show = true;

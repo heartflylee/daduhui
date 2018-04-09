@@ -1,0 +1,46 @@
+<template id="setupHead">
+    <header class="b-header setupHead-wrap">
+        <div class="h-right">
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-home"></i>
+                        返回首页
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout"></i>
+                        退出登录
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var setupHead = Vue.extend({
+        template: '#setupHead',
+        data: function () {
+            return {
+                user: {
+                    company: "北京蜜宝世纪科技有限公司",
+                    headImg: "img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+
+            }
+        }
+    });
+    Vue.component('setupHead', setupHead);
+</script>

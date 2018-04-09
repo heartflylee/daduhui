@@ -274,18 +274,17 @@
             <div class="h-search">
                 <form @submit.prevent="Hsearch">
                     <div class="search-input-box">
-                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息"/>
+                        <input type="text" class="search-input" v-model="search" placeholder="请输入姓名、公司、手机号等相关信息" />
                     </div>
                     <div class="search-btn-box">
-                        <input type="submit" value="&#xe616" class="search-btn"/>
+                        <input type="submit" value="&#xe616" class="search-btn" />
                     </div>
                 </form>
             </div>
             <div class="h-nav-box">
                 <div class="nav-li">
                     <a class="nav-href" href="#">
-                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left"
-                           title="在线客服"></i>
+                        <i class="nav-icon nav-service" data-toggle="tooltip" data-placement="auto left" title="在线客服"></i>
                     </a>
                 </div>
                 <div class="nav-li">
@@ -318,7 +317,7 @@
                     </div>
                 </div>
                 <div class="nav-li">
-                    <a class="nav-href" href="javascript:void(0);">
+                    <a class="nav-href" href="setupDepartment.html">
                         <i class="nav-icon nav-setup" data-toggle="tooltip" data-placement="auto left" title="设置"></i>
                     </a>
                 </div>
@@ -343,9 +342,9 @@
         data: function () {
             return {
                 search: "",
-                user:{
-                    company:"北京蜜宝世纪科技有限公司",
-                    headImg:"img/head.png"
+                user: {
+                    company: "北京蜜宝世纪科技有限公司",
+                    headImg: "img/head.png"
                 }
             }
         },
@@ -542,18 +541,28 @@
                         </div>
                         <div class="tags-main">
                             <div class="tags-con-li active">
-                                    <div class="message-box">
-                                            <div class="message-t">
-                                                跟进信息
+                                <div class="message-box">
+                                    <div class="message-t">
+                                        跟进信息
+                                    </div>
+                                    <div class="message-content">
+                                        <detail-message :message="messages.remark" name="remark" row="true"></detail-message>
+                                        <detail-message :message="messages.fllowPerson" name="fllowPerson"></detail-message>
+                                        <!-- <detail-message :message="messages.createdTime" name="createdTime"></detail-message> -->
+                                        <div class="message-li">
+                                            <div class="message-name">
+                                                创建时间
                                             </div>
-                                            <div class="message-content">
-                                                <detail-message :message="messages.remark" name="remark" row="true"></detail-message>
-                                                <detail-message :message="messages.fllowPerson" name="fllowPerson"></detail-message>
-                                                <detail-message :message="messages.createdTime" name="createdTime"></detail-message>
-                                                <detail-message :message="messages.progress" name="progress"></detail-message>
-                                               
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    {{messages.createdTime.value}}
+                                                </div>
                                             </div>
                                         </div>
+                                        <detail-message :message="messages.progress" name="progress"></detail-message>
+
+                                    </div>
+                                </div>
                                 <div class="message-box">
                                     <div class="message-t">
                                         基本信息
@@ -573,14 +582,14 @@
                                     </div>
                                 </div>
                                 <div class="message-box">
-                                        <div class="message-t">
-                                            其他
-                                        </div>
-                                        <div class="message-content">
-    
-                                            <detail-message :message="messages.dataSources" name="dataSources"></detail-message>
-                                        </div>
+                                    <div class="message-t">
+                                        其他
                                     </div>
+                                    <div class="message-content">
+
+                                        <detail-message :message="messages.dataSources" name="dataSources"></detail-message>
+                                    </div>
+                                </div>
                                 <div class="message-box">
                                     <div class="message-t">
                                         其他
@@ -630,7 +639,7 @@
             '        </div>\n' +
             '    </div>\n' +
             '</div>\n',
-        props: ['message', 'name','row'],
+        props: ['message', 'name', 'row'],
         data: function () {
             return {
             }
@@ -708,20 +717,20 @@
 
                 messages: {
                     customerId: "",
-                    remark: { name: "客户备注", value: "", type: "input"},
+                    remark: { name: "客户备注", value: "", type: "input" },
                     fllowPerson: { name: "跟进人", value: "", type: "input" },
                     createdTime: { name: "创建时间", value: "" },
                     progress: { name: "销售进度", value: "", type: "select", options: '初步沟通,确认需求,报价,面谈,成单,无需求,输单,未标记' },
-                    userName: { name: "客户姓名", value: "",  type: "input" },
-                    gender: { name: "性别", value: "", type: "select",options:'男,女' },
-                    email: { name: "邮箱地址", value: "",  type: "input" },
-                    channel:{name: "渠道来源", value: "",  type: "input"},
-                    DecorationAdress:{name: "装修地址", value: "",  type: "input"},
-                    DecorationWeek:{name: "装修周期", value: "",  type: "input"},
-                    IntentionalCategory:{name: "意向品类", value: "",  type: "input"},
-                    QQ:{name: "QQ", value: "",  type: "input"},
-                    wechat:{name: "微信", value: "",  type: "input"},
-                    phone:{name: "微信", value: "",  type: "input"},
+                    userName: { name: "客户姓名", value: "", type: "input" },
+                    gender: { name: "性别", value: "", type: "select", options: '男,女' },
+                    email: { name: "邮箱地址", value: "", type: "input" },
+                    channel: { name: "渠道来源", value: "", type: "input" },
+                    DecorationAdress: { name: "装修地址", value: "", type: "input" },
+                    DecorationWeek: { name: "装修周期", value: "", type: "input" },
+                    IntentionalCategory: { name: "意向品类", value: "", type: "input" },
+                    QQ: { name: "QQ", value: "", type: "input" },
+                    wechat: { name: "微信", value: "", type: "input" },
+                    phone: { name: "微信", value: "", type: "input" },
                     cellphone: { name: "座机号码", value: "", type: "input" },
                     dataSources: { name: "数据来源", value: "" },
                 },
@@ -743,7 +752,7 @@
             customerModify: function () {
                 this.$emit('layer', 'customerModify');
             },
-         
+
             modifyDefault: function (e) {
                 if ($(e.target).isChildAndSelfOf(".message-li")) {
                     $(".editor[data-toggle='MessageEditor']").each(function () {
@@ -784,7 +793,7 @@
             // $messages.comType.value = message.comType;
             // $messages.comAdress.value = message.comAdress;
             //            this.$data.messages.postcode.value = message.postcode;
-       
+
 
 
 
@@ -798,7 +807,7 @@
             }, function (response) {
                 console.info(response);
             });
-        
+
         }
     });
     Vue.component('customerDetail', customerDetail);

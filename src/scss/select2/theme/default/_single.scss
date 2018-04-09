@@ -7,7 +7,7 @@
     color: #444;
     //line-height: 28px;
     line-height: $normalHeight;
-    .m-info &{
+    .m-info & {
       line-height: $bigHeight;
     }
   }
@@ -24,8 +24,8 @@
 
   .select2-selection__arrow {
     //height: 26px;
-height:($normalHeight - 2);
-    .m-info &{
+    height: ($normalHeight - 2);
+    .m-info & {
       height: ($bigHeight - 2);
     }
     position: absolute;
@@ -54,7 +54,7 @@ height:($normalHeight - 2);
   }
 }
 
-&[dir="rtl"] {
+&[dir='rtl'] {
   .select2-selection--single {
     .select2-selection__clear {
       float: left;
