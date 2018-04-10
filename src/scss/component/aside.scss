@@ -1,158 +1,193 @@
-
-$menucolor : #4e606e #e25956 #e6c076;/*侧面菜单*/
+$menucolor: #4e606e #e25956 #e6c076; /*侧面菜单*/
 .b-aside {
-    position: relative;
-    z-index: 10;
-    float: left;
-    width: $aside-w;
-    height: 100%;
-    background: #fff;
-    border-right: solid 1px #efefef;
-    color: #fff;
+  position: relative;
+  z-index: 10;
+  float: left;
+  width: $aside-w;
+  height: 100%;
+  background: #fff;
+  border-right: solid 1px #efefef;
+  color: #fff;
+  &.setupAside {
+    width: 149px;
+  }
 }
 
 .menu-wrap {
-    padding: 15px 0;
+  padding: 15px 0;
 }
 
 .menu-btn-box {
-    position: absolute;
-    top: 15px;
-    right: 5px;
-    cursor: pointer; 
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  cursor: pointer;
 }
 
 .menu-icon {
+  display: inline-block;
+  color: #505050;
+  &:after {
     display: inline-block;
-    color: #505050;
-    &:after {
-        display: inline-block;
-        content: "\e64b";
-        font-size: 27px;
-        line-height: 50px; 
-    }
+    content: '\e64b';
+    font-size: 27px;
+    line-height: 50px;
+  }
 }
 
 .m-nav {
-    position: relative;
-    @for $i from 1 through 3{
-        &.nav-left#{$i}:hover .nav-info:before {
-            background: nth($menucolor, $i );
-        }
+  position: relative;
+  @for $i from 1 through 3 {
+    &.nav-left#{$i}:hover .nav-info:before {
+      background: nth($menucolor, $i);
     }
+  }
 }
 
 .nav-info {
-    font-size: 14px;
-    &:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 4px;
-    }
-    &.active,
-    &:hover,
-    .m-nav:hover &{
-        background: #f1f4ff;
-       
-    }
-
+  font-size: 14px;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+  }
+  &.active,
+  &:hover,
+  .m-nav:hover & {
+    background: #f1f4ff;
+  }
 }
 
 .m-second a,
 a.nav-info {
-    display: block;
-    position: relative;
-    padding: 15px 20px 15px 41px;
-    height: 50px; 
-    line-height: 20px;
-    white-space: nowrap;
-    color: #505050;
-    font-size: $asideFontsize;
+  display: block;
+  position: relative;
+  padding: 15px 20px 15px 41px;
+  height: 50px;
+  line-height: 20px;
+  white-space: nowrap;
+  color: #505050;
+  font-size: $asideFontsize;
+  cursor: pointer;
+  label {
     cursor: pointer;
-    label {
-        cursor: pointer;
-        transition: display $asideOpenTime linear 0s;
-    }
+    transition: display $asideOpenTime linear 0s;
+  }
 }
 
 .m-second a {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .m-icon {
-    position: absolute;
-    left: 12px;
-    top: 15px;
-    line-height: 0;
-    text-align: center;
-    @include icon;
+  position: absolute;
+  left: 12px;
+  top: 15px;
+  line-height: 0;
+  text-align: center;
+  @include icon;
 }
 
-$menu: "\e605" "\e607" "\e609" "\e60b";
+$menu: '\e605' '\e607' '\e609' '\e60b';
 
 // $menuActive: "\e606" "\e608" "\e60a" "\e60c";
 @for $i from 1 through 3 {
-    .icon-m#{$i} {
-        &:after {
-            font-family: "iconfont" !important;
-            font-size: 19px;
-            font-style: normal;
-            content: "#{nth($menu,$i)}";
-            color: #{nth($menucolor,$i)};
-        } 
-        // &.active:after {
-        //     content: "#{nth($menuActive,$i)}"; 
-        // }
-        // .m-nav:hover &:after,
-        // .nav-info:hover &:after {
-        //     content: "#{nth($menuActive,$i)}"; 
-        // }
+  .icon-m#{$i} {
+    &:after {
+      font-family: 'iconfont' !important;
+      font-size: 19px;
+      font-style: normal;
+      content: '#{nth($menu,$i)}';
+      color: #{nth($menucolor, $i)};
     }
+    // &.active:after {
+    //     content: "#{nth($menuActive,$i)}";
+    // }
+    // .m-nav:hover &:after,
+    // .nav-info:hover &:after {
+    //     content: "#{nth($menuActive,$i)}";
+    // }
+  }
 }
 
-.icon-sign {
-    position: absolute;
-    top: 14px;
-    right: 8px; 
-    @include icon; 
+$setupMenu: '\e601' '\e65a' '\e643' '\e748' '\e63c' '\e639';
+@for $i from 1 through 6 {
+  .setup-m#{$i} {
     &:after {
-        font-family: "iconfont";
-        content: '\e637';
-        font-size: 13px;
-        font-style: normal;
-        color: #a6a6a6;
-    } 
+      font-family: 'iconfont' !important;
+      font-size: 19px;
+      font-style: normal;
+      content: '#{nth($setupMenu,$i)}';
+      // color: #{nth($menucolor, $i)};
+    }
+    // &.active:after {
+    //     content: "#{nth($menuActive,$i)}";
+    // }
+    // .m-nav:hover &:after,
+    // .nav-info:hover &:after {
+    //     content: "#{nth($menuActive,$i)}";
+    // }
+  }
+}
+.icon-sign {
+  position: absolute;
+  top: 14px;
+  right: 8px;
+  @include icon;
+  &:after {
+    font-family: 'iconfont';
+    content: '\e637';
+    font-size: 13px;
+    font-style: normal;
+    color: #a6a6a6;
+  }
 }
 
 .m-second-list {
-    display: none;
-    background: #f1f4ff;
-    position: absolute;
-    top: 0;
-    width: 138px;
-    left: 98px;
-    z-index: 99;
-    transition: display .25s ease-in-out;
-    .menu-list:hover & {
-        display: block;
-    } 
+  display: none;
+  background: #f1f4ff;
+  position: absolute;
+  top: 0;
+  width: 138px;
+  left: 98px;
+  z-index: 99;
+  transition: display 0.25s ease-in-out;
+  .menu-list:hover & {
+    display: block;
+  }
 }
 
 .m-second {
-    i {
-        position: absolute;
-        top: 15px;
-        left: 13px;
-        @include icon;
-        &:after{
-            font-family: 'iconfont';
-            content: '\e637';
-            font-size: 13px;
-            font-style: normal;
-            color: #a6a6a6;
-        }
+  i {
+    position: absolute;
+    top: 15px;
+    left: 13px;
+    @include icon;
+    &:after {
+      font-family: 'iconfont';
+      content: '\e637';
+      font-size: 13px;
+      font-style: normal;
+      color: #a6a6a6;
     }
+  }
+}
+
+.setup-menu {
+  line-height: 36px;
+}
+.setup-icon {
+  margin-right: 15px;
+}
+.setup-menu-href {
+  padding: 0 15px;
+  display: block;
+  color: #4e606e;
+  &:hover,
+  &.active {
+    color: #2495cf;
+  }
 }

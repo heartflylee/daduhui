@@ -1,0 +1,68 @@
+<template id="setupAside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside setupAside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <li class="setup-menu" v-for="item,$index in menuList">
+                    <a :href="item.href" class="setup-menu-href" :class="menu == item.name?'active':''">
+                        <i class="setup-icon" :class="'setup-m'+($index+1)"></i>
+                        <span>{{item.text}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+</template>
+<script>
+
+    var setupAside = Vue.extend({
+        template: '#setupAside',
+        props: ['menu'],
+        data: function () {
+            return {
+                menuList: [
+                    {
+                        name: 'department',
+                        icon: 'setup-m1',
+                        text: '部门管理',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'calltags',
+                        icon: 'setup-m2',
+                        text: '外呼标签',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'message',
+                        icon: 'setup-m3',
+                        text: '短信设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'email',
+                        icon: 'setup-m4',
+                        text: '邮件设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'team',
+                        icon: 'setup-m5',
+                        text: '团队设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'custom',
+                        icon: 'setup-m6',
+                        text: '自定义字段',
+                        href: 'javascript:void(0)'
+                    },
+
+                ]
+            }
+        },
+        methods: {
+        }
+    });
+    Vue.component('setupAside', setupAside);
+</script>

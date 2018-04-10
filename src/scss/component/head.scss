@@ -146,6 +146,9 @@ $h-p-t: 13px;
 .nav-logout:after {
   content: '\e62c';
 }
+.nav-home:after {
+  content: '\e600';
+}
 
 .dropdown-box {
   position: absolute;
@@ -260,13 +263,30 @@ a.dropli {
 .setupHead-wrap {
   color: #fff;
   background: #4e606e;
-  a {
-    color: #fff;
-  }
-  .nav-href {
-    border: 1px solid #fff;
-    &:hover {
-      background: transparent;
+}
+.nav-setup-href {
+  display: inline-block;
+  padding-right: 15px;
+  height: 40px;
+  margin-top: 6px;
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 14px;
+  .nav-icon {
+    width: 40px;
+    height: 40px;
+    &:after {
+      color: #fff;
+      line-height: 40px;
+      font-size: 23px;
     }
+    &.nav-logout:after {
+      font-size: 26px;
+    }
+  }
+  span {
+    display: inline-block;
+    vertical-align: top;
+    line-height: 40px;
   }
 }

@@ -5,9 +5,8 @@
                 公司名称：
             </div>
             <div class="m-info m-input">
-                <autocomplete id="company" classname="input" name="company" placeholder="请输入公司名称"
-                              url="json/company.json" param="value" limit="5" anchor="value"
-                              @value="comValue"></autocomplete>
+                <autocomplete id="company" classname="input" name="company" placeholder="请输入公司名称" url="json/company.json" param="value" limit="5"
+                    anchor="value" @value="comValue"></autocomplete>
             </div>
         </div>
         <input-row :rows="rows.customerName"></input-row>
@@ -42,6 +41,51 @@
         <input-row v-if="more" :rows="rows.wechat"></input-row>
         <div class="m-row" v-if="more">
             <div class="m-name">
+                购房用途
+            </div>
+            <div class="m-info m-input">
+                <div class="radio-wrap">
+                    <label class="radio-box">
+                        <input type="radio" name="custom1" @change="radioChange($event)" data-input="true">
+                        <i></i>自用</label>
+                    <label class="radio-box">
+                        <input type="radio" name="custom1" @change="radioChange($event)" data-input="false">
+                        <i></i>投资</label>
+                    <label class="radio-box">
+                        <input type="radio" name="custom1" @change="radioChange($event)" data-input="true">
+                        <i></i>出租</label>
+                </div>
+                <input type="text" class="input" placeholder="请输入选项备注" />
+            </div>
+        </div>
+        <div class="m-row" v-if="more">
+            <div class="m-name">
+                证件类型
+            </div>
+            <div class="m-info m-input">
+                <div class="check-wrap">
+                    <label class="check-box">
+                        <input type="checkbox" name="custom2">
+                        <i></i>自用</label>
+                    <label class="check-box">
+                        <input type="checkbox" name="custom2">
+                        <i></i>投资</label>
+                    <label class="check-box">
+                        <input type="checkbox" name="custom2">
+                        <i></i>出租</label>
+                </div>
+            </div>
+        </div>
+        <div class="m-row" v-if="more">
+            <div class="m-name">
+                证件号码
+            </div>
+            <div class="m-info m-input">
+                <input type="text" class="input" placeholder="请输入证件号码">
+            </div>
+        </div>
+        <div class="m-row" v-if="more">
+            <div class="m-name">
                 性别：
             </div>
             <div class="m-info m-input">
@@ -68,45 +112,45 @@
         data: function () {
             return {
                 rows: {
-                    company: {name: "公司名称", input: true, value: "", required: true},
-                    customerName: {name: "联系人姓名", input: true, value: "", required: true},
-                    cellphone: {name: "联系人手机号", input: true, value: "", required: true,enter:true,icon:"EnterSearch",text:"查重"},
-                    comAdress: {name: "公司地址", input: true, value: ""},
-                    comType: {name: "公司类型", value: "", input: true},
-                    remark: {name: "备注", value: ""},
-                    openName: {name: "企业法人", value: ""},
-                    registCapi: {name: "注册资金", value: ""},
-                    mainProduce: {name: "经营范围", value: ""},
-                    position: {name: "职位", value: "", input: true},
+                    company: { name: "公司名称", input: true, value: "", required: true },
+                    customerName: { name: "联系人姓名", input: true, value: "", required: true },
+                    cellphone: { name: "联系人手机号", input: true, value: "", required: true, enter: true, icon: "EnterSearch", text: "查重" },
+                    comAdress: { name: "公司地址", input: true, value: "" },
+                    comType: { name: "公司类型", value: "", input: true },
+                    remark: { name: "备注", value: "" },
+                    openName: { name: "企业法人", value: "" },
+                    registCapi: { name: "注册资金", value: "" },
+                    mainProduce: { name: "经营范围", value: "" },
+                    position: { name: "职位", value: "", input: true },
                     industry: {
                         name: "行业", value: "0", options: [
-                            {id: "IT/通讯/电子/互联网", text: "IT/通讯/电子/互联网"},
-                            {id: "金融业", text: "金融业"},
-                            {id: "房地产/建筑业", text: "房地产/建筑业"},
-                            {id: "商业服务", text: "商业服务"},
-                            {id: "贸易/批发/零售", text: "贸易/批发/零售"},
-                            {id: "文教传媒/体育娱乐", text: "文教传媒/体育娱乐"},
-                            {id: "生产/加工/制造", text: "生产/加工/制造"},
-                            {id: "仓储物流", text: "仓储物流"},
-                            {id: "能源/矿产/环保", text: "能源/矿产/环保"},
-                            {id: "政府/非盈利机构", text: "政府/非盈利机构"},
-                            {id: "农林牧渔", text: "农林牧渔"}
+                            { id: "IT/通讯/电子/互联网", text: "IT/通讯/电子/互联网" },
+                            { id: "金融业", text: "金融业" },
+                            { id: "房地产/建筑业", text: "房地产/建筑业" },
+                            { id: "商业服务", text: "商业服务" },
+                            { id: "贸易/批发/零售", text: "贸易/批发/零售" },
+                            { id: "文教传媒/体育娱乐", text: "文教传媒/体育娱乐" },
+                            { id: "生产/加工/制造", text: "生产/加工/制造" },
+                            { id: "仓储物流", text: "仓储物流" },
+                            { id: "能源/矿产/环保", text: "能源/矿产/环保" },
+                            { id: "政府/非盈利机构", text: "政府/非盈利机构" },
+                            { id: "农林牧渔", text: "农林牧渔" }
                         ]
                     },
-                    cellphone2: {name: "手机号码2", value: "", input: true},
-                    email: {name: "邮箱地址", value: "", input: true},
-                    QQ: {name: "QQ号码", value: "", input: true},
-                    wechat: {name: "微信号码", value: "", input: true},
-                    gender: {name: "性别", value: "0", options: [{id: "男", text: "男"}, {id: "女", text: "女"}]},
-                    birthday: {name: "生日", value: "", input: true},
-                    reception: {name: "前台电话", value: "", input: true},
-                    telephone: {name: "座机", value: "", input: true},
-                    fax: {name: "传真", value: "", input: true},
-                    spare1: {name: "备用字段一", value: "", input: true},
-                    spare2: {name: "备用字段二", value: "", input: true},
-                    spare3: {name: "备用字段三", value: "", input: true},
-                    spare4: {name: "备用字段四", value: "", input: true},
-                    spare5: {name: "备用字段五", value: "", input: true}
+                    cellphone2: { name: "手机号码2", value: "", input: true },
+                    email: { name: "邮箱地址", value: "", input: true },
+                    QQ: { name: "QQ号码", value: "", input: true },
+                    wechat: { name: "微信号码", value: "", input: true },
+                    gender: { name: "性别", value: "0", options: [{ id: "男", text: "男" }, { id: "女", text: "女" }] },
+                    birthday: { name: "生日", value: "", input: true },
+                    reception: { name: "前台电话", value: "", input: true },
+                    telephone: { name: "座机", value: "", input: true },
+                    fax: { name: "传真", value: "", input: true },
+                    spare1: { name: "备用字段一", value: "", input: true },
+                    spare2: { name: "备用字段二", value: "", input: true },
+                    spare3: { name: "备用字段三", value: "", input: true },
+                    spare4: { name: "备用字段四", value: "", input: true },
+                    spare5: { name: "备用字段五", value: "", input: true }
                 },
                 more: false,
                 compnayBusiness: false
@@ -122,7 +166,7 @@
                 vm.layers.customerAdd.show = false;
                 alert("", "添加成功", function () {
                     //新增客户弹框隐藏
-                }, {type: "success"});
+                }, { type: "success" });
             },
             comValue: function (data) {
                 console.log(data);
@@ -142,6 +186,15 @@
                 }, function (response) {
                     console.info(response);
                 })
+            },
+            radioChange: function (el) {
+                var target = el.target;
+                if ($(target).data().input == true) {
+                    $(target).parents(".radio-wrap").next().val('');
+                    $(target).parents(".radio-wrap").next().show();
+                } else {
+                    $(target).parents(".radio-wrap").next().hide();
+                }
             }
         },
         components: {
@@ -154,6 +207,7 @@
                 },
                 update: function (el) {
                     console.log(el);
+
                 }
             }
         }

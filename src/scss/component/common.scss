@@ -1,5 +1,5 @@
 @charset "utf-8";
-@import "vars";
+@import 'vars';
 
 %box {
   width: 100%;
@@ -13,16 +13,16 @@
 }
 
 @function rem($number) {
-  @return ($number/$htmlfontsize)*1rem;
+  @return ($number/$htmlfontsize) * 1rem;
 }
 
 //--------单位转换-----------
 @mixin font-size($font-size) {
   font-size: $font-size;
-  [data-dpr="2"] & {
+  [data-dpr='2'] & {
     font-size: $font-size * 2;
   }
-  [data-dpr="3"] & {
+  [data-dpr='3'] & {
     font-size: $font-size * 3;
   }
 }
@@ -50,7 +50,7 @@ $prefix-for-spec: true !default; // 标准版
     } @else if $prefix == spec and $prefix-for-spec == true {
       #{$property}: $value;
     } @else {
-      @warn "Unrecognized prefix: #{$prefix}";
+      @warn 'Unrecognized prefix: #{$prefix}';
     }
   }
 }
@@ -103,7 +103,7 @@ $prefix-for-spec: true !default; // 标准版
         @content;
       }
     } @else {
-      @warn "Unrecognized prefix: #{$prefix}";
+      @warn 'Unrecognized prefix: #{$prefix}';
     }
   }
 }
@@ -121,7 +121,7 @@ $lte7: true;
   }
   &:after,
   &:before {
-    content: "";
+    content: '';
     display: table;
     font: 0/0 a;
   }
@@ -136,7 +136,7 @@ $lte7: true;
   }
   &:after,
   &:before {
-    content: "";
+    content: '';
     display: table;
     font: 0/0 a;
   }
@@ -165,7 +165,8 @@ $lte7: true;
   $offsets: top right bottom left;
   @each $o in $offsets {
     $i: index($args, $o);
-    @if $i and $i + 1 <= length($args) and type-of( nth($args, $i + 1) ) == number {
+    @if $i and $i + 1 <= length($args) and type-of(nth($args, $i + 1)) == number
+    {
       #{$o}: nth($args, $i + 1);
     }
   }
@@ -188,57 +189,57 @@ $lte7: true;
 //得使用[modernizr](http://modernizr.com/)来检测，在html上加class
 @mixin no-border-radius {
   .no-border-radius {
-    @content
+    @content;
   }
 }
 
 //设置固定两边圆角
-@mixin borderradius-d($direction, $size ) {
+@mixin borderradius-d($direction, $size) {
   @if $direction == tl {
-    @include prefixer("border-top-left-radius", $size, spec webkit o ms);
+    @include prefixer('border-top-left-radius', $size, spec webkit o ms);
     -moz-border-radius-topleft: $size;
   } @else if $direction == tr {
-    @include prefixer("border-top-right-radius", $size, spec webkit o ms);
+    @include prefixer('border-top-right-radius', $size, spec webkit o ms);
     -moz-border-radius-topright: $size;
   } @else if $direction == bl {
-    @include prefixer("border-bottom-left-radius", $size, spec webkit o ms);
+    @include prefixer('border-bottom-left-radius', $size, spec webkit o ms);
     -moz-border-radius-bottomleft: $size;
   } @else if $direction == br {
-    @include prefixer("border-bottom-right-radius", $size, spec webkit o ms);
+    @include prefixer('border-bottom-right-radius', $size, spec webkit o ms);
     -moz-border-radius-bottomright: $size;
   } @else if $direction == t {
-    @include prefixer("border-top-right-radius", $size, spec webkit o ms);
-    @include prefixer("border-top-left-radius", $size, spec webkit o ms);
+    @include prefixer('border-top-right-radius', $size, spec webkit o ms);
+    @include prefixer('border-top-left-radius', $size, spec webkit o ms);
     -moz-border-radius-topleft: $size;
     -moz-border-radius-topright: $size;
   } @else if $direction == b {
-    @include prefixer("border-bottom-right-radius", $size, spec webkit o ms);
-    @include prefixer("border-bottom-left-radius", $size, spec webkit o ms);
+    @include prefixer('border-bottom-right-radius', $size, spec webkit o ms);
+    @include prefixer('border-bottom-left-radius', $size, spec webkit o ms);
     -moz-border-radius-bottomleft: $size;
     -moz-border-radius-bottomright: $size;
   } @else if $direction == l {
-    @include prefixer("border-top-left-radius", $size, spec webkit o ms);
-    @include prefixer("border-bottom-left-radius", $size, spec webkit o ms);
+    @include prefixer('border-top-left-radius', $size, spec webkit o ms);
+    @include prefixer('border-bottom-left-radius', $size, spec webkit o ms);
     -moz-border-radius-topleft: $size;
     -moz-border-radius-bottomleft: $size;
   } @else if $direction == r {
-    @include prefixer("border-top-right-radius", $size, spec webkit o ms);
-    @include prefixer("border-bottom-right-radius", $size, spec webkit o ms);
+    @include prefixer('border-top-right-radius', $size, spec webkit o ms);
+    @include prefixer('border-bottom-right-radius', $size, spec webkit o ms);
     -moz-border-radius-topright: $size;
     -moz-border-radius-bottomright: $size;
   } @else if $direction == all {
-    @include prefixer("border-radius", $size, spec webkit moz o ms);
+    @include prefixer('border-radius', $size, spec webkit moz o ms);
   } @else if $direction == reset {
-    @include prefixer("border-radius", 0, spec webkit moz o ms);
+    @include prefixer('border-radius', 0, spec webkit moz o ms);
   }
 }
 
 //先来个我们常用的用border生成三角形的@mixin:
 // triangle
-@mixin triangle($direction, $size, $borderColor ) {
+@mixin triangle($direction, $size, $borderColor) {
   $color-border-style: $size solid $borderColor;
   $transparent-border-style: $size dashed transparent;
-  content: "";
+  content: '';
   height: 0;
   width: 0;
   @if $direction == top {
@@ -261,12 +262,12 @@ $lte7: true;
 }
 
 $breakpoints: (
-        small: 320px,
-        medium: 480px,
-        medium1: 767px,
-        medium2: 992px,
-        medium3: 1024px,
-        large: 1200px
+  small: 320px,
+  medium: 480px,
+  medium1: 767px,
+  medium2: 992px,
+  medium3: 1024px,
+  large: 1200px
 ); // _mixins.scss
 @mixin respond-to($breakpoint) {
   @if map-has-key($breakpoints, $breakpoint) {
@@ -274,28 +275,24 @@ $breakpoints: (
       @content;
     }
   } @else {
-    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. " + "Please make sure it is defined in `$breakpoints` map.";
+    @warn 'Unfortunately, no value could be retrieved from `#{$breakpoint}`. ' + 'Please make sure it is defined in `$breakpoints` map.';
   }
 }
-
-//定义media-queries的最小最大宽度
+// 定义media-queries的最小最大宽度
 @mixin screen($res-min, $res-max) {
   @media screen and (min-width: $res-min) and (max-width: $res-max) {
     @content;
   }
 }
-
-/// @param {number} $width - 盒子宽度
-/// @param {number} $height:$width - 盒子高度
-@mixin size($width, $height:$width) {
+// / @param {number} $width - 盒子宽度
+// / @param {number} $height:$width - 盒子高度
+@mixin size($width, $height: $width) {
   width: $width;
   height: $height;
 }
-
-//------------设置盒子的宽和高---------------
-//-----------------------------------------------------------------------------------------------------------------------
-
-@mixin backgroundChang($position,$start,$end) {
+// ------------设置盒子的宽和高---------------
+// -----------------------------------------------------------------------------------------------------------------------
+@mixin backgroundChang($position, $start, $end) {
   $ieType: 0;
   $webkitStart: 0% 0%;
   $webkitEnd: 0% 100%;
@@ -304,16 +301,64 @@ $breakpoints: (
     $webkitStart: 0% 100%;
     $webkitEnd: 100% 100%;
   }
-
   background: -ms-linear-gradient($position, $start, $end); /* IE 10 */
-
-  background: -moz-linear-gradient($position, $start, $end); /*火狐*/
-
-  background: -webkit-gradient(linear, $webkitStart, $webkitEnd, from($start), to($end)); /*谷歌*/
-
-  //background: -webkit-gradient(linear, 0% 100%, 100% 100%, from($start), to($end));      /* Safari 4-5, Chrome 1-9*/
-
-  background: -webkit-linear-gradient($position, $start, $end); /*Safari5.1 Chrome 10+*/
-
-  background: -o-linear-gradient($position, $start, $end); /*Opera 11.10+*/
+  background: -moz-linear-gradient($position, $start, $end); /* 火狐 */
+  background: -webkit-gradient(
+    linear,
+    $webkitStart,
+    $webkitEnd,
+    from($start),
+    to($end)
+  ); /* 谷歌 */
+  // background: -webkit-gradient(linear, 0% 100%, 100% 100%, from($start), to($end));      /* Safari 4-5, Chrome 1-9*/
+  background: -webkit-linear-gradient($position, $start, $end);
+  /* Safari5.1 Chrome 10+ */
+  background: -o-linear-gradient($position, $start, $end);
+  /* Opera 11.10+ */
+}
+.radio-wrap,
+.check-wrap {
+  display: inline-block;
+  line-height: 20px;
+}
+.radio-box,
+.check-box {
+  display: inline-block;
+  margin-right: 15px;
+}
+.radio-box {
+  input[type='radio'] {
+    display: none;
+    + i {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url(../img/radio.png);
+      margin-right: 5px;
+      vertical-align: top;
+    }
+    &:checked {
+      + i {
+        background: url(../img/radio_active.png);
+      }
+    }
+  }
+}
+.check-box {
+  input[type='checkbox'] {
+    display: none;
+    + i {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url(../img/check.png);
+      margin-right: 5px;
+      vertical-align: top;
+    }
+    &:checked {
+      + i {
+        background: url(../img/check_active.png);
+      }
+    }
+  }
 }

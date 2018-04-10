@@ -33,6 +33,11 @@
 
     <script src="js/jqx/globalize.culture.ch-CN.js"></script>
 
+    <link rel="stylesheet" href="css/zTreeStyle.css">
+    <script src="js/jquery.ztree.core.js"></script>
+    <script src="js/jquery.ztree.exedit.js"></script>
+
+
 
 </head>
 
@@ -46,19 +51,22 @@
         <setup-head></setup-head>
         <section class="b-main">
             <!--左侧菜单-->
-            <menu-aside menu="index"></menu-aside>
+            <setup-aside menu="department"></setup-aside>
             <div class="b-panel">
-                <customer-head @layer="layer"></customer-head>
-                <customer-table></customer-table>
+                <div class="setup-title">
+                    部门管理
+                </div>
+                <div class="setup-left">
+
+                </div>
             </div>
         </section>
-
 
     </div>
 
     @@include('../components/inputRow.html')
     <!--左侧导航-->
-    @@include('../components/aside.html')
+    @@include('../components/setupAside.html')
     <!--顶部-->
     @@include('../components/setupHead.html')
     <!--弹框-->

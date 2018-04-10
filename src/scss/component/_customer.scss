@@ -234,6 +234,10 @@ $listicon: list-left list-right list-up list-down;
       width: 100%;
     }
   }
+  .radio-wrap,
+  .check-wrap {
+    margin: 10px 0;
+  }
 }
 .m-tip {
   display: inline-block;

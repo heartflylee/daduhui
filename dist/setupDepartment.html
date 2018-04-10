@@ -63,6 +63,11 @@
 
     <script src="js/jqx/globalize.culture.ch-CN.js"></script>
 
+    <link rel="stylesheet" href="css/zTreeStyle.css">
+    <script src="js/jquery.ztree.core.js"></script>
+    <script src="js/jquery.ztree.exedit.js"></script>
+
+
 
 </head>
 
@@ -76,13 +81,16 @@
         <setup-head></setup-head>
         <section class="b-main">
             <!--左侧菜单-->
-            <menu-aside menu="index"></menu-aside>
+            <setup-aside menu="department"></setup-aside>
             <div class="b-panel">
-                <customer-head @layer="layer"></customer-head>
-                <customer-table></customer-table>
+                <div class="setup-title">
+                    部门管理
+                </div>
+                <div class="setup-left">
+
+                </div>
             </div>
         </section>
-
 
     </div>
 
@@ -108,102 +116,73 @@
 //    Vue.component('inputRow',inputRow);
 </script>
     <!--左侧导航-->
-    <template id="aside">
+    <template id="setupAside">
     <!-- 左侧菜单 -->
-    <aside class="b-aside">
+    <aside class="b-aside setupAside">
         <div class="menu-wrap">
             <ul class="m-list">
-                <menu-content :content="index" index="1"></menu-content>
-                <menu-content :content="customer" index="2"></menu-content>
-                <menu-content :content="task" index="3"></menu-content>
+                <li class="setup-menu" v-for="item,$index in menuList">
+                    <a :href="item.href" class="setup-menu-href" :class="menu == item.name?'active':''">
+                        <i class="setup-icon" :class="'setup-m'+($index+1)"></i>
+                        <span>{{item.text}}</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </aside>
 </template>
 <script>
-    var menuContent = Vue.extend({
-        template: '<li class="m-nav menu-list" :class=" \'nav-left\' + index" v-if="content.subShow">\n' +
-            '    <a class="nav-info" href="javascript:void(0)">\n' +
-            '        <i class="icon m-icon" :class="content.icon" ></i>\n' +
-            '        <label>{{content.title}}</label>\n' +
-            '        <i v-if="content.sub.length>0" class="icon-sign"></i>\n' +
-            '    </a>\n' +
-            '    <ul class="m-second-list child-list" v-if="content.sub.length>0" >\n' +
-            '        <li class="m-second" v-for="sub in content.sub">\n' +
-            '            <a :href="sub.href">\n' +
-            '                <i></i>\n' +
-            '                <label>{{sub.title}}</label>\n' +
-            '            </a>\n' +
-            '        </li>\n' +
-            '    </ul>\n' +
-            '</li>' +
-            '<li class="m-nav " v-else>\n' +
-            '    <a class=\'nav-info\' :href="content.href">\n' +
-            '        <i class="icon m-icon" :class="content.icon"></i>\n' +
-            '        <label>{{content.title}}</label>\n' +
-            '        <i class="icon-sign"></i>\n' +
-            '    </a>\n' +
-            '</li>',
-        props: ['content', 'index']
-    });
 
-    var aside = Vue.extend({
-        template: '#aside',
+    var setupAside = Vue.extend({
+        template: '#setupAside',
+        props: ['menu'],
         data: function () {
             return {
-                index: {
-                    title: "首页",
-                    icon: "icon-m1",
-                    subShow: true,
-                    active: "",
-                    sub: []
-                },
-                customer: {
-                    title: "客户",
-                    icon: "icon-m2",
-                    subShow: true,
-                    active: "",
-                    sub: [
-                        {
-                            title: "客户列表",
-                            href: "customer.html"
-                        },
-                        {
-                            title: "企业公海",
-                            href: "contact.html"
-                        }
-                    ]
-                },
-                task: {
-                    title: "任务",
-                    icon: "icon-m3",
-                    href: "",
-                    subShow: true,
-                    active: "",
-                    sub: [{
-                        title: "电话任务",
-                        href: "task.html"
-                    }, {
-                        title: "短信任务",
-                        href: "taskMessage.html"
-                    }, {
-                        title: "邮件任务",
-                        href: "taskEmail.html"
-                    }]
-                }
+                menuList: [
+                    {
+                        name: 'department',
+                        icon: 'setup-m1',
+                        text: '部门管理',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'calltags',
+                        icon: 'setup-m2',
+                        text: '外呼标签',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'message',
+                        icon: 'setup-m3',
+                        text: '短信设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'email',
+                        icon: 'setup-m4',
+                        text: '邮件设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'team',
+                        icon: 'setup-m5',
+                        text: '团队设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'custom',
+                        icon: 'setup-m6',
+                        text: '自定义字段',
+                        href: 'javascript:void(0)'
+                    },
+
+                ]
             }
         },
         methods: {
-            // menu: function () {
-            //     $("body").toggleClass('side-open');
-            //     tableResize();
-            // }
-        },
-        components: {
-            'menuContent': menuContent
         }
     });
-    Vue.component('menuAside', aside);
+    Vue.component('setupAside', setupAside);
 </script>
     <!--顶部-->
     <template id="setupHead">
@@ -211,15 +190,15 @@
         <div class="h-right">
             <div class="h-nav-box">
                 <div class="nav-li">
-                    <a class="nav-href" href="javascript:void(0);">
+                    <a class="nav-setup-href" href="javascript:void(0);">
                         <i class="nav-icon nav-home"></i>
-                        返回首页
+                        <span>返回首页</span>
                     </a>
                 </div>
                 <div class="nav-li">
-                    <a class="nav-href" href="javascript:void(0);">
+                    <a class="nav-setup-href" href="javascript:void(0);">
                         <i class="nav-icon nav-logout"></i>
-                        退出登录
+                        <span>退出登录</span>
                     </a>
                 </div>
             </div>

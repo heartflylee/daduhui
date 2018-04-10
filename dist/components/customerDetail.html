@@ -111,11 +111,10 @@
                                 </div>
                                 <div class="message-box">
                                     <div class="message-t">
-                                        其他
+                                        自定义字段
                                     </div>
                                     <div class="message-content">
-
-                                        <detail-message :message="messages.dataSources" name="dataSources"></detail-message>
+                                        <detail-message v-for="item in customFileds" :message="item" :name="item.name"></detail-message>
                                     </div>
                                 </div>
                                 <div class="message-box">
@@ -162,7 +161,7 @@
             '        {{message.name}}\n' +
             '    </div>\n' +
             '    <div class="message-main" >\n' +
-            '        <div class="message-text" :data-name="name"  :data-value="message.value == \'\'?\'\':message.value" :data-type="message.type" :data-nametext="message.name" :data-option="message.options == null || message.options == \'\' || message.options == undefined ? \'\' :message.options ">\n' +
+            '        <div class="message-text" :data-name="name"  :data-value="message.value == \'\'?\'\':message.value" :data-type="message.type" :data-nametext="message.name" :data-multiple="message.multiple" :data-option="message.options == null || message.options == \'\' || message.options == undefined ? \'\' :message.options ">\n' +
             '                {{message.value == ""?"点击填写":message.value}}\n' +
             '        </div>\n' +
             '    </div>\n' +
@@ -262,6 +261,11 @@
                     cellphone: { name: "座机号码", value: "", type: "input" },
                     dataSources: { name: "数据来源", value: "" },
                 },
+                customFileds: [
+                    { name: '购房用途', value: '111', type: 'select', options: '111,222,333' },
+                    { name: '购房用途', value: '111', type: 'input' },
+                    { name: '购房用途', value: '[111,222]', type: 'select', multiple: true, options: '111,222,333' }
+                ],
                 detailLineList: [],
             }
         },
