@@ -586,7 +586,7 @@
                                         自定义字段
                                     </div>
                                     <div class="message-content">
-                                        <detail-message v-for="item in customFileds" :message="item" :name="item.name"></detail-message>
+                                        <customfileds-message v-for="item,index in messages.customFileds" :message="item" :name="index"></customfileds-message>
                                     </div>
                                 </div>
                                 <div class="message-box">
@@ -633,8 +633,9 @@
             '        {{message.name}}\n' +
             '    </div>\n' +
             '    <div class="message-main" >\n' +
-            '        <div class="message-text" :data-name="name"  :data-value="message.value == \'\'?\'\':message.value" :data-type="message.type" :data-nametext="message.name" :data-multiple="message.multiple" :data-option="message.options == null || message.options == \'\' || message.options == undefined ? \'\' :message.options ">\n' +
-            '                {{message.value == ""?"点击填写":message.value}}\n' +
+            '        <div class="message-text" :data-name="name"  :data-value=" message.value == \'\'?\'\':(message.multiple == true? \'[\'+message.value+\']\': message.value)" :data-type="message.type" :data-nametext="message.name" :data-multiple="message.multiple" :data-option="message.options == null || message.options == \'\' || message.options == undefined ? \'\' :message.options ">\n' +
+            // '               {{message.value == ""?"点击填写": message.value}}\n' +
+            '               {{ message.type=="input"?(message.value == ""?"点击填写": message.value):(message.text == ""?"点击填写":message.text)}}\n' +
             '        </div>\n' +
             '    </div>\n' +
             '</div>\n',
@@ -648,7 +649,7 @@
                 bind: function (el) {
                     $(el).click(function (e) {
                         if ($(e.target).isChildAndSelfOf(".message-li")) {
-                            $(this).MessageEditor({ editor: true }, this)
+                            $(this).MessageEditor({ editor: true }, this);
                         }
                     });
 
@@ -657,6 +658,50 @@
         }
     });
 
+
+    var customFiledsMessage = Vue.extend({
+        template: '<div :class="(message.multiple != true&& message.type==\'select\')? \'customFiledsDetail\':\'\'"><div class="message-li" :class="row == \'true\'?\'message-row\':\'\'" v-modify data-toggle="MessageEditor"  data-target=".message-li"  data-backdrop="true">\n' +
+            '    <div class="icon edit-icon"></div>\n' +
+            '    <div class="message-name">\n' +
+            '        {{message.name}}\n' +
+            '    </div>\n' +
+            '    <div class="message-main" >\n' +
+            '        <div class="message-text" :data-name="name" :data-value=" message.value == \'\'?\'\':(message.multiple == true? \'[\'+message.value+\']\': message.value)" :data-type="message.type" :data-nametext="message.name" :data-multiple="message.multiple" :data-option="message.options == null || message.options == \'\' || message.options == undefined ? \'\' :message.options ">\n' +
+            '               {{ message.type=="input"?(message.value == ""?"点击填写": message.value):(message.text == ""?"点击填写":message.text)}}\n' +
+            '        </div>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '<div class="message-li" v-if="message.selectShow" v-modify data-toggle="MessageEditor"  data-target=".message-li"  data-backdrop="true">\n' +
+            '    <div class="icon edit-icon"></div>\n' +
+            '    <div class="message-name">\n' +
+            '        选项文本\n' +
+            '    </div>\n' +
+            '    <div class="message-main" >\n' +
+            '        <div class="message-text"  :data-value=" message.selectText" data-type="input" data-nametext="选项文本" >\n' +
+            '               {{ message.selectText == ""?"点击填写": message.selectText}}\n' +
+            '        </div>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>',
+        props: ['message', 'name', 'row'],
+        data: function () {
+            return {
+            }
+        },
+        directives: {
+            modify: {
+                bind: function (el) {
+                    $(el).click(function (e) {
+                        console.log(e);
+                        if ($(e.target).isChildAndSelfOf(".message-li")) {
+                            $(this).MessageEditor({ editor: true }, this);
+                        }
+                    });
+
+                }
+            }
+        }
+    });
 
     var detailLine = Vue.extend({
         template: '<div class="time-line">' +
@@ -713,15 +758,14 @@
         props: ['layer'],
         data: function () {
             return {
-
                 messages: {
                     customerId: "",
                     remark: { name: "客户备注", value: "", type: "input" },
                     fllowPerson: { name: "跟进人", value: "", type: "input" },
                     createdTime: { name: "创建时间", value: "" },
-                    progress: { name: "销售进度", value: "", type: "select", options: '初步沟通,确认需求,报价,面谈,成单,无需求,输单,未标记' },
+                    progress: { name: "销售进度", value: "", text: '', type: "select", options: '[{"name":"初步沟通","value":"1"},{"name":"确认需求","value":"2"},{"name":"报价","value":"3"},{"name":"面谈","value":"4"},{"name":"成单","value":"5"},{"name":"无需求","value":"6"},{"name":"输单","value":"7"},{"name":"未标记","value":"8"}]' },
                     userName: { name: "客户姓名", value: "", type: "input" },
-                    gender: { name: "性别", value: "", type: "select", options: '男,女' },
+                    gender: { name: "性别", value: "", text: '', type: "select", options: '[{"name":"男","value":"man"},{"name":"女","value":"woman"}]' },
                     email: { name: "邮箱地址", value: "", type: "input" },
                     channel: { name: "渠道来源", value: "", type: "input" },
                     DecorationAdress: { name: "装修地址", value: "", type: "input" },
@@ -732,12 +776,13 @@
                     phone: { name: "微信", value: "", type: "input" },
                     cellphone: { name: "座机号码", value: "", type: "input" },
                     dataSources: { name: "数据来源", value: "" },
+                    customFileds: [
+                        { name: '购房用途', value: '1', text: '111', type: 'select', selectText: '', selectShow: false, options: '[{"name":"111","value":"1","input":"true"},{"name":"222","value":"2","input":"false"},{"name":"333","value":"3","input":"true"}]' },
+                        { name: '购房用途', value: '1', type: 'input' },
+                        { name: '购房用途', value: '1,2', text: '111,222', type: 'select', multiple: true, options: '[{"name":"111","value":"1"},{"name":"222","value":"2"},{"name":"333","value":"3"}]' }
+                    ],
                 },
-                customFileds: [
-                    { name: '购房用途', value: '111', type: 'select', options: '111,222,333' },
-                    { name: '购房用途', value: '111', type: 'input' },
-                    { name: '购房用途', value: '[111,222]', type: 'select', multiple: true, options: '111,222,333' }
-                ],
+
                 detailLineList: [],
             }
         },
@@ -761,13 +806,15 @@
                 if ($(e.target).isChildAndSelfOf(".message-li")) {
                     $(".editor[data-toggle='MessageEditor']").each(function () {
                         if (!$(e.target).isChildAndSelfOf(this)) {
-                            $(this).MessageEditor({ editor: false, callback: 'changed(data)' }, this)
+                            var obj = $(this);
+                            $(this).MessageEditor({ editor: false, callback: 'changed(data,"customerDetail")' }, this)
                         }
                     })
                 }
                 else {
                     $(".editor[data-toggle='MessageEditor']").each(function () {
-                        $(this).MessageEditor({ editor: false, callback: 'changed(data)' }, this)
+                        var obj = $(this);
+                        obj.MessageEditor({ editor: false, callback: 'changed(data,"customerDetail")' }, this)
                     })
                 }
             },
@@ -779,6 +826,7 @@
         components: {
             "headMessage": headMessage,
             "detailMessage": detailMessage,
+            'customfiledsMessage': customFiledsMessage,
             "detailLine": detailLine,
         },
         activated: function () {

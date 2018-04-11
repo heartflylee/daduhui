@@ -1,4 +1,4 @@
-+(function($) {
++(function($, JSON) {
   'use strict';
 
   var MessageEditor = function(element, option) {
@@ -64,14 +64,26 @@
           .appendTo(this.$text)
           .focus();
       } else if (data.type == 'select') {
-        var select = data.option.split(',');
+        // var select = data.option.split(',');
+        console.log(JSON);
+        // var select = JSON.parse(data.option);
+        var select = data.option;
+        console.log(select);
         var options = '';
         for (var i = 0; i < select.length; i++) {
           options +=
             data.value == select[i]
-              ? "<option selected='selected'>"
-              : '<option>';
-          options += select[i];
+              ? "<option selected='selected' value='" +
+                select[i].value +
+                "' data-input='" +
+                select[i].input +
+                "'>"
+              : "<option value='" +
+                select[i].value +
+                "' data-input='" +
+                select[i].input +
+                "'>";
+          options += select[i].name;
           options += '</option>';
         }
 
@@ -86,10 +98,11 @@
         // console.log(jQuery.fn.select2);
         if (jQuery.fn.select2 != undefined) {
           select.select2();
-        }
-        if (data.multiple == true) {
           select.val(data.value).trigger('change');
         }
+        // if (data.multiple == true) {
+        //   select.val(data.value).trigger('change');
+        // }
       }
 
       that.$element.trigger('focus').trigger(e);
@@ -110,23 +123,46 @@
       var data = this.$text.data();
       console.log(data);
       var value;
-      if (data.multiple != true) {
+      var selectData;
+      if (data.type != 'select') {
         value = this.$text.children()[0].value;
         //   console.log(value);
         if (value == undefined) {
           return;
         }
       } else {
+        console.log($(this.$text.children()[0]).select2('data'));
         console.log($(this.$text.children()[0]).select2('val'));
         value = $(this.$text.children()[0]).select2('val');
+        selectData = $(this.$text.children()[0]).select2('data');
+        // .toString();
       }
 
       if (value == '') {
         value = MessageEditor.DEFAULTS.defaultText;
       }
+      // console.log(
+      //   $(this.$text.children()[0])
+      //     .find('option[selected]')
+      //     .data().input
+      // );
 
       this.$text.data().value = value;
-      this.$text.html(value);
+      if (data.type != 'select') {
+        this.$text.html(value);
+      } else {
+        var text = '';
+        for (var i = 0; i < selectData.length; i++) {
+          text += selectData[i].text;
+          this.$text.data().input = selectData[i].element.dataset.input;
+          if (i < selectData.length - 1) {
+            text += ',';
+          }
+        }
+        // this.$text.data().input = ;
+        this.$text.html(text);
+        this.$text.data().text = text;
+      }
       // this.$text.append("<div class='message-block'>" + value + "</div>");
       this.$element.removeClass('editor');
     },
@@ -214,4 +250,4 @@
   //             Plugin.call($target, {editor: true}, this)
   //         }
   //     })
-})(jQuery);
+})(jQuery, JSON);

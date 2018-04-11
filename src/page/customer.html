@@ -67,14 +67,14 @@
         <!--客户详情-->
         <transition name="detail">
             <keep-alive v-if="layers.customerDetail.show">
-                <customer-detail :layer="layers.customerDetail" @layer="layer"></customer-detail>
+                <customer-detail :layer="layers.customerDetail" @layer="layer" ref="customerDetail"></customer-detail>
             </keep-alive>
         </transition>
 
         <!--拨打电话-->
         <transition name="detail">
             <keep-alive v-if="layers.callDetail.show">
-                <call-detail :layer="layers.callDetail" @layer="layer"></call-detail>
+                <call-detail :layer="layers.callDetail" @layer="layer" ref="callDetail"></call-detail>
             </keep-alive>
         </transition>
 

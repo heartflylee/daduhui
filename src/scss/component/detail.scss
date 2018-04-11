@@ -747,3 +747,8 @@ a.line-href {
 .tag-radius-box {
   margin-left: 95px;
 }
+
+.customFiledsDetail {
+  display: block;
+  @include clearfix;
+}

@@ -51,12 +51,24 @@ $(function() {
   // })
 });
 
-function changed(data) {
+function changed(data, ref) {
   console.log(data);
   //保存修改的字段
+  console.log(vm.$refs[ref].$data.messages);
+  // console.log(!isNaN(data.name));
+  if (!isNaN(data.name)) {
+    console.log(vm.$refs[ref].$data.messages.customFileds);
+    vm.$refs[ref].$data.messages.customFileds[data.name].value = data.value;
+    vm.$refs[ref].$data.messages.customFileds[data.name].text = data.text;
 
-  // vm.$data.layers.customerDetail.message[data.name] = data.value;
-  // console.log(vm.$data.layers.customerDetail.message);
+    if (data.input == 'true') {
+      vm.$refs[ref].$data.messages.customFileds[data.name].selectShow = true;
+    }
+  } else {
+    vm.$refs[ref].$data.messages[data.name].value = data.value;
+  }
+
+  console.log(vm.$refs[ref].$data.messages);
   // console.log(customerModify);
 }
 

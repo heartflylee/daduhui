@@ -86,8 +86,10 @@
                 <div class="setup-title">
                     部门管理
                 </div>
-                <div class="setup-left">
-
+                <div class="setup-main">
+                    <div class="setup-left">
+                        <ztree></ztree>
+                    </div>
                 </div>
             </div>
         </section>
@@ -452,6 +454,140 @@
     Vue.component('autocomplete',autocomplete);
 
 </script>
+ <template id="ztree">
+    <ul class="ztree" id="treeDemo"></ul>
+</template>
+<script>
+
+
+    //显示添加节点
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+            + "' title='添加' onfocus='this.blur();'></span>";
+        sObj.after(addStr);
+        var btn = $("#addBtn_" + treeNode.tId);
+        if (btn) btn.bind("click", function () {
+            newDepart();
+            return false;
+        });
+    };
+
+    //去除添加节点
+    function removeHoverDom(treeId, treeNode) {
+        $("#addBtn_" + treeNode.tId).unbind().remove();
+    }
+
+    //删除节点（根节点不显示删除）
+    function showRemoveBtn(treeId, treeNode) {
+        return !(treeNode.parentTId == null);
+    }
+
+    //编辑前设置
+    function beforeEditName(treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("tree");
+        zTree.selectNode(treeNode);
+        editorDepart();
+        return false;
+    }
+
+    //删除
+    function beforeRemove(treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("tree");
+        zTree.selectNode(treeNode);
+        return confirm("确认删除  " + treeNode.name + " 吗？");
+    }
+
+    //选择部门
+    function onMouseDown(event, treeId, treeNode) {
+        //选中部门
+    }
+
+    //变更中选择部门
+    function departSelect(event, treeId, treeNode) {
+        if (treeNode != null) {
+            $("#department").val(treeNode.name);
+            var zTree = $.fn.zTree.getZTreeObj("depart-tree");
+            zTree.selectNode(treeNode);
+            $("#departTree-wrap").hide();
+        }
+    }
+
+    var ztree = Vue.extend({
+        template: '#ztree',
+        data: function () {
+            return {
+                setting: {
+                    view:
+                        {
+                            // showLine: false,
+                            addHoverDom: addHoverDom,
+                            removeHoverDom: removeHoverDom,
+                            selectedMulti: false,
+                            // showIcon: false,
+                            fontCss: { 'font-weight': 'bold' }
+                        },
+                    check: {
+                        enable: false
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    },
+                    edit: {
+                        enable: true,
+                        showRemoveBtn: showRemoveBtn,
+                        removeTitle: "删除",
+                        renameTitle: "编辑"
+                    },
+                    callback: {
+                        beforeEditName: beforeEditName,
+                        beforeRemove: beforeRemove,
+                        onMouseDown: onMouseDown
+                    }
+                },
+                zNodes: [
+                    {
+                        name: "全公司", open: true,
+                        children: [
+                            {
+                                name: "销售部",
+                                children: [
+                                    { name: "销售部1" },
+                                    { name: "销售部2" },
+                                    { name: "销售部3" },
+                                    { name: "销售部4" }
+                                ]
+                            },
+                            {
+                                name: "市场部",
+                                children: [
+                                    { name: "市场部1" },
+                                    { name: "市场部2" },
+                                    { name: "市场部3" },
+                                    { name: "市场部4市场部4市场部4市场部4市场部4" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        directives: {
+            ztree: function (el, data) {
+                console.log(el);
+                console.log(data);
+            }
+        },
+        mounted() {
+            $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
+        }
+    });
+    Vue.component('ztree', ztree);
+</script>
+
 
     <!--selected-->
     <template id="select2-template">
