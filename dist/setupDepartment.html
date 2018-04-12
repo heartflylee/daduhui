@@ -87,23 +87,110 @@
                     部门管理
                 </div>
                 <div class="setup-main">
-                    <div class="setup-left">
+                    <div class="setup-left department-left">
                         <ztree></ztree>
+                        <div class="companyCode-wrap">
+                            <div class="companyCode-text">
+                                企业串码
+                            </div>
+                            <div class="companyCode-code">
+                                382087754
+                            </div>
+                            <div class="companyCode-text">
+                                邀请员工
+                            </div>
+                            <form class="join-wrap" @submit.prevent="joinEmployee">
+                                <div class="input-box">
+                                    <input type="text" class="input" placeholder="请输入员工手机号" v-model="employeePhone">
+                                </div>
+                                <div class="btn-box">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="setup-right">
+                        <div class="setupTable-top">
+                            <form class="setupTable-top-form" @submit.prevent="searchEmployee">
+                                <div class="setupSearch-box">
+                                    <input type="text" class="input" placeholder="搜索员工" v-model="selectEmployee">
+                                </div>
+                                <button type="submit" class="btn btn-primary">搜索</button>
+                            </form>
+                            <div class="setup-select">
+                                <label class="setupSelect-nav">已选中{{checklength}}项</label>
+                                <a class="setupSelect-nav" href="javasctipt:void(0)">设置为管理员</a>
+                                <a class="setupSelect-nav" href="javascript:void(0)">变更部门</a>
+                            </div>
+                            <div class="setupTable-right">
+                                <button class="btn btn-default">已解绑员工</button>
+                                <button class="btn btn-default">重置全部员工密码</button>
+                                <button class="btn btn-default">申请列表</button>
+                            </div>
+                        </div>
+                        <div class="setup-table">
+                            <div class="setupTable">
+                                <div class="jqxtable" id="jqxtable"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <transition name="layer">
+            <layer :layer="layers.departmentAdd">
+                <department-add ref="departmentAdd" :message="layers.departmentAdd.message"></department-add>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.departmentModify">
+                <department-add ref="departmentModify" :message="layers.departmentModify.message"></department-add>
+            </layer>
+        </transition>
     </div>
 
+    <template id="departmentAdd">
+        <input-row :rows="message"></input-row>
+    </template>
+    <script>
+        var departemntAdd = Vue.extend({
+            template: '#departmentAdd',
+            props: ['message'],
+            methods: {
+                submit: function () {
+                    console.log("新建部门提交");
+                }
+            }
+        });
+        Vue.component('departmentAdd', departemntAdd);
+    </script>
+    <template id="departmentModify">
+        <input-row :rows="message"></input-row>
+    </template>
+    <script>
+        var departmentModify = Vue.extend({
+            template: '#departmentModify',
+            props: ['message'],
+            methods: {
+                submit: function () {
+                    console.log("编辑部门提交");
+                }
+            }
+        });
+        Vue.component('departmentModify', departmentModify);
+    </script>
+    <!-- input输入框 -->
     <template id="inputRow">
     <div class="m-row">
         <div class="m-name " :class="{required:rows.required}">
             {{rows.name}}
         </div>
         <div class="m-info m-input" v-if="rows.input">
-            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"/>
-            <div v-if="rows.enter" class="enter-btn" :class="rows.icon"><i></i>{{rows.text}}</div>
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"
+            />
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon">
+                <i></i>{{rows.text}}</div>
         </div>
         <div class="m-info" v-else>
             {{rows.value}}
@@ -115,7 +202,7 @@
         template: '#inputRow',
         props: ['rows']
     });
-//    Vue.component('inputRow',inputRow);
+    Vue.component('inputRow', inputRow);
 </script>
     <!--左侧导航-->
     <template id="setupAside">
@@ -306,155 +393,9 @@
     });
 
     Vue.component('layer', layer);
-</script> <template id="autocomplete">
-    <div class="autocomplete-wrap">
-        <input type="text"
-               :id="id"
-               :class="classname"
-               :name="name"
-               :placeholder="placeholder"
-               v-model="inputmodel"
-               @input="input(inputmodel)"
-               @blur="hideAll"
-               @focus="focus"/>
-        <div class="qixinbao" :class="business" @click="businessShow"><i></i>工商信息</div>
-        <div v-if="showList" :class='"autocomplete autocomplete-"+ name ' :id="'autocomplete-'+ name ">
-            <ul>
-                <li v-for="data in json">
-                    <a href="javascript:void(0)"
-                       @click="selectList(data)">
-                        <b>{{ data[anchor] }}</b>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</template>
-
-<script>
-    var autocomplete = Vue.extend({
-        template: '#autocomplete',
-        props: {
-            id: String,
-            classname: String,
-            name: String,
-            placeholder: String,
-
-            //父组件模型名称
-            model: String,
-
-            //JSON数据取值的Key
-            anchor: {
-                type: String,
-                required: true
-            },
-
-            //请求的数据链接
-            url: {
-                type: String,
-                required: true
-            },
-
-            //请求的参数KEY
-            param: {
-                type: String,
-                default: 'q'
-            },
-
-            //拉取的数据个数的限制
-            limit: {
-                type: String,
-                default: 5
-            }
-        },
-
-        data: function () {
-            return {
-                showList: false,
-                inputmodel: '',
-                json: [],
-                focusList: '',
-                business:""
-            }
-        },
-
-        methods: {
-            input: function (val) {
-                this.showList = true;
-                console.log("输入");
-                //触发调用getData方法
-                this.getData(val);
-                this.business="";
-            },
-
-            //隐藏补全列表
-            hideAll: function (e) {
-                var _self=this;
-                //为了让blur方法延迟执行，以便能够成功执行click方法
-                setTimeout(function () {
-                    _self.showList = false;
-                }, 250);
-            },
-
-            //
-            focus: function (e) {
-                this.focusList = 0;
-            },
-
-            //选中列表中的哪一项
-            selectList: function (data) {
-                console.log(data);
-                console.log(JSON.stringify(data));
-
-                //按照指定的JSON键值显示在模型上
-                this.inputmodel = data.value;
-                //传递给父组件中的对象
-                this.showList = false;
-                this.$emit('value',data);
-                this.business="active";
-            },
-
-            //获取数据
-            getData: function (val) {
-                console.log(val);
-                let self = this;
-
-                if (this.url != null) {
-
-                    let ajax = new XMLHttpRequest();
-
-                    ajax.open('GET', `${this.url}?${this.param}=${val}`, true);
-                    ajax.send();
-
-                    ajax.addEventListener('progress', function (data) {
-                        if (data.lengthComputable) {
-                        }
-                    });
-
-                    ajax.addEventListener('loadend', function (data) {
-                        console.log(data);
-                        let json = JSON.parse(this.responseText);
-                        console.log(json);
-                        self.json = json;
-                    });
-
-                }
-            },
-            businessShow:function(){
-                if(this.business ==""){
-                    return false;
-                }
-                vm.$data.layers.business.show = true;
-
-//                this.$emit('business',this.json);
-            }
-
-        }
-    });
-    Vue.component('autocomplete',autocomplete);
-
 </script>
- <template id="ztree">
+    <!-- 树形图 -->
+    <template id="ztree">
     <ul class="ztree" id="treeDemo"></ul>
 </template>
 <script>
@@ -513,7 +454,10 @@
             $("#departTree-wrap").hide();
         }
     }
-
+    //新建部门
+    function newDepart() {
+        vm.$data.layers.departmentAdd.show = true;
+    }
     var ztree = Vue.extend({
         template: '#ztree',
         data: function () {
@@ -575,20 +519,61 @@
                 ]
             }
         },
-        directives: {
-            ztree: function (el, data) {
-                console.log(el);
-                console.log(data);
-            }
-        },
         mounted() {
             $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
         }
     });
     Vue.component('ztree', ztree);
 </script>
-
-
+    <!-- 编辑员工 -->
+    <template id="staffModify">
+    <div class="staffModify">
+        <input-row :rows="name"></input-row>
+        <div class="m-row">
+            <div class="m-name ">
+                性别
+            </div>
+            <div class="m-info m-input">
+                <div class="radio-wrap">
+                    <label class="radio-box">
+                        <input type="radio" name="gender">
+                        <i></i>男</label>
+                    <label class="radio-box">
+                        <input type="radio" name="gender">
+                        <i></i>女</label>
+                </div>
+            </div>
+            <input-row :rows="phone"></input-row>
+            <input-row :rows="major"></input-row>
+        </div>
+</template>
+<script>
+    var staffModify = Vue.extend({
+        template: '#staffModify',
+        data: function () {
+            return {
+                name: {
+                    name: "员工姓名", value: "", input: true
+                },
+                gender: {
+                    name: "性别", value: ""
+                },
+                phone: {
+                    name: "手机号码", value: "", input: true
+                },
+                major: {
+                    name: "职位", value: "", input: true
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("编辑员工");
+            }
+        }
+    });
+    Vue.component('staffModify', staffModify);
+</script>
     <!--selected-->
     <template id="select2-template">
     <select>

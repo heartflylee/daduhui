@@ -1,0 +1,48 @@
+<template id="staffModify">
+    <div class="staffModify">
+        <input-row :rows="name"></input-row>
+        <div class="m-row">
+            <div class="m-name ">
+                性别
+            </div>
+            <div class="m-info m-input">
+                <div class="radio-wrap">
+                    <label class="radio-box">
+                        <input type="radio" name="gender">
+                        <i></i>男</label>
+                    <label class="radio-box">
+                        <input type="radio" name="gender">
+                        <i></i>女</label>
+                </div>
+            </div>
+            <input-row :rows="phone"></input-row>
+            <input-row :rows="major"></input-row>
+        </div>
+</template>
+<script>
+    var staffModify = Vue.extend({
+        template: '#staffModify',
+        data: function () {
+            return {
+                name: {
+                    name: "员工姓名", value: "", input: true
+                },
+                gender: {
+                    name: "性别", value: ""
+                },
+                phone: {
+                    name: "手机号码", value: "", input: true
+                },
+                major: {
+                    name: "职位", value: "", input: true
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("编辑员工");
+            }
+        }
+    });
+    Vue.component('staffModify', staffModify);
+</script>

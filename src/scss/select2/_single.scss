@@ -1,6 +1,6 @@
 .select2-selection--single {
   box-sizing: border-box;
-
+  min-height: 40px;
   cursor: pointer;
   display: block;
 
@@ -26,17 +26,17 @@
     position: relative;
   }
 
-  .staff-head{
+  .staff-head {
     display: inline-block;
   }
-  .staff-name{
+  .staff-name {
     display: inline-block;
     line-height: 40px;
     vertical-align: top;
   }
 }
 
-&[dir="rtl"] {
+&[dir='rtl'] {
   .select2-selection--single {
     .select2-selection__rendered {
       padding-right: 8px;

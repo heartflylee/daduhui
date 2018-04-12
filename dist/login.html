@@ -70,8 +70,10 @@
             {{rows.name}}
         </div>
         <div class="m-info m-input" v-if="rows.input">
-            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"/>
-            <div v-if="rows.enter" class="enter-btn" :class="rows.icon"><i></i>{{rows.text}}</div>
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"
+            />
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon">
+                <i></i>{{rows.text}}</div>
         </div>
         <div class="m-info" v-else>
             {{rows.value}}
@@ -83,7 +85,7 @@
         template: '#inputRow',
         props: ['rows']
     });
-//    Vue.component('inputRow',inputRow);
+    Vue.component('inputRow', inputRow);
 </script>
 <!--登陆组件-->
 <template id="signIn">

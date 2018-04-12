@@ -57,7 +57,10 @@
             $("#departTree-wrap").hide();
         }
     }
-
+    //新建部门
+    function newDepart() {
+        vm.$data.layers.departmentAdd.show = true;
+    }
     var ztree = Vue.extend({
         template: '#ztree',
         data: function () {
@@ -117,12 +120,6 @@
                         ]
                     }
                 ]
-            }
-        },
-        directives: {
-            ztree: function (el, data) {
-                console.log(el);
-                console.log(data);
             }
         },
         mounted() {

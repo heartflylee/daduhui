@@ -158,8 +158,10 @@
             {{rows.name}}
         </div>
         <div class="m-info m-input" v-if="rows.input">
-            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"/>
-            <div v-if="rows.enter" class="enter-btn" :class="rows.icon"><i></i>{{rows.text}}</div>
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"
+            />
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon">
+                <i></i>{{rows.text}}</div>
         </div>
         <div class="m-info" v-else>
             {{rows.value}}
@@ -171,13 +173,13 @@
         template: '#inputRow',
         props: ['rows']
     });
-//    Vue.component('inputRow',inputRow);
+    Vue.component('inputRow', inputRow);
 </script>
     <!-- 选择跟进人 -->
     <template id="staffSelect">
     <div class="staff-select-wrap">
-        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'">
-            <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
+        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'" :id="id">
+            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
             <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
@@ -186,7 +188,7 @@
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
         </select>
         <select v-selectstaff v-else>
-            <option v-for="staff in staffs" :data-img="staff.img">{{staff.value}}</option>
+            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id" :id="id">{{staff.value}}</option>
             <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
@@ -197,9 +199,10 @@
     </div>
 </template>
 <script>
+
     var staffSelect = Vue.extend({
         template: '#staffSelect',
-        props:["multiple"],
+        props: ["multiple", 'id'],
         data: function () {
             return {
                 staffs: []
@@ -214,21 +217,21 @@
             }, function (response) {
                 console.info(response);
             })
-//
+            //
         },
         directives: {
             selectstaff:
                 {
                     update: function (el) {
                         console.log(el);
-//                        $(el).select2();
-//                        selectStaff(el);
+                        //                        $(el).select2();
+                        //                        selectStaff(el);
                         staffSelect(el);
                     }
                 }
         }
     });
-       Vue.component('staffSelect', staffSelect);
+    Vue.component('staffSelect', staffSelect);
 </script>
     <!-- 修改跟进人 -->
     <template id="changeContact">

@@ -63,6 +63,8 @@ function changed(data, ref) {
 
     if (data.input == 'true') {
       vm.$refs[ref].$data.messages.customFileds[data.name].selectShow = true;
+    } else {
+      vm.$refs[ref].$data.messages.customFileds[data.name].selectShow = false;
     }
   } else {
     vm.$refs[ref].$data.messages[data.name].value = data.value;

@@ -8,7 +8,7 @@
                     开始时间
                 </div>
                 <div class="m-info m-input">
-                    <input-time :time="rows.startTime.time"></input-time>
+                    <input-time :time="rows.startTime.time" ref="inputTime" id="startTime"></input-time>
                     <!--<select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">-->
                     <!--</select2>-->
                 </div>
@@ -40,7 +40,7 @@
                 执行坐席
             </div>
             <div class="m-info m-input">
-                <staff-select multiple="false"></staff-select>
+                <staff-select multiple="false" ref="staffSelect" id="staffSelect"></staff-select>
             </div>
         </div>
         <div class="m-row">
@@ -67,7 +67,7 @@
                         name: "任务名称", value: "", input: true, required: true
                     },
                     startTime: {
-                        name: "开始时间", value: "", input: true, required: true,time:{readonly:true,icon:"time",placeholder:"请选择开始时间",istime:false,format:"YYYY-MM-DD"}
+                        name: "开始时间", value: "", input: true, required: true, time: { readonly: true, icon: "time", placeholder: "请选择开始时间", istime: false, format: "YYYY-MM-DD" }
                     },
                     preNumber: {
                         name: "人均电话量", placeholder: "请输入电话数量", value: "", input: true, required: true
@@ -75,40 +75,42 @@
                     cycle: {
                         name: "任务周期",
                         value: "日",
-                        options: [{id: "日", text: "日"}, {id: "周", text: "周"}, {id: "月", text: "月"}]
+                        options: [{ id: "日", text: "日" }, { id: "周", text: "周" }, { id: "月", text: "月" }]
                     },
                     repetitions: {
                         name: "重复次数",
                         value: "不重复",
-                        options: [{id: "不重复", text: "不重复"}, {id: "1", text: "1"}, {id: "2", text: "2"}, {
+                        options: [{ id: "不重复", text: "不重复" }, { id: "1", text: "1" }, { id: "2", text: "2" }, {
                             id: "3",
                             text: "3"
-                        }, {id: "4", text: "4"}, {id: "5", text: "5"}, {id: "6", text: "6"}, {
+                        }, { id: "4", text: "4" }, { id: "5", text: "5" }, { id: "6", text: "6" }, {
                             id: "7",
                             text: "7"
-                        }, {id: "8", text: "8"}, {id: "9", text: "9"}, {id: "10", text: "10"}, {
+                        }, { id: "8", text: "8" }, { id: "9", text: "9" }, { id: "10", text: "10" }, {
                             id: "11",
                             text: "11"
-                        }, {id: "12", text: "12"}]
+                        }, { id: "12", text: "12" }]
                     },
                     data: {
                         name: "数据来源",
                         value: "0",
-                        optiondefault:true,
+                        optiondefault: true,
                         options: []
-                    },
+                    }
                 }
             }
         },
-        methods:{
-          submit:function () {
-              console.log("新建任务提交");
-          }
+        methods: {
+            submit: function () {
+                console.log($("#startTime").val());
+
+                console.log("新建任务提交");
+            }
         },
         components: {
             'inputRow': inputRow,
             'inputTime': inputTime,
-            'staffSelect':staffSelect
+            'staffSelect': staffSelect
         }
     });
     Vue.component('taskAdd', taskAdd);

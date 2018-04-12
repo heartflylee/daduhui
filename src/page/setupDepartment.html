@@ -57,24 +57,111 @@
                     部门管理
                 </div>
                 <div class="setup-main">
-                    <div class="setup-left">
+                    <div class="setup-left department-left">
                         <ztree></ztree>
+                        <div class="companyCode-wrap">
+                            <div class="companyCode-text">
+                                企业串码
+                            </div>
+                            <div class="companyCode-code">
+                                382087754
+                            </div>
+                            <div class="companyCode-text">
+                                邀请员工
+                            </div>
+                            <form class="join-wrap" @submit.prevent="joinEmployee">
+                                <div class="input-box">
+                                    <input type="text" class="input" placeholder="请输入员工手机号" v-model="employeePhone">
+                                </div>
+                                <div class="btn-box">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="setup-right">
+                        <div class="setupTable-top">
+                            <form class="setupTable-top-form" @submit.prevent="searchEmployee">
+                                <div class="setupSearch-box">
+                                    <input type="text" class="input" placeholder="搜索员工" v-model="selectEmployee">
+                                </div>
+                                <button type="submit" class="btn btn-primary">搜索</button>
+                            </form>
+                            <div class="setup-select">
+                                <label class="setupSelect-nav">已选中{{checklength}}项</label>
+                                <a class="setupSelect-nav" href="javasctipt:void(0)">设置为管理员</a>
+                                <a class="setupSelect-nav" href="javascript:void(0)">变更部门</a>
+                            </div>
+                            <div class="setupTable-right">
+                                <button class="btn btn-default">已解绑员工</button>
+                                <button class="btn btn-default">重置全部员工密码</button>
+                                <button class="btn btn-default">申请列表</button>
+                            </div>
+                        </div>
+                        <div class="setup-table">
+                            <div class="setupTable">
+                                <div class="jqxtable" id="jqxtable"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <transition name="layer">
+            <layer :layer="layers.departmentAdd">
+                <department-add ref="departmentAdd" :message="layers.departmentAdd.message"></department-add>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.departmentModify">
+                <department-add ref="departmentModify" :message="layers.departmentModify.message"></department-add>
+            </layer>
+        </transition>
     </div>
 
+    <template id="departmentAdd">
+        <input-row :rows="message"></input-row>
+    </template>
+    <script>
+        var departemntAdd = Vue.extend({
+            template: '#departmentAdd',
+            props: ['message'],
+            methods: {
+                submit: function () {
+                    console.log("新建部门提交");
+                }
+            }
+        });
+        Vue.component('departmentAdd', departemntAdd);
+    </script>
+    <template id="departmentModify">
+        <input-row :rows="message"></input-row>
+    </template>
+    <script>
+        var departmentModify = Vue.extend({
+            template: '#departmentModify',
+            props: ['message'],
+            methods: {
+                submit: function () {
+                    console.log("编辑部门提交");
+                }
+            }
+        });
+        Vue.component('departmentModify', departmentModify);
+    </script>
+    <!-- input输入框 -->
     @@include('../components/inputRow.html')
     <!--左侧导航-->
     @@include('../components/setupAside.html')
     <!--顶部-->
     @@include('../components/setupHead.html')
     <!--弹框-->
-    @@include('../components/layer.html') @@include('../components/autocomplete.html') @@include('../components/ztree.html')
-
-
+    @@include('../components/layer.html')
+    <!-- 树形图 -->
+    @@include('../components/ztree.html')
+    <!-- 编辑员工 -->
+    @@include('../components/staffModify.html')
     <!--selected-->
     @@include('../components/select2.html')
 

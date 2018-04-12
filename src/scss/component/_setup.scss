@@ -5,3 +5,125 @@
   border-bottom: 1px solid #efefef;
   line-height: 39px;
 }
+.setup-main {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  top: 60px;
+  // overflow: auto;
+}
+.setup-left {
+  width: 222px;
+  float: left;
+  position: relative;
+  height: 100%;
+  border-right: 1px solid #d4d4d4;
+}
+.setup-right {
+  height: 100%;
+  padding: 0 10px;
+  margin-left: 222px;
+  position: relative;
+}
+.ztree {
+  overflow: auto;
+  border-bottom: 1px solid #d4d4d4;
+  .department-left & {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 194px;
+    left: 0;
+    overflow: auto;
+  }
+}
+.companyCode-wrap {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 15px;
+  line-height: 24px;
+  font-size: 14px;
+  color: #383838;
+  text-align: center;
+}
+.companyCode-code {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d4d4d4;
+  font-size: 18px;
+  font-weight: bold;
+  color: #4e606e;
+  + .companyCode-text {
+    margin-top: 10px;
+  }
+}
+.join-wrap {
+  .input-box {
+    margin: 10px;
+    .input {
+      height: 30px;
+    }
+  }
+  .btn-box {
+    margin: 0 20px;
+    .btn {
+      width: 100%;
+    }
+  }
+}
+.setupTable-top {
+  padding: 10px 0;
+  border-bottom: 1px solid #d4d4d4;
+}
+.setupTable-top-form {
+  display: inline-block;
+}
+.setupSearch-box {
+  display: inline-block;
+  width: 242px;
+  .input {
+    height: 30px;
+  }
+}
+.setup-select {
+  display: inline-block;
+}
+.setupSelect-nav {
+  display: inline-block;
+  padding: 0 15px;
+  color: #999;
+  line-height: 26px;
+  border-left: 1px solid #999;
+  &:first-child {
+    border-left: 0;
+  }
+}
+.setupTable-right {
+  float: right;
+}
+.manager-name {
+  display: inline-block;
+  line-height: 40px;
+}
+.manager-tip {
+  display: inline-block;
+  line-height: 20px;
+  margin-top: 9px;
+  margin-left: 9px;
+  vertical-align: top;
+  width: 20px;
+  text-align: center;
+  background: #e25956;
+  border-radius: 2px;
+  font-size: 12px;
+  color: #fff;
+}
+.setupTable {
+  // margin: 0 10px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  top: 52px;
+}
