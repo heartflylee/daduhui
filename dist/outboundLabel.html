@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>部门设置</title>
+    <title>外呼标签</title>
     <!--公共-->
     <link type="image/x-icon" href="img/favicon.ico" rel="icon">
 
@@ -82,30 +82,11 @@
             <setup-aside menu="department"></setup-aside>
             <div class="b-panel">
                 <div class="setup-title">
-                    部门管理
+                    外呼标签
                 </div>
                 <div class="setup-main">
-                    <div class="setup-left department-left">
+                    <div class="setup-left department-left outbound">
                         <ztree editor="true" id="ztreeEditor" ref="ztreeEditor"></ztree>
-                        <div class="companyCode-wrap">
-                            <div class="companyCode-text">
-                                企业串码
-                            </div>
-                            <div class="companyCode-code">
-                                382087754
-                            </div>
-                            <div class="companyCode-text">
-                                邀请员工
-                            </div>
-                            <form class="join-wrap" @submit.prevent="joinEmployee">
-                                <div class="input-box">
-                                    <input type="text" class="input" placeholder="请输入员工手机号" v-model="employeePhone">
-                                </div>
-                                <div class="btn-box">
-                                    <button type="submit" class="btn btn-primary">提交</button>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                     <div class="setup-right">
                         <div class="setupTable-top">

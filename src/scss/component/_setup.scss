@@ -37,6 +37,10 @@
     left: 0;
     overflow: auto;
     border-bottom: 1px solid #d4d4d4;
+    &.outbound {
+      bottom: 0;
+      border-bottom: 0;
+    }
   }
 }
 .companyCode-wrap {
