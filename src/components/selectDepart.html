@@ -1,0 +1,40 @@
+<template id="selectDepart">
+    <div class="m-row m-selectDepart">
+        <div class="m-name required">
+            选择部门
+        </div>
+        <div class="m-info m-input">
+            <div class="select-box">
+                <div class="select-text" @click="selectClick" :class="departShow == true?'select-down':''">
+                    {{depart}}
+                    <b></b>
+                </div>
+                <div class="selectDown-wrap" v-if="departShow">
+                    <ztree editor="false" id="departZtree" ref="departZtree"></ztree>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+<script>
+    var selectDepart = Vue.extend({
+        template: '#selectDepart',
+        data: function () {
+            return {
+                depart: '',
+                departShow: false
+            }
+        },
+        methods: {
+            selectClick: function () {
+                this.$data.departShow = !this.$data.departShow;
+
+            },
+            submit: function () {
+                console.log("选择部门");
+            }
+        }
+    });
+    Vue.component('selectDepart', selectDepart);
+</script>

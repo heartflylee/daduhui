@@ -1,0 +1,51 @@
+<template id="unbundling">
+    <div class="unbundling-wrap">
+        <div class="unbundling-text">
+            请选择改员工所拥有的数据去向
+        </div>
+        <div class="unbundling-row">
+            <label class="radio-box">
+                <input type="radio" name="data" v-model="radio" value="0">
+                <i></i>
+                <span>数据进入公海（无跟进人）</span>
+            </label>
+            <label class="radio-box">
+                <input type="radio" name="data" v-model="radio" value="1">
+                <i></i>
+                <span>数据交接给其他员工（全部变更跟进人）</span>
+            </label>
+            <staff-select multiple="false" ref="staffSelect" id="staffSelect" disabled="disabled"></staff-select>
+            <label class="radio-box">
+                <input type="radio" name="data" v-model="radio" value="2">
+                <i></i>
+                <span>不进行数据转移（跟进人为原员工）</span>
+            </label>
+        </div>
+    </div>
+</template>
+<script>
+    var unbundling = Vue.extend({
+        template: '#unbundling',
+        data: function () {
+            return {
+                radio: 0
+            }
+        },
+        watch: {
+            radio: function (val) {
+                if (val == 1) {
+                    this.$refs.staffSelect.changeDisabled(false);
+                } else {
+                    this.$refs.staffSelect.changeDisabled(true);
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log($("#staffSelect").select2('data'));
+                console.log("解绑员工");
+            }
+        }
+    });
+    Vue.component('unbundling', unbundling);
+</script>

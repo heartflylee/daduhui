@@ -43,6 +43,36 @@ var vm = new Vue({
           show: false,
           submit: true,
           layerName: 'departmentModify',
+          message: {
+            name: '编辑部门',
+            input: true,
+            value: '',
+            required: true,
+          },
+        },
+        staffModify: {
+          title: '编辑员工',
+          show: false,
+          submit: true,
+          layerName: 'staffModify',
+        },
+        selectDepart: {
+          title: '变更部门',
+          show: false,
+          submit: true,
+          layerName: 'selectDepart',
+        },
+        unbundling: {
+          title: '解绑员工',
+          show: false,
+          submit: true,
+          layerName: 'unbundling',
+        },
+        setManager: {
+          title: '设置为管理员',
+          show: false,
+          submit: true,
+          layerName: 'setManager',
         },
       },
     };
@@ -60,6 +90,14 @@ var vm = new Vue({
     },
     searchEmployee: function() {
       console.log('搜索员工');
+    },
+    changeDepart: function() {
+      console.log('变更部门');
+      this.$data.layers.selectDepart.show = true;
+    },
+    manager: function() {
+      console.log('设置为管理员');
+      this.$data.layers.setManager.show = true;
     },
   },
 });
@@ -101,6 +139,7 @@ $(document).ready(function() {
     editable: false,
     rowsheight: 40, //行高
     pagerheight: 50,
+    selectionmode: 'checkbox', //选择框
     columns: [
       {
         text: '员工姓名',
@@ -173,12 +212,21 @@ $(document).ready(function() {
       },
     ],
   });
+
+  //表格内复选框
+  $('#jqxtable').on('rowselect rowunselect', function(e) {
+    var rowindexes = $('#jqxtable').jqxGrid('getselectedrowindexes');
+    vm.$data.checklength = rowindexes.length;
+    console.log(rowindexes);
+  });
 });
 
 function modifyStaff() {
+  vm.$data.layers.staffModify.show = true;
   console.log('编辑员工');
 }
 function unbundling() {
+  vm.$data.layers.unbundling.show = true;
   console.log('解除绑定');
 }
 function resetPwd() {

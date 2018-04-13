@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
@@ -29,67 +30,61 @@
     <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
 
 </head>
+
 <body>
-     <!-- Preloader -->
-  <div class="preloader">
+    <!-- Preloader -->
+    <div class="preloader">
         <div class="cssload-speeding-wheel"></div>
     </div>
-<div id="app">
-    
+    <div id="app">
+
         <!--header-->
-        <common-head ></common-head>
-   
-    <section class="b-main">
-         <!--左侧菜单-->
-    <menu-aside menu="index"></menu-aside>
-        <div class="b-panel">
-            <!-- <main-left></main-left> -->
-            <main-task></main-task>
-        </div>
-    </section>
+        <common-head></common-head>
 
-    <transition name="layer">
-        <layer :layer="layers.taskAdd" >
-            <task-add ref="taskAdd"></task-add>
-        </layer>
-    </transition>
-    <transition name="layer">
-        <layer :layer="layers.stopTask" >
-            <stop-task ref=stopTask></stop-task>
-        </layer>
-    </transition>
-</div>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="index"></menu-aside>
+            <div class="b-panel">
+                <!-- <main-left></main-left> -->
+                <main-task></main-task>
+            </div>
+        </section>
 
-<template id="stopTask">
-    <div class="layer-text-content">终止任务后将无法恢复，是否继续</div>
-</template>
-<script>
-    var stopTask = Vue.extend({
-            template:'#stopTask',
-            methods:{
-                submit:function(){
+        <transition name="layer">
+            <layer :layer="layers.taskAdd">
+                <task-add ref="taskAdd"></task-add>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.stopTask">
+                <stop-task ref=stopTask></stop-task>
+            </layer>
+        </transition>
+    </div>
+
+    <template id="stopTask">
+        <div class="layer-text-content">终止任务后将无法恢复，是否继续</div>
+    </template>
+    <script>
+        var stopTask = Vue.extend({
+            template: '#stopTask',
+            methods: {
+                submit: function () {
                     console.log('终止任务');
                 }
             }
-    });
-    Vue.component('stopTask',stopTask);
-</script>
+        });
+        Vue.component('stopTask', stopTask);
+    </script> @@include('../components/staffSelect.html')
+    <!--左侧导航-->
+    @@include('../components/aside.html')
+    <!--顶部-->
+    @@include('../components/head.html') @@include('../components/mainTask.html') @@include('../components/inputRow.html') @@include('../components/inputTime.html')
+    @@include('../components/select2.html') @@include('../components/layer.html') @@include('../components/taskAdd.html')
 
-
-@@include('../components/staffSelect.html')
-<!--左侧导航-->
-@@include('../components/aside.html')
-<!--顶部-->
-@@include('../components/head.html')
-@@include('../components/mainTask.html')
-@@include('../components/inputRow.html')
-@@include('../components/inputTime.html')
-@@include('../components/select2.html')
-@@include('../components/layer.html')
-@@include('../components/taskAdd.html')
-
-<script src="js/scripts.js"></script>
-<script src="js/task.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/task.js"></script>
 
 </body>
+
 </html>

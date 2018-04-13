@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
@@ -59,56 +60,54 @@
     <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
 
 </head>
+
 <body>
-     <!-- Preloader -->
-  <div class="preloader">
+    <!-- Preloader -->
+    <div class="preloader">
         <div class="cssload-speeding-wheel"></div>
     </div>
-<div id="app">
-    
+    <div id="app">
+
         <!--header-->
-        <common-head ></common-head>
-   
-    <section class="b-main">
-         <!--左侧菜单-->
-    <menu-aside menu="index"></menu-aside>
-        <div class="b-panel">
-            <!-- <main-left></main-left> -->
-            <main-task></main-task>
-        </div>
-    </section>
+        <common-head></common-head>
 
-    <transition name="layer">
-        <layer :layer="layers.taskAdd" >
-            <task-add ref="taskAdd"></task-add>
-        </layer>
-    </transition>
-    <transition name="layer">
-        <layer :layer="layers.stopTask" >
-            <stop-task ref=stopTask></stop-task>
-        </layer>
-    </transition>
-</div>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="index"></menu-aside>
+            <div class="b-panel">
+                <!-- <main-left></main-left> -->
+                <main-task></main-task>
+            </div>
+        </section>
 
-<template id="stopTask">
-    <div class="layer-text-content">终止任务后将无法恢复，是否继续</div>
-</template>
-<script>
-    var stopTask = Vue.extend({
-            template:'#stopTask',
-            methods:{
-                submit:function(){
+        <transition name="layer">
+            <layer :layer="layers.taskAdd">
+                <task-add ref="taskAdd"></task-add>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.stopTask">
+                <stop-task ref=stopTask></stop-task>
+            </layer>
+        </transition>
+    </div>
+
+    <template id="stopTask">
+        <div class="layer-text-content">终止任务后将无法恢复，是否继续</div>
+    </template>
+    <script>
+        var stopTask = Vue.extend({
+            template: '#stopTask',
+            methods: {
+                submit: function () {
                     console.log('终止任务');
                 }
             }
-    });
-    Vue.component('stopTask',stopTask);
-</script>
-
-
-<template id="staffSelect">
+        });
+        Vue.component('stopTask', stopTask);
+    </script> <template id="staffSelect">
     <div class="staff-select-wrap">
-        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'" :id="id">
+        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'" :id="id" :disabled="idDisabled">
             <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
             <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
@@ -117,8 +116,8 @@
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
         </select>
-        <select v-selectstaff v-else>
-            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id" :id="id">{{staff.value}}</option>
+        <select v-selectstaff v-else :id="id" :disabled="idDisabled">
+            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
             <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
@@ -132,10 +131,16 @@
 
     var staffSelect = Vue.extend({
         template: '#staffSelect',
-        props: ["multiple", 'id'],
+        props: ["multiple", 'id', 'disabled'],
         data: function () {
             return {
-                staffs: []
+                staffs: [],
+                idDisabled: false
+            }
+        },
+        methods: {
+            changeDisabled: function (disabled) {
+                this.$data.idDisabled = disabled;
             }
         },
         created: function () {
@@ -146,7 +151,11 @@
                 this.$data.staffs = json;
             }, function (response) {
                 console.info(response);
-            })
+            });
+
+            if (this.$props.disabled == 'disabled') {
+                this.$data.idDisabled = true;
+            }
             //
         },
         directives: {
@@ -163,8 +172,8 @@
     });
     Vue.component('staffSelect', staffSelect);
 </script>
-<!--左侧导航-->
-<template id="aside">
+    <!--左侧导航-->
+    <template id="aside">
     <!-- 左侧菜单 -->
     <aside class="b-aside">
         <div class="menu-wrap">
@@ -261,8 +270,8 @@
     });
     Vue.component('menuAside', aside);
 </script>
-<!--顶部-->
-<template id="head">
+    <!--顶部-->
+    <template id="head">
     <header class="b-header">
         <div class="h-right">
             <div class="h-search">
@@ -354,8 +363,7 @@
         }
     });
     Vue.component('commonHead', head);
-</script>
-<template id="mainTask">
+</script> <template id="mainTask">
     <div class="main-box">
         <div class="small-nav-wrap">
             <div class="nav-box">
@@ -387,8 +395,7 @@
         }
     });
     Vue.component('mainTask', mainTask);
-</script>
-<template id="inputRow">
+</script> <template id="inputRow">
     <div class="m-row">
         <div class="m-name " :class="{required:rows.required}">
             {{rows.name}}
@@ -410,8 +417,7 @@
         props: ['rows']
     });
     Vue.component('inputRow', inputRow);
-</script>
-<template id="inputTime">
+</script> <template id="inputTime">
     <div class="input-time">
         <div class="input" v-time="date"></div>
         <input type="hidden" v-model="date" :id="id">
@@ -448,7 +454,7 @@
         }
     });
 </script>
-<template id="select2-template">
+    <template id="select2-template">
     <select>
         <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
         <slot></slot>
@@ -487,8 +493,7 @@
         }
     })
 
-</script>
-<template id="layer">
+</script> <template id="layer">
     <div class="modal" v-if="layer.show">
         <div class="layer-bg"></div>
         <div class="modal-dialog">
@@ -560,8 +565,7 @@
     });
 
     Vue.component('layer', layer);
-</script>
-<template id="taskAdd">
+</script> <template id="taskAdd">
     <div class="task-wrap">
         <input-row :rows="rows.taskName"></input-row>
         <div class="task-row">
@@ -666,7 +670,7 @@
         methods: {
             submit: function () {
                 console.log($("#startTime").val());
-
+                console.log($("#staffSelect").select2('data'));
                 console.log("新建任务提交");
             }
         },
@@ -679,8 +683,9 @@
     Vue.component('taskAdd', taskAdd);
 </script>
 
-<script src="js/scripts.js"></script>
-<script src="js/task.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/task.js"></script>
 
 </body>
+
 </html>

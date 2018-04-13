@@ -67,8 +67,6 @@
     <script src="js/jquery.ztree.core.js"></script>
     <script src="js/jquery.ztree.exedit.js"></script>
 
-
-
 </head>
 
 <body>
@@ -88,7 +86,7 @@
                 </div>
                 <div class="setup-main">
                     <div class="setup-left department-left">
-                        <ztree></ztree>
+                        <ztree editor="true" id="ztreeEditor" ref="ztreeEditor"></ztree>
                         <div class="companyCode-wrap">
                             <div class="companyCode-text">
                                 企业串码
@@ -119,8 +117,8 @@
                             </form>
                             <div class="setup-select">
                                 <label class="setupSelect-nav">已选中{{checklength}}项</label>
-                                <a class="setupSelect-nav" href="javasctipt:void(0)">设置为管理员</a>
-                                <a class="setupSelect-nav" href="javascript:void(0)">变更部门</a>
+                                <a class="setupSelect-nav" href="javasctipt:void(0)" @click="manager">设置为管理员</a>
+                                <a class="setupSelect-nav" href="javascript:void(0)" @click="changeDepart">变更部门</a>
                             </div>
                             <div class="setupTable-right">
                                 <button class="btn btn-default">已解绑员工</button>
@@ -146,6 +144,26 @@
         <transition name="layer">
             <layer :layer="layers.departmentModify">
                 <department-add ref="departmentModify" :message="layers.departmentModify.message"></department-add>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.staffModify">
+                <staff-modify ref="staffModify"></staff-modify>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.selectDepart">
+                <select-depart ref="selectDepart"></select-depart>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.unbundling">
+                <unbundling ref="unbundling"></unbundling>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.setManager">
+                <set-manager ref="setManager"></set-manager>
             </layer>
         </transition>
     </div>
@@ -179,6 +197,21 @@
             }
         });
         Vue.component('departmentModify', departmentModify);
+    </script>
+
+    <template id="setManager">
+        <div class="layer-text-content">设置为管理员后该员工可看到本部门及下属部门的数据，是否继续</div>
+    </template>
+    <script>
+        var setManager = Vue.extend({
+            template: '#setManager',
+            methods: {
+                submit: function () {
+                    console.log('设置为管理员');
+                }
+            }
+        });
+        Vue.component('setManager', setManager);
     </script>
     <!-- input输入框 -->
     <template id="inputRow">
@@ -396,70 +429,13 @@
 </script>
     <!-- 树形图 -->
     <template id="ztree">
-    <ul class="ztree" id="treeDemo"></ul>
+    <ul class="ztree" :id="id"></ul>
 </template>
 <script>
 
-
-    //显示添加节点
-    function addHoverDom(treeId, treeNode) {
-        var sObj = $("#" + treeNode.tId + "_span");
-        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
-        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-            + "' title='添加' onfocus='this.blur();'></span>";
-        sObj.after(addStr);
-        var btn = $("#addBtn_" + treeNode.tId);
-        if (btn) btn.bind("click", function () {
-            newDepart();
-            return false;
-        });
-    };
-
-    //去除添加节点
-    function removeHoverDom(treeId, treeNode) {
-        $("#addBtn_" + treeNode.tId).unbind().remove();
-    }
-
-    //删除节点（根节点不显示删除）
-    function showRemoveBtn(treeId, treeNode) {
-        return !(treeNode.parentTId == null);
-    }
-
-    //编辑前设置
-    function beforeEditName(treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj("tree");
-        zTree.selectNode(treeNode);
-        editorDepart();
-        return false;
-    }
-
-    //删除
-    function beforeRemove(treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj("tree");
-        zTree.selectNode(treeNode);
-        return confirm("确认删除  " + treeNode.name + " 吗？");
-    }
-
-    //选择部门
-    function onMouseDown(event, treeId, treeNode) {
-        //选中部门
-    }
-
-    //变更中选择部门
-    function departSelect(event, treeId, treeNode) {
-        if (treeNode != null) {
-            $("#department").val(treeNode.name);
-            var zTree = $.fn.zTree.getZTreeObj("depart-tree");
-            zTree.selectNode(treeNode);
-            $("#departTree-wrap").hide();
-        }
-    }
-    //新建部门
-    function newDepart() {
-        vm.$data.layers.departmentAdd.show = true;
-    }
     var ztree = Vue.extend({
         template: '#ztree',
+        props: ['editor', 'id'],
         data: function () {
             return {
                 setting: {
@@ -492,6 +468,33 @@
                         onMouseDown: onMouseDown
                     }
                 },
+                departSetting: {
+                    view: {
+                        selectedMulti: false,
+                        // showIcon: false,
+                        fontCss: {
+                            "font-weight": "bold"
+                        }
+                    },
+                    check: {
+                        enable: false
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    },
+                    edit: {
+                        enable: false
+                    },
+                    callback: {
+                        onClick: departSelect
+                    },
+                    async: {
+                        enable: true
+                    }
+
+                },
                 zNodes: [
                     {
                         name: "全公司", open: true,
@@ -520,10 +523,77 @@
             }
         },
         mounted() {
-            $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
+            var _self = this;
+            console.log((_self.$props.editor == 'true'));
+            console.log((_self.$props.id));
+            if (_self.$props.editor == 'true') {
+                $.fn.zTree.init($("#" + _self.$props.id), _self.$data.setting, _self.$data.zNodes);
+            } else {
+                $.fn.zTree.init($("#" + _self.$props.id), _self.$data.departSetting, _self.$data.zNodes);
+            }
         }
     });
     Vue.component('ztree', ztree);
+    //显示添加节点
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+            + "' title='添加' onfocus='this.blur();'></span>";
+        sObj.after(addStr);
+        var btn = $("#addBtn_" + treeNode.tId);
+        if (btn) btn.bind("click", function () {
+            newDepart();
+            return false;
+        });
+    };
+
+    //去除添加节点
+    function removeHoverDom(treeId, treeNode) {
+        $("#addBtn_" + treeNode.tId).unbind().remove();
+    }
+
+    //删除节点（根节点不显示删除）
+    function showRemoveBtn(treeId, treeNode) {
+        return !(treeNode.parentTId == null);
+    }
+
+    //编辑前设置
+    function beforeEditName(treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj(vm.$refs.ztreeEditor.$props.id);
+        zTree.selectNode(treeNode);
+        vm.$data.layers.departmentModify.show = true;
+        return false;
+    }
+
+
+    //删除
+    function beforeRemove(treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj(vm.$refs.ztreeEditor.$props.id);
+        zTree.selectNode(treeNode);
+        return confirm("确认删除  " + treeNode.name + " 吗？");
+    }
+
+    //选择部门
+    function onMouseDown(event, treeId, treeNode) {
+        //选中部门
+    }
+
+    //变更中选择部门
+    function departSelect(event, treeId, treeNode) {
+        if (treeNode != null) {
+            vm.$refs.selectDepart.$data.depart = treeNode.name;
+            vm.$refs.selectDepart.$data.departShow = false;
+            // $("#department").val(treeNode.name);
+            var zTree = $.fn.zTree.getZTreeObj(vm.$refs.selectDepart.$refs.departZtree.$props.id);
+            zTree.selectNode(treeNode);
+            // $("#departTree-wrap").hide();
+        }
+    }
+    //新建部门
+    function newDepart() {
+        vm.$data.layers.departmentAdd.show = true;
+    }
 </script>
     <!-- 编辑员工 -->
     <template id="staffModify">
@@ -543,9 +613,10 @@
                         <i></i>女</label>
                 </div>
             </div>
-            <input-row :rows="phone"></input-row>
-            <input-row :rows="major"></input-row>
         </div>
+        <input-row :rows="phone"></input-row>
+        <input-row :rows="major"></input-row>
+    </div>
 </template>
 <script>
     var staffModify = Vue.extend({
@@ -573,6 +644,165 @@
         }
     });
     Vue.component('staffModify', staffModify);
+</script>
+    <!-- 解绑员工 -->
+    <template id="unbundling">
+    <div class="unbundling-wrap">
+        <div class="unbundling-text">
+            请选择改员工所拥有的数据去向
+        </div>
+        <div class="unbundling-row">
+            <label class="radio-box">
+                <input type="radio" name="data" v-model="radio" value="0">
+                <i></i>
+                <span>数据进入公海（无跟进人）</span>
+            </label>
+            <label class="radio-box">
+                <input type="radio" name="data" v-model="radio" value="1">
+                <i></i>
+                <span>数据交接给其他员工（全部变更跟进人）</span>
+            </label>
+            <staff-select multiple="false" ref="staffSelect" id="staffSelect" disabled="disabled"></staff-select>
+            <label class="radio-box">
+                <input type="radio" name="data" v-model="radio" value="2">
+                <i></i>
+                <span>不进行数据转移（跟进人为原员工）</span>
+            </label>
+        </div>
+    </div>
+</template>
+<script>
+    var unbundling = Vue.extend({
+        template: '#unbundling',
+        data: function () {
+            return {
+                radio: 0
+            }
+        },
+        watch: {
+            radio: function (val) {
+                if (val == 1) {
+                    this.$refs.staffSelect.changeDisabled(false);
+                } else {
+                    this.$refs.staffSelect.changeDisabled(true);
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log($("#staffSelect").select2('data'));
+                console.log("解绑员工");
+            }
+        }
+    });
+    Vue.component('unbundling', unbundling);
+</script> <template id="staffSelect">
+    <div class="staff-select-wrap">
+        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'" :id="id" :disabled="idDisabled">
+            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
+            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+        </select>
+        <select v-selectstaff v-else :id="id" :disabled="idDisabled">
+            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
+            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
+            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
+        </select>
+    </div>
+</template>
+<script>
+
+    var staffSelect = Vue.extend({
+        template: '#staffSelect',
+        props: ["multiple", 'id', 'disabled'],
+        data: function () {
+            return {
+                staffs: [],
+                idDisabled: false
+            }
+        },
+        methods: {
+            changeDisabled: function (disabled) {
+                this.$data.idDisabled = disabled;
+            }
+        },
+        created: function () {
+            var url = "json/staffList.json";
+            this.$http.get(url).then(function (data) {
+                var json = JSON.parse(data.bodyText);
+                console.log(json);
+                this.$data.staffs = json;
+            }, function (response) {
+                console.info(response);
+            });
+
+            if (this.$props.disabled == 'disabled') {
+                this.$data.idDisabled = true;
+            }
+            //
+        },
+        directives: {
+            selectstaff:
+                {
+                    update: function (el) {
+                        console.log(el);
+                        //                        $(el).select2();
+                        //                        selectStaff(el);
+                        staffSelect(el);
+                    }
+                }
+        }
+    });
+    Vue.component('staffSelect', staffSelect);
+</script>
+    <!-- 变更部门 -->
+    <template id="selectDepart">
+    <div class="m-row m-selectDepart">
+        <div class="m-name required">
+            选择部门
+        </div>
+        <div class="m-info m-input">
+            <div class="select-box">
+                <div class="select-text" @click="selectClick" :class="departShow == true?'select-down':''">
+                    {{depart}}
+                    <b></b>
+                </div>
+                <div class="selectDown-wrap" v-if="departShow">
+                    <ztree editor="false" id="departZtree" ref="departZtree"></ztree>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+<script>
+    var selectDepart = Vue.extend({
+        template: '#selectDepart',
+        data: function () {
+            return {
+                depart: '',
+                departShow: false
+            }
+        },
+        methods: {
+            selectClick: function () {
+                this.$data.departShow = !this.$data.departShow;
+
+            },
+            submit: function () {
+                console.log("选择部门");
+            }
+        }
+    });
+    Vue.component('selectDepart', selectDepart);
 </script>
     <!--selected-->
     <template id="select2-template">

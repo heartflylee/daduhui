@@ -195,7 +195,9 @@ function staffSelect(el) {
     },
     templateSelection: function(data) {
       console.log(data);
-      $(el).val(data);
+      // $(el)
+      //   .next()
+      //   .val(data);
       var element = data.element;
       if (
         element != undefined &&

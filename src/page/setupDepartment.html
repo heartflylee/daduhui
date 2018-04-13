@@ -37,8 +37,6 @@
     <script src="js/jquery.ztree.core.js"></script>
     <script src="js/jquery.ztree.exedit.js"></script>
 
-
-
 </head>
 
 <body>
@@ -58,7 +56,7 @@
                 </div>
                 <div class="setup-main">
                     <div class="setup-left department-left">
-                        <ztree></ztree>
+                        <ztree editor="true" id="ztreeEditor" ref="ztreeEditor"></ztree>
                         <div class="companyCode-wrap">
                             <div class="companyCode-text">
                                 企业串码
@@ -89,8 +87,8 @@
                             </form>
                             <div class="setup-select">
                                 <label class="setupSelect-nav">已选中{{checklength}}项</label>
-                                <a class="setupSelect-nav" href="javasctipt:void(0)">设置为管理员</a>
-                                <a class="setupSelect-nav" href="javascript:void(0)">变更部门</a>
+                                <a class="setupSelect-nav" href="javasctipt:void(0)" @click="manager">设置为管理员</a>
+                                <a class="setupSelect-nav" href="javascript:void(0)" @click="changeDepart">变更部门</a>
                             </div>
                             <div class="setupTable-right">
                                 <button class="btn btn-default">已解绑员工</button>
@@ -116,6 +114,26 @@
         <transition name="layer">
             <layer :layer="layers.departmentModify">
                 <department-add ref="departmentModify" :message="layers.departmentModify.message"></department-add>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.staffModify">
+                <staff-modify ref="staffModify"></staff-modify>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.selectDepart">
+                <select-depart ref="selectDepart"></select-depart>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.unbundling">
+                <unbundling ref="unbundling"></unbundling>
+            </layer>
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.setManager">
+                <set-manager ref="setManager"></set-manager>
             </layer>
         </transition>
     </div>
@@ -150,6 +168,21 @@
         });
         Vue.component('departmentModify', departmentModify);
     </script>
+
+    <template id="setManager">
+        <div class="layer-text-content">设置为管理员后该员工可看到本部门及下属部门的数据，是否继续</div>
+    </template>
+    <script>
+        var setManager = Vue.extend({
+            template: '#setManager',
+            methods: {
+                submit: function () {
+                    console.log('设置为管理员');
+                }
+            }
+        });
+        Vue.component('setManager', setManager);
+    </script>
     <!-- input输入框 -->
     @@include('../components/inputRow.html')
     <!--左侧导航-->
@@ -162,6 +195,10 @@
     @@include('../components/ztree.html')
     <!-- 编辑员工 -->
     @@include('../components/staffModify.html')
+    <!-- 解绑员工 -->
+    @@include('../components/unbundling.html') @@include('../components/staffSelect.html')
+    <!-- 变更部门 -->
+    @@include('../components/selectDepart.html')
     <!--selected-->
     @@include('../components/select2.html')
 

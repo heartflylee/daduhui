@@ -178,7 +178,7 @@
     <!-- 选择跟进人 -->
     <template id="staffSelect">
     <div class="staff-select-wrap">
-        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'" :id="id">
+        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'" :id="id" :disabled="idDisabled">
             <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
             <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
@@ -187,8 +187,8 @@
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
         </select>
-        <select v-selectstaff v-else>
-            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id" :id="id">{{staff.value}}</option>
+        <select v-selectstaff v-else :id="id" :disabled="idDisabled">
+            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
             <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
             <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
@@ -202,10 +202,16 @@
 
     var staffSelect = Vue.extend({
         template: '#staffSelect',
-        props: ["multiple", 'id'],
+        props: ["multiple", 'id', 'disabled'],
         data: function () {
             return {
-                staffs: []
+                staffs: [],
+                idDisabled: false
+            }
+        },
+        methods: {
+            changeDisabled: function (disabled) {
+                this.$data.idDisabled = disabled;
             }
         },
         created: function () {
@@ -216,7 +222,11 @@
                 this.$data.staffs = json;
             }, function (response) {
                 console.info(response);
-            })
+            });
+
+            if (this.$props.disabled == 'disabled') {
+                this.$data.idDisabled = true;
+            }
             //
         },
         directives: {
