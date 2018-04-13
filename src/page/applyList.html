@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>申请列表</title>
+    <!--公共-->
+    @@include("../component/common.html",{"style":"normal"})
+    <!--表格-->
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
+
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
+
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+        <!--header-->
+        <setup-head></setup-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <setup-aside menu="department"></setup-aside>
+            <div class="b-panel">
+                <div class="setup-title">
+                    申请列表
+                    <div class="setupTable-right">
+                        <button class="btn btn-primary">批量同意</button>
+                        <button class="btn btn-danger">批量拒绝</button>
+                    </div>
+                </div>
+                <div class="setup-main">
+                    <div class="jqxtable" id="jqxtable"></div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+
+
+    <!--左侧导航-->
+    @@include('../components/setupAside.html')
+    <!--顶部-->
+    @@include('../components/setupHead.html')
+
+    <script src="js/scripts.js"></script>
+    <script src="js/applyList.js"></script>
+
+</body>
+
+</html>

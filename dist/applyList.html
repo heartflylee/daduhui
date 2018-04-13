@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>申请列表</title>
+    <!--公共-->
+    <link type="image/x-icon" href="img/favicon.ico" rel="icon">
+
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/beAlert.css">
+<link rel="stylesheet" href="css/select2.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/jqxgrid.css">
+
+
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource@1.3.4.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/resize.js"></script>
+<script src="js/beAlert.js"></script>
+<script src="js/select2.js"></script>
+<script src="js/drag.js"></script>
+<!--<script src="js/jsDate/laydate.js"></script>-->
+<!--<script src="js/layDate/laydate.js"></script>-->
+<!---->
+
+<script src="js/audio.js"></script>
+
+<!--[if lt IE 10]>
+<script type="text/javascript" src="js/html5shiv.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script>
+<script type="text/javascript" src="js/placeholder.js"></script>
+<![endif]-->
+    <!--表格-->
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
+
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
+
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+        <!--header-->
+        <setup-head></setup-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <setup-aside menu="department"></setup-aside>
+            <div class="b-panel">
+                <div class="setup-title">
+                    申请列表
+                    <div class="setupTable-right">
+                        <button class="btn btn-primary">批量同意</button>
+                        <button class="btn btn-danger">批量拒绝</button>
+                    </div>
+                </div>
+                <div class="setup-main">
+                    <div class="jqxtable" id="jqxtable"></div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+
+
+    <!--左侧导航-->
+    <template id="setupAside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside setupAside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <li class="setup-menu" v-for="item,$index in menuList">
+                    <a :href="item.href" class="setup-menu-href" :class="menu == item.name?'active':''">
+                        <i class="setup-icon" :class="'setup-m'+($index+1)"></i>
+                        <span>{{item.text}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+</template>
+<script>
+
+    var setupAside = Vue.extend({
+        template: '#setupAside',
+        props: ['menu'],
+        data: function () {
+            return {
+                menuList: [
+                    {
+                        name: 'department',
+                        icon: 'setup-m1',
+                        text: '部门管理',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'calltags',
+                        icon: 'setup-m2',
+                        text: '外呼标签',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'message',
+                        icon: 'setup-m3',
+                        text: '短信设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'email',
+                        icon: 'setup-m4',
+                        text: '邮件设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'team',
+                        icon: 'setup-m5',
+                        text: '团队设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'custom',
+                        icon: 'setup-m6',
+                        text: '自定义字段',
+                        href: 'javascript:void(0)'
+                    },
+
+                ]
+            }
+        },
+        methods: {
+        }
+    });
+    Vue.component('setupAside', setupAside);
+</script>
+    <!--顶部-->
+    <template id="setupHead">
+    <header class="b-header setupHead-wrap">
+        <div class="h-right">
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-setup-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-home"></i>
+                        <span>返回首页</span>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-setup-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout"></i>
+                        <span>退出登录</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var setupHead = Vue.extend({
+        template: '#setupHead',
+        data: function () {
+            return {
+                user: {
+                    company: "北京蜜宝世纪科技有限公司",
+                    headImg: "img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+
+            }
+        }
+    });
+    Vue.component('setupHead', setupHead);
+</script>
+
+    <script src="js/scripts.js"></script>
+    <script src="js/applyList.js"></script>
+
+</body>
+
+</html>

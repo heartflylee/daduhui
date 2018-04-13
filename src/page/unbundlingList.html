@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>已解绑员工</title>
+    <!--公共-->
+    @@include("../component/common.html",{"style":"normal"})
+    <!--表格-->
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
+
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
+
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+        <!--header-->
+        <setup-head></setup-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <setup-aside menu="department"></setup-aside>
+            <div class="b-panel">
+                <div class="setup-title">
+                    已解绑员工
+                </div>
+                <div class="setup-main">
+                    <div class="jqxtable" id="jqxtable"></div>
+                </div>
+            </div>
+        </section>
+
+        <transition name="layer">
+            <layer :layer="layers.cancellation">
+                <cancellation ref="cancellation"></cancellation>
+            </layer>
+        </transition>
+
+    </div>
+
+    <template id="cancellation">
+        <div class="cancellation-wrap">
+            <div class="cancellation-text">
+                短信验证码已发送
+            </div>
+            <div class="cancellation-box">
+                <div class="btn-box">
+                    <button class="btn" :class="isDisabled==true?'':'btn-primary'" :disabled="isDisabled" @click="getCode">{{btnText}}</button>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input" placeholder="请输入验证码" v-model="code">
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        var cancellation = Vue.extend({
+            template: '#cancellation',
+            data: function () {
+                return {
+                    code: '',
+                    isDisabled: true,
+                    btnText: '60s后重新获取'
+                }
+            },
+            methods: {
+                getCode: function () {
+                    console.log("获取验证码");
+                    var time, long = 60, _self = this;
+                    _self.$data.isDisabled = true;
+                    _self.$data.btnText = long + 's后重新获取';
+                    time = setInterval(function () {
+                        long--;
+                        _self.$data.btnText = long + 's后重新获取';
+                        if (long <= 0) {
+                            clearInterval(time);
+                            _self.$data.btnText = "获取短信验证码";
+                            _self.$data.isDisabled = false;
+                        }
+                    }, 1000);
+                },
+                submit: function () {
+                    console.log("注销账号");
+                },
+
+            },
+            mounted: function () {
+                this.getCode();
+            }
+        });
+        Vue.component('cancellation', cancellation);
+    </script>
+    <!--左侧导航-->
+    @@include('../components/setupAside.html')
+    <!--顶部-->
+    @@include('../components/setupHead.html')
+
+    <!--弹框-->
+    @@include('../components/layer.html')
+
+    <script src="js/scripts.js"></script>
+    <script src="js/unbundlingList.js"></script>
+
+</body>
+
+</html>

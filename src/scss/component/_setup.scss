@@ -198,3 +198,19 @@
   .select2-selection__arrow {
   height: 38px;
 }
+.cancellation-text {
+  padding: 20px;
+  text-align: center;
+}
+.cancellation-box {
+  .btn-box {
+    float: right;
+    .btn {
+      height: 40px;
+      width: 140px;
+    }
+  }
+  .input-box {
+    margin-right: 150px;
+  }
+}

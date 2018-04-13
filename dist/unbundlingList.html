@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>已解绑员工</title>
+    <!--公共-->
+    <link type="image/x-icon" href="img/favicon.ico" rel="icon">
+
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/beAlert.css">
+<link rel="stylesheet" href="css/select2.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/jqxgrid.css">
+
+
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource@1.3.4.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/resize.js"></script>
+<script src="js/beAlert.js"></script>
+<script src="js/select2.js"></script>
+<script src="js/drag.js"></script>
+<!--<script src="js/jsDate/laydate.js"></script>-->
+<!--<script src="js/layDate/laydate.js"></script>-->
+<!---->
+
+<script src="js/audio.js"></script>
+
+<!--[if lt IE 10]>
+<script type="text/javascript" src="js/html5shiv.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script>
+<script type="text/javascript" src="js/placeholder.js"></script>
+<![endif]-->
+    <!--表格-->
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
+
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
+
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+        <!--header-->
+        <setup-head></setup-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <setup-aside menu="department"></setup-aside>
+            <div class="b-panel">
+                <div class="setup-title">
+                    已解绑员工
+                </div>
+                <div class="setup-main">
+                    <div class="jqxtable" id="jqxtable"></div>
+                </div>
+            </div>
+        </section>
+
+        <transition name="layer">
+            <layer :layer="layers.cancellation">
+                <cancellation ref="cancellation"></cancellation>
+            </layer>
+        </transition>
+
+    </div>
+
+    <template id="cancellation">
+        <div class="cancellation-wrap">
+            <div class="cancellation-text">
+                短信验证码已发送
+            </div>
+            <div class="cancellation-box">
+                <div class="btn-box">
+                    <button class="btn" :class="isDisabled==true?'':'btn-primary'" :disabled="isDisabled" @click="getCode">{{btnText}}</button>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input" placeholder="请输入验证码" v-model="code">
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        var cancellation = Vue.extend({
+            template: '#cancellation',
+            data: function () {
+                return {
+                    code: '',
+                    isDisabled: true,
+                    btnText: '60s后重新获取'
+                }
+            },
+            methods: {
+                getCode: function () {
+                    console.log("获取验证码");
+                    var time, long = 60, _self = this;
+                    _self.$data.isDisabled = true;
+                    _self.$data.btnText = long + 's后重新获取';
+                    time = setInterval(function () {
+                        long--;
+                        _self.$data.btnText = long + 's后重新获取';
+                        if (long <= 0) {
+                            clearInterval(time);
+                            _self.$data.btnText = "获取短信验证码";
+                            _self.$data.isDisabled = false;
+                        }
+                    }, 1000);
+                },
+                submit: function () {
+                    console.log("注销账号");
+                },
+
+            },
+            mounted: function () {
+                this.getCode();
+            }
+        });
+        Vue.component('cancellation', cancellation);
+    </script>
+    <!--左侧导航-->
+    <template id="setupAside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside setupAside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <li class="setup-menu" v-for="item,$index in menuList">
+                    <a :href="item.href" class="setup-menu-href" :class="menu == item.name?'active':''">
+                        <i class="setup-icon" :class="'setup-m'+($index+1)"></i>
+                        <span>{{item.text}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+</template>
+<script>
+
+    var setupAside = Vue.extend({
+        template: '#setupAside',
+        props: ['menu'],
+        data: function () {
+            return {
+                menuList: [
+                    {
+                        name: 'department',
+                        icon: 'setup-m1',
+                        text: '部门管理',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'calltags',
+                        icon: 'setup-m2',
+                        text: '外呼标签',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'message',
+                        icon: 'setup-m3',
+                        text: '短信设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'email',
+                        icon: 'setup-m4',
+                        text: '邮件设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'team',
+                        icon: 'setup-m5',
+                        text: '团队设置',
+                        href: 'javascript:void(0)'
+                    },
+                    {
+                        name: 'custom',
+                        icon: 'setup-m6',
+                        text: '自定义字段',
+                        href: 'javascript:void(0)'
+                    },
+
+                ]
+            }
+        },
+        methods: {
+        }
+    });
+    Vue.component('setupAside', setupAside);
+</script>
+    <!--顶部-->
+    <template id="setupHead">
+    <header class="b-header setupHead-wrap">
+        <div class="h-right">
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-setup-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-home"></i>
+                        <span>返回首页</span>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-setup-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout"></i>
+                        <span>退出登录</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var setupHead = Vue.extend({
+        template: '#setupHead',
+        data: function () {
+            return {
+                user: {
+                    company: "北京蜜宝世纪科技有限公司",
+                    headImg: "img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+
+            }
+        }
+    });
+    Vue.component('setupHead', setupHead);
+</script>
+
+    <!--弹框-->
+    <template id="layer">
+    <div class="modal" v-if="layer.show">
+        <div class="layer-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="submit" autocomplete="off">
+                    <div class="modal-header layer-head">
+                        <button type="button" class="close" @click="close">&times;</button>
+                        <h4 class="modal-title">{{layer.title}}</h4>
+                    </div>
+                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
+                        <slot></slot>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click="close">关闭</button>
+                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var layer = Vue.extend({
+        template: '#layer',
+        props: ['layer'],
+        data: function () {
+            return {
+                maxHeight: document.body.clientHeight - 200
+            }
+        },
+        methods: {
+            close: function (layer) {
+                console.log(this.$props);
+                this.$props.layer.show = false;
+                return false;
+            },
+            submit: function () {
+                console.log("彈框提交");
+                console.log(vm.$refs[this.$props.layer.layerName]);
+                vm.$refs[this.$props.layer.layerName].submit();
+                return false;
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            window.onresize = function () {
+                _self.maxHeight = document.body.clientHeight - 200;
+            }
+        },
+        watch: {
+            maxHeight: function (val) {
+                var modalBody = document.getElementsByClassName('modal-body');
+                for (var i = 0; i < modalBody.length; i++) {
+                    modalBody[i].style.maxHeight = val + 'px';
+                }
+            }
+        },
+        updated: function () {
+            var modalDialog = $(this.$el).find(".modal-dialog")[0];
+            $(modalDialog).css({
+                top: ($("body").height() - $(modalDialog).height()) / 2,
+                left: ($("body").width() - $(modalDialog).width()) / 2
+            });
+            $(modalDialog).bg_move({
+                    move: '.modal-header',
+                    closed: '.close'
+                });
+        }
+    });
+
+    Vue.component('layer', layer);
+</script>
+
+    <script src="js/scripts.js"></script>
+    <script src="js/unbundlingList.js"></script>
+
+</body>
+
+</html>
