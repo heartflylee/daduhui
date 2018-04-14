@@ -450,6 +450,7 @@
         props: ['options', 'value','name','optiondefault'],
         template: '#select2-template',
         mounted: function () {
+            console.log("123123")
             var vm = this
             $(this.$el)
             // init select2
@@ -559,7 +560,7 @@
                 短信模板
             </div>
             <div class="m-info m-input">
-                <select2 :options="rows.message.options" v-model="rows.message.value" name="短信模板">
+                <select2 :options="rows.message.options" v-model="rows.message.value" name="短信模板" id="messageSelect">
                 </select2>
             </div>
         </div>
@@ -568,7 +569,7 @@
                 短信内容
             </div>
             <div class="m-info m-input">
-                <textarea class="textarea"  v-model="rows.messageContent.value"></textarea>
+                <textarea class="textarea"  v-model="rows.messageContent.value" disabled="disabled"></textarea>
             </div>
         </div>
        
@@ -602,16 +603,13 @@
                     },
                    message:{
                     name: "短信模板", value: "不重复", required: true,
-                        options: [{id: "不重复", text: "不重复"}, {id: "1", text: "1"}, {id: "2", text: "2"}, {
+                        options: [{id: "不重复", text: "不重复",content:'模板1'}, {id: "1", text: "1",content:'模板2'}, {id: "2", text: "2",content:'模板3'}, {
                             id: "3",
-                            text: "3"
-                        }, {id: "4", text: "4"}, {id: "5", text: "5"}, {id: "6", text: "6"}, {
+                            text: "3",content:'模板4'
+                        }, {id: "4", text: "4",content:'模板5'}, {id: "5", text: "5",content:'模板6'}, {id: "6", text: "6",content:'模板7'}, {
                             id: "7",
-                            text: "7"
-                        }, {id: "8", text: "8"}, {id: "9", text: "9"}, {id: "10", text: "10"}, {
-                            id: "11",
-                            text: "11"
-                        }, {id: "12", text: "12"}]
+                            text: "7",content:'模板8'
+                        }, {id: "8", text: "8",content:'模板9'}]
                    },
                    messageContent:{
                     name: "短信内容", value: "", input: true
@@ -625,10 +623,27 @@
                 }
             }
         },
+        watch:{
+            'rows.message.value':{
+                handler:function(val,oldVal){
+                    var _self = this;
+                    var options = _self.$data.rows.message.options;
+                    for(var i=0;i<options.length;i++){
+                        if(val == options[i].text){
+                            _self.$data.rows.messageContent.value = options[i].content;
+                            return;
+                        }
+                    }
+                },
+                // 深度观察
+                deep:true
+            }
+        },
         methods:{
           submit:function () {
               console.log("新建任务提交");
-          }
+          },
+          
         },
         components: {
             'inputRow': inputRow,

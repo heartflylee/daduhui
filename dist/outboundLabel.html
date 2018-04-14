@@ -83,104 +83,36 @@
             <div class="b-panel">
                 <div class="setup-title">
                     外呼标签
+                    <div class="setupTable-right">
+                        <div class="select-box">
+                            <div class="select-text">
+                                <b></b>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="setup-main">
                     <div class="setup-left department-left outbound">
                         <ztree editor="true" id="ztreeEditor" ref="ztreeEditor"></ztree>
                     </div>
                     <div class="setup-right">
-                        <div class="setupTable-top">
-                            <form class="setupTable-top-form" @submit.prevent="searchEmployee">
-                                <div class="setupSearch-box">
-                                    <input type="text" class="input" placeholder="搜索员工" v-model="selectEmployee">
-                                </div>
-                                <button type="submit" class="btn btn-primary">搜索</button>
-                            </form>
-                            <div class="setup-select">
-                                <label class="setupSelect-nav">已选中{{checklength}}项</label>
-                                <a class="setupSelect-nav" href="javasctipt:void(0)" @click="manager">设置为管理员</a>
-                                <a class="setupSelect-nav" href="javascript:void(0)" @click="changeDepart">变更部门</a>
-                            </div>
-                            <div class="setupTable-right">
-                                <a class="btn btn-default" href="unbundlingList.html">已解绑员工</a>
-                                <button class="btn btn-default">重置全部员工密码</button>
-                                <a class="btn btn-default" href="applyList.html">申请列表</a>
-                            </div>
-                        </div>
-                        <div class="setup-table">
-                            <div class="setupTable">
-                                <div class="jqxtable" id="jqxtable"></div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
         </section>
 
-        <transition name="layer">
+        <!-- <transition name="layer">
             <layer :layer="layers.departmentAdd">
                 <department-add ref="departmentAdd" :message="layers.departmentAdd.message"></department-add>
             </layer>
-        </transition>
-        <transition name="layer">
-            <layer :layer="layers.departmentModify">
-                <department-add ref="departmentModify" :message="layers.departmentModify.message"></department-add>
-            </layer>
-        </transition>
-        <transition name="layer">
-            <layer :layer="layers.staffModify">
-                <staff-modify ref="staffModify"></staff-modify>
-            </layer>
-        </transition>
-        <transition name="layer">
-            <layer :layer="layers.selectDepart">
-                <select-depart ref="selectDepart"></select-depart>
-            </layer>
-        </transition>
-        <transition name="layer">
-            <layer :layer="layers.unbundling">
-                <unbundling ref="unbundling"></unbundling>
-            </layer>
-        </transition>
-        <transition name="layer">
-            <layer :layer="layers.setManager">
-                <set-manager ref="setManager"></set-manager>
-            </layer>
-        </transition>
+        </transition> -->
+
     </div>
 
-    <template id="departmentAdd">
-        <input-row :rows="message"></input-row>
-    </template>
-    <script>
-        var departemntAdd = Vue.extend({
-            template: '#departmentAdd',
-            props: ['message'],
-            methods: {
-                submit: function () {
-                    console.log("新建部门提交");
-                }
-            }
-        });
-        Vue.component('departmentAdd', departemntAdd);
-    </script>
-    <template id="departmentModify">
-        <input-row :rows="message"></input-row>
-    </template>
-    <script>
-        var departmentModify = Vue.extend({
-            template: '#departmentModify',
-            props: ['message'],
-            methods: {
-                submit: function () {
-                    console.log("编辑部门提交");
-                }
-            }
-        });
-        Vue.component('departmentModify', departmentModify);
-    </script>
 
-    <template id="setManager">
+
+    <!-- <template id="setManager">
         <div class="layer-text-content">设置为管理员后该员工可看到本部门及下属部门的数据，是否继续</div>
     </template>
     <script>
@@ -193,31 +125,8 @@
             }
         });
         Vue.component('setManager', setManager);
-    </script>
-    <!-- input输入框 -->
-    <template id="inputRow">
-    <div class="m-row">
-        <div class="m-name " :class="{required:rows.required}">
-            {{rows.name}}
-        </div>
-        <div class="m-info m-input" v-if="rows.input">
-            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"
-            />
-            <div v-if="rows.enter" class="enter-btn" :class="rows.icon">
-                <i></i>{{rows.text}}</div>
-        </div>
-        <div class="m-info" v-else>
-            {{rows.value}}
-        </div>
-    </div>
-</template>
-<script>
-    var inputRow = Vue.extend({
-        template: '#inputRow',
-        props: ['rows']
-    });
-    Vue.component('inputRow', inputRow);
-</script>
+    </script> -->
+
     <!--左侧导航-->
     <template id="setupAside">
     <!-- 左侧菜单 -->
@@ -576,259 +485,9 @@
         vm.$data.layers.departmentAdd.show = true;
     }
 </script>
-    <!-- 编辑员工 -->
-    <template id="staffModify">
-    <div class="staffModify">
-        <input-row :rows="name"></input-row>
-        <div class="m-row">
-            <div class="m-name ">
-                性别
-            </div>
-            <div class="m-info m-input">
-                <div class="radio-wrap">
-                    <label class="radio-box">
-                        <input type="radio" name="gender">
-                        <i></i>男</label>
-                    <label class="radio-box">
-                        <input type="radio" name="gender">
-                        <i></i>女</label>
-                </div>
-            </div>
-        </div>
-        <input-row :rows="phone"></input-row>
-        <input-row :rows="major"></input-row>
-    </div>
-</template>
-<script>
-    var staffModify = Vue.extend({
-        template: '#staffModify',
-        data: function () {
-            return {
-                name: {
-                    name: "员工姓名", value: "", input: true
-                },
-                gender: {
-                    name: "性别", value: ""
-                },
-                phone: {
-                    name: "手机号码", value: "", input: true
-                },
-                major: {
-                    name: "职位", value: "", input: true
-                }
-            }
-        },
-        methods: {
-            submit: function () {
-                console.log("编辑员工");
-            }
-        }
-    });
-    Vue.component('staffModify', staffModify);
-</script>
-    <!-- 解绑员工 -->
-    <template id="unbundling">
-    <div class="unbundling-wrap">
-        <div class="unbundling-text">
-            请选择改员工所拥有的数据去向
-        </div>
-        <div class="unbundling-row">
-            <label class="radio-box">
-                <input type="radio" name="data" v-model="radio" value="0">
-                <i></i>
-                <span>数据进入公海（无跟进人）</span>
-            </label>
-            <label class="radio-box">
-                <input type="radio" name="data" v-model="radio" value="1">
-                <i></i>
-                <span>数据交接给其他员工（全部变更跟进人）</span>
-            </label>
-            <staff-select multiple="false" ref="staffSelect" id="staffSelect" disabled="disabled"></staff-select>
-            <label class="radio-box">
-                <input type="radio" name="data" v-model="radio" value="2">
-                <i></i>
-                <span>不进行数据转移（跟进人为原员工）</span>
-            </label>
-        </div>
-    </div>
-</template>
-<script>
-    var unbundling = Vue.extend({
-        template: '#unbundling',
-        data: function () {
-            return {
-                radio: 0
-            }
-        },
-        watch: {
-            radio: function (val) {
-                if (val == 1) {
-                    this.$refs.staffSelect.changeDisabled(false);
-                } else {
-                    this.$refs.staffSelect.changeDisabled(true);
-                }
-            }
-        },
-        methods: {
-            submit: function () {
-                console.log($("#staffSelect").select2('data'));
-                console.log("解绑员工");
-            }
-        }
-    });
-    Vue.component('unbundling', unbundling);
-</script> <template id="staffSelect">
-    <div class="staff-select-wrap">
-        <select v-selectstaff multiple="multiple" v-if="multiple == 'true'" :id="id" :disabled="idDisabled">
-            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
-            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
-        </select>
-        <select v-selectstaff v-else :id="id" :disabled="idDisabled">
-            <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
-            <!--<option data-img="img/head-list.png" data-manage="true">艾云鹤1</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤21</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤31</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤41</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤51</option>-->
-            <!--<option data-img="img/head-list.png" data-manage="false">艾云鹤61</option>-->
-        </select>
-    </div>
-</template>
-<script>
-
-    var staffSelect = Vue.extend({
-        template: '#staffSelect',
-        props: ["multiple", 'id', 'disabled'],
-        data: function () {
-            return {
-                staffs: [],
-                idDisabled: false
-            }
-        },
-        methods: {
-            changeDisabled: function (disabled) {
-                this.$data.idDisabled = disabled;
-            }
-        },
-        created: function () {
-            var url = "json/staffList.json";
-            this.$http.get(url).then(function (data) {
-                var json = JSON.parse(data.bodyText);
-                console.log(json);
-                this.$data.staffs = json;
-            }, function (response) {
-                console.info(response);
-            });
-
-            if (this.$props.disabled == 'disabled') {
-                this.$data.idDisabled = true;
-            }
-            //
-        },
-        directives: {
-            selectstaff:
-                {
-                    update: function (el) {
-                        console.log(el);
-                        //                        $(el).select2();
-                        //                        selectStaff(el);
-                        staffSelect(el);
-                    }
-                }
-        }
-    });
-    Vue.component('staffSelect', staffSelect);
-</script>
-    <!-- 变更部门 -->
-    <template id="selectDepart">
-    <div class="m-row m-selectDepart">
-        <div class="m-name required">
-            选择部门
-        </div>
-        <div class="m-info m-input">
-            <div class="select-box">
-                <div class="select-text" @click="selectClick" :class="departShow == true?'select-down':''">
-                    {{depart}}
-                    <b></b>
-                </div>
-                <div class="selectDown-wrap" v-if="departShow">
-                    <ztree editor="false" id="departZtree" ref="departZtree"></ztree>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</template>
-<script>
-    var selectDepart = Vue.extend({
-        template: '#selectDepart',
-        data: function () {
-            return {
-                depart: '',
-                departShow: false
-            }
-        },
-        methods: {
-            selectClick: function () {
-                this.$data.departShow = !this.$data.departShow;
-
-            },
-            submit: function () {
-                console.log("选择部门");
-            }
-        }
-    });
-    Vue.component('selectDepart', selectDepart);
-</script>
-    <!--selected-->
-    <template id="select2-template">
-    <select>
-        <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
-        <slot></slot>
-    </select>
-</template>
-
-<script>
-    Vue.component('select2', {
-        props: ['options', 'value','name','optiondefault'],
-        template: '#select2-template',
-        mounted: function () {
-            var vm = this
-            $(this.$el)
-            // init select2
-                .select2({ data: this.options })
-                .val(this.value)
-                .trigger('change')
-                // emit event on change.
-                .on('change', function () {
-                    vm.$emit('input', this.value)
-                })
-        },
-        watch: {
-            value: function (value) {
-                // update value
-                $(this.$el).val(value).trigger('change');
-            },
-            options: function (options) {
-                console.log(options);
-                // update options
-                $(this.$el).select2({ data: options })
-            }
-        },
-        destroyed: function () {
-            $(this.$el).off().select2('destroy')
-        }
-    })
-
-</script>
 
     <script src="js/scripts.js"></script>
-    <script src="js/setupDepartment.js"></script>
+    <script src="js/outboundLabel.js"></script>
 
 </body>
 
