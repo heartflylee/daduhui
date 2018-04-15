@@ -1,5 +1,9 @@
 <template id="calltips">
-        <div class="tag-radius" >{{tips.value}}<div class="tag-editor-box"><span class="icon icon-editor"></span><span class="icon icon-remove"></span></div></div>
+        <form class="calltips" @submit.prevent="tipsSubmit">
+            <label v-show="!modify">{{tips.value}}</label>
+            <input type="text" v-model="data" v-show="modify" :id="'tips'+tips.id" @blur="tipsSubmit">
+            <div class="tag-editor-box" v-show="!modify"><span class="icon icon-editor" @click="modifyBtn"></span><span class="icon icon-remove"></span></div>
+        </div>
 </template>
 
 <script>
@@ -8,7 +12,24 @@
         props:['tips'],
         data:function(){
             return{
-
+modify:false,
+data:""
+            }
+        },
+        methods:{
+            modifyBtn:function(){
+                this.$data.data = this.$props.tips.value;
+                this.$data.modify = true;
+            },
+            tipsSubmit:function(){
+                console.log("外呼标签提交");
+                  this.$props.tips.value = this.$data.data;
+                this.$data.modify = false;
+            }
+        },
+        mounted:function(){
+            if(this.$props.tips.edit == true){
+                this.$data.modify = true;
             }
         }
     });

@@ -84,11 +84,15 @@
                 <div class="setup-title">
                     外呼标签
                     <div class="setupTable-right">
-                        <div class="select-box">
-                            <div class="select-text">
-                                <b></b>
-                            </div>
-                        </div>
+                                <div class="select-box setup-right-depart">
+                                        <div class="select-text" @click="selectClick" :class="departShow == true?'select-down':''">
+                                            {{depart}}
+                                            <b></b>
+                                        </div>
+                                        <div class="selectDown-wrap" v-if="departShow">
+                                            <ztree editor="false" id="departZtree" ref="departZtree"></ztree>
+                                        </div>
+                                    </div>
                     </div>
                 </div>
                 <div class="setup-main">
@@ -96,14 +100,14 @@
                         <ztree editor="true" id="ztreeEditor" ref="ztreeEditor"></ztree>
                     </div>
                     <div class="setup-right">
-                            <div class="calltips-wrap">
+                            <form class="calltips-wrap" @submit.prevent="submit">
                                     <div class="tag-main">
                                         <div class="tag-main-name">
                                             有意向
                                         </div>
                                         <div class="tag-radius-box">
                                             <calltips v-for="item in calltips.intentions" :tips="item" ></calltips>
-                                            
+                                            <div class="calltips" @click="addTips('intentions')"><label class="calltips-add">+</label> </div>
                                         </div>
                                     </div>
                                     <div class="tag-main">
@@ -112,7 +116,7 @@
                                         </div>
                                         <div class="tag-radius-box">
                                                 <calltips v-for="item in calltips.noIntentions" :tips="item" ></calltips>
-                                            
+                                                <div class="calltips" @click="addTips('noIntentions')"><label class="calltips-add">+</label> </div>
                                         </div>
                                     </div>
                                     <div class="tag-main">
@@ -121,7 +125,7 @@
                                         </div>
                                         <div class="tag-radius-box">
                                                 <calltips v-for="item in calltips.dataErrors"  :tips="item"></calltips>
-                                             
+                                                <div class="calltips" @click="addTips('dataErrors')"><label class="calltips-add">+</label> </div>
                                         </div>
                                     </div>
                                     <div class="tag-main">
@@ -130,15 +134,19 @@
                                         </div>
                                         <div class="tag-radius-box">
                                                 <calltips v-for="item in calltips.twiceCalls"  :tips="item"></calltips>
-                                            
+                                                <div class="calltips" @click="addTips('twiceCalls')"><label class="calltips-add">+</label> </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="btn-box">
+                                            <button class="btn btn-primary" type="submit">保存标签组</button>
+                                        </div>
+                                    </form>
+                              
                     </div>
                 </div>
             </div>
         </section>
-
+ 
         <!-- <transition name="layer">
             <layer :layer="layers.departmentAdd">
                 <department-add ref="departmentAdd" :message="layers.departmentAdd.message"></department-add>
@@ -163,7 +171,6 @@
         });
         Vue.component('setManager', setManager);
     </script> -->
-
     <!--左侧导航-->
     <template id="setupAside">
     <!-- 左侧菜单 -->
@@ -356,7 +363,11 @@
 </script>
 
     <template id="calltips">
-        <div class="tag-radius" >{{tips.value}}<div class="tag-editor-box"><span class="icon icon-editor"></span><span class="icon icon-remove"></span></div></div>
+        <form class="calltips" @submit.prevent="tipsSubmit">
+            <label v-show="!modify">{{tips.value}}</label>
+            <input type="text" v-model="data" v-show="modify" :id="'tips'+tips.id" @blur="tipsSubmit">
+            <div class="tag-editor-box" v-show="!modify"><span class="icon icon-editor" @click="modifyBtn"></span><span class="icon icon-remove"></span></div>
+        </div>
 </template>
 
 <script>
@@ -365,7 +376,24 @@
         props:['tips'],
         data:function(){
             return{
-
+modify:false,
+data:""
+            }
+        },
+        methods:{
+            modifyBtn:function(){
+                this.$data.data = this.$props.tips.value;
+                this.$data.modify = true;
+            },
+            tipsSubmit:function(){
+                console.log("外呼标签提交");
+                  this.$props.tips.value = this.$data.data;
+                this.$data.modify = false;
+            }
+        },
+        mounted:function(){
+            if(this.$props.tips.edit == true){
+                this.$data.modify = true;
             }
         }
     });

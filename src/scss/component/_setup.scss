@@ -39,7 +39,7 @@
     border-bottom: 1px solid #d4d4d4;
     
   }
-  .department.outbound &{
+  .department-left.outbound &{
     bottom: 0;
     border-bottom: 0;
   }
@@ -222,8 +222,33 @@
 .calltips-wrap{
   padding: 20px;
 } 
-.tag-radius{
+.calltips{
   position: relative;
+  display: inline-block;
+  height:30px;
+ line-height: 0;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  min-width: 90px;
+  border:1px solid #d4d4d4;
+  text-align: center;
+  border-radius: 20px;
+  vertical-align: top;
+  input[type="text"]{
+    width:90px;;
+    padding:0;
+    height:28px;
+    border-radius: 15px;
+    border:0;
+    text-align: center;
+  }
+  label{
+    display: inline-block;
+    line-height: 30px;
+  }
+}
+.calltips-add{
+  font-size: 20px;
 }
 .tag-editor-box{
   display: none;
@@ -236,11 +261,18 @@
   color: #fff;
   border-radius:25px;
   font-family: 'iconfont';
-  .tag-radius:hover &{
+  .calltips:hover &{
     display: block;
   }
   .icon{
     width:50%;
+    height:100%;
+    float: left;
+    border-left:1px solid #fff;
+    line-height: 30px;
+    &:first-child{
+      border-left:0;
+    }
   }
 }
 .icon-editor{
@@ -248,8 +280,15 @@
     content:'\e8cf';
   }
 }
-.icon-romove{
+.icon-remove{
   &:after{
     content:'\e61c';
   }
+}
+.setup-right-depart{
+width:200px;
+z-index: 9;
+.selectDown-wrap{
+  box-shadow: 0 0 3px #d4d4d4;
+}
 }

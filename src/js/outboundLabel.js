@@ -9,6 +9,8 @@ var vm = new Vue({
         dataErrors: [{value:'资料错误',  id:"1"},{value: '资料错误1',id:"2"}],
         twiceCalls: [{value:'二次外呼',  id:"1"},{value: '二次外呼1',id:"2"}],
       },
+      depart: '',
+                departShow: false,
       layers: {
       },
     };
@@ -21,7 +23,18 @@ var vm = new Vue({
     layer: function(layer) {
       this.layers[layer].show = true;
     },
-    
+    addTips:function(type){
+      this.$data.calltips[type].push({
+        value:'',id:'0',edit:true
+      })
+    },
+    submit:function(){
+      console.log("提交")
+    },
+    selectClick: function () {
+      this.$data.departShow = !this.$data.departShow;
+
+    }
   },
 });
 
