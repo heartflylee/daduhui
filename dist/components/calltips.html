@@ -1,0 +1,16 @@
+<template id="calltips">
+        <div class="tag-radius" >{{tips.value}}<div class="tag-editor-box"><span class="icon icon-editor"></span><span class="icon icon-remove"></span></div></div>
+</template>
+
+<script>
+    var calltips = Vue.extend({
+        template:'#calltips',
+        props:['tips'],
+        data:function(){
+            return{
+
+            }
+        }
+    });
+    Vue.component('calltips',calltips);
+</script>

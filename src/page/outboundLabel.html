@@ -66,7 +66,44 @@
                         <ztree editor="true" id="ztreeEditor" ref="ztreeEditor"></ztree>
                     </div>
                     <div class="setup-right">
-
+                            <div class="calltips-wrap">
+                                    <div class="tag-main">
+                                        <div class="tag-main-name">
+                                            有意向
+                                        </div>
+                                        <div class="tag-radius-box">
+                                            <calltips v-for="item in calltips.intentions" :tips="item" ></calltips>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="tag-main">
+                                        <div class="tag-main-name">
+                                            无意向
+                                        </div>
+                                        <div class="tag-radius-box">
+                                                <calltips v-for="item in calltips.noIntentions" :tips="item" ></calltips>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="tag-main">
+                                        <div class="tag-main-name">
+                                            资料错误
+                                        </div>
+                                        <div class="tag-radius-box">
+                                                <calltips v-for="item in calltips.dataErrors"  :tips="item"></calltips>
+                                             
+                                        </div>
+                                    </div>
+                                    <div class="tag-main">
+                                        <div class="tag-main-name">
+                                            二次外呼
+                                        </div>
+                                        <div class="tag-radius-box">
+                                                <calltips v-for="item in calltips.twiceCalls"  :tips="item"></calltips>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
                     </div>
                 </div>
             </div>
@@ -103,6 +140,8 @@
     @@include('../components/setupHead.html')
     <!--弹框-->
     @@include('../components/layer.html')
+
+    @@include('../components/calltips.html')
     <!-- 树形图 -->
     @@include('../components/ztree.html')
 

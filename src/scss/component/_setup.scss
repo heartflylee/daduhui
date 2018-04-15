@@ -37,10 +37,11 @@
     left: 0;
     overflow: auto;
     border-bottom: 1px solid #d4d4d4;
-    &.outbound {
-      bottom: 0;
-      border-bottom: 0;
-    }
+    
+  }
+  .department.outbound &{
+    bottom: 0;
+    border-bottom: 0;
   }
 }
 .companyCode-wrap {
@@ -216,5 +217,39 @@
   }
   .input-box {
     margin-right: 150px;
+  }
+}
+.calltips-wrap{
+  padding: 20px;
+} 
+.tag-radius{
+  position: relative;
+}
+.tag-editor-box{
+  display: none;
+ position: absolute;
+  width:100%;
+  height: 100%;
+  top:0;
+  left:0;
+  background: #4e606e;
+  color: #fff;
+  border-radius:25px;
+  font-family: 'iconfont';
+  .tag-radius:hover &{
+    display: block;
+  }
+  .icon{
+    width:50%;
+  }
+}
+.icon-editor{
+  &:after{
+    content:'\e8cf';
+  }
+}
+.icon-romove{
+  &:after{
+    content:'\e61c';
   }
 }
