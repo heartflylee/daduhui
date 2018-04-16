@@ -1,0 +1,94 @@
+<template id="departZtree">
+    <ul class="ztree" :id="id"></ul>
+</template>
+<script>
+
+    var departZtree = Vue.extend({
+        template: '#departZtree',
+        props: ['editor', 'id'],
+        data: function () {
+            return {
+                departSetting: {
+                    view: {
+                        selectedMulti: false,
+                        // showIcon: false,
+                        fontCss: {
+                            "font-weight": "bold"
+                        }
+                    },
+                    check: {
+                        enable: false
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    },
+                    edit: {
+                        enable: false
+                    },
+                    callback: {
+                        onClick: this.departSelect
+                    },
+                    async: {
+                        enable: true
+                    }
+
+                },
+                zNodes: [
+                    {
+                        name: "全公司", open: true,
+                        children: [
+                            {
+                                name: "销售部",
+                                children: [
+                                    { name: "销售部1" },
+                                    { name: "销售部2" },
+                                    { name: "销售部3" },
+                                    { name: "销售部4" }
+                                ]
+                            },
+                            {
+                                name: "市场部",
+                                children: [
+                                    { name: "市场部1" },
+                                    { name: "市场部2" },
+                                    { name: "市场部3" },
+                                    { name: "市场部4市场部4市场部4市场部4市场部4" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        methods:{
+    //变更中选择部门
+     departSelect:function(event, treeId, treeNode) {
+         console.log("123123123")
+         console.log(treeNode)
+         var _self =this;
+        if (treeNode != null) {
+            // vm.$refs.selectDepart.$data.depart = treeNode.name;
+            // vm.$refs.selectDepart.$data.departShow = false;
+            
+            // $("#department").val(treeNode.name);
+            var zTree = $.fn.zTree.getZTreeObj(_self.$props.id);
+            zTree.selectNode(treeNode);
+            _self.$emit('treeselect',treeNode.name);
+            // $("#departTree-wrap").hide();
+        }
+    }
+        },
+        mounted() {
+            var _self = this;
+                $.fn.zTree.init($("#" + _self.$props.id), _self.$data.departSetting, _self.$data.zNodes);
+        
+        }
+    });
+    Vue.component('departZtree', departZtree);
+  
+
+
+
+</script>

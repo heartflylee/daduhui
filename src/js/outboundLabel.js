@@ -34,6 +34,11 @@ var vm = new Vue({
     selectClick: function () {
       this.$data.departShow = !this.$data.departShow;
 
+    },
+    treeNode:function(name){
+      console.log(name);
+      this.$data.depart = name;
+      this.$data.departShow = false;
     }
   },
 });

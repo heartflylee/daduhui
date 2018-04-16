@@ -60,7 +60,7 @@
                                             <b></b>
                                         </div>
                                         <div class="selectDown-wrap" v-if="departShow">
-                                            <ztree editor="false" id="departZtree" ref="departZtree"></ztree>
+                                            <depart-ztree editor="false" id="departZtree" ref="departZtree" @treeselect="treeNode"></depart-ztree>
                                         </div>
                                     </div>
                     </div>
@@ -150,7 +150,7 @@
 
     @@include('../components/calltips.html')
     <!-- 树形图 -->
-    @@include('../components/ztree.html')
+    @@include('../components/departztree.html')
 
     <script src="js/scripts.js"></script>
     <script src="js/outboundLabel.js"></script>
