@@ -1,0 +1,32 @@
+<template id="myTask">
+    <div class="main-box">
+        <div class="small-nav-wrap">
+            <div class="nav-box">
+                <label class="nav-title">
+                    任务列表
+                </label>
+                <div class="nav-right">
+                    <div class="task-btn btn btn-radius btn-primary">进行中</div>
+                    <div class="task-btn btn btn-radius">已完成</div>
+                    <!-- <label class="nav-btn" @click="taskAdd">新建任务</label> -->
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="jqxtable task" id="jqxtable"></div>
+        </div>
+    </div>
+</template>
+<script>
+    var myTask = Vue.extend({
+        template: '#myTask',
+        data: function () {
+            return {
+            }
+        },
+        methods: {
+
+        }
+    });
+    Vue.component('myTask', myTask);
+</script>

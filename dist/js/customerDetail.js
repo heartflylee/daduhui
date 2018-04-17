@@ -1,19 +1,3 @@
-//客户详情切换
-function tags(obj) {
-  var $obj = $(obj);
-  var objli = $obj.parent('.tags-li');
-  if (objli.hasClass('active')) {
-    return false;
-  }
-  var index = objli.index('.tags-li');
-  var tags = objli.parents('.tags');
-  var tagsMain = tags.next();
-  var tagsShow = tagsMain.find('.tags-con-li:eq(' + index + ')');
-  tags.find('.tags-li').removeClass('active');
-  objli.addClass('active');
-  tagsMain.find('.tags-con-li').removeClass('active');
-  tagsShow.addClass('active');
-}
 //详情内相关的显示隐藏
 function detail(obj) {
   var dMain = $(obj)
@@ -50,29 +34,6 @@ $(function() {
   //     }
   // })
 });
-
-function changed(data, ref) {
-  console.log(data);
-  //保存修改的字段
-  console.log(vm.$refs[ref].$data.messages);
-  // console.log(!isNaN(data.name));
-  if (!isNaN(data.name)) {
-    console.log(vm.$refs[ref].$data.messages.customFileds);
-    vm.$refs[ref].$data.messages.customFileds[data.name].value = data.value;
-    vm.$refs[ref].$data.messages.customFileds[data.name].text = data.text;
-
-    if (data.input == 'true') {
-      vm.$refs[ref].$data.messages.customFileds[data.name].selectShow = true;
-    } else {
-      vm.$refs[ref].$data.messages.customFileds[data.name].selectShow = false;
-    }
-  } else {
-    vm.$refs[ref].$data.messages[data.name].value = data.value;
-  }
-
-  console.log(vm.$refs[ref].$data.messages);
-  // console.log(customerModify);
-}
 
 //客户详情中的表格全选/全部不选
 function checkboxAll(obj) {

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
-    <title>电话任务详情</title>
+    <title>我的任务</title>
     <!--公共-->
     <link type="image/x-icon" href="img/favicon.ico" rel="icon">
 
@@ -59,32 +60,30 @@
     <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
 
 </head>
+
 <body>
-     <!-- Preloader -->
-  <div class="preloader">
+    <!-- Preloader -->
+    <div class="preloader">
         <div class="cssload-speeding-wheel"></div>
     </div>
-<div id="app">
-    
+    <div id="app">
+
         <!--header-->
-        <common-head ></common-head>
-   
-    <section class="b-main">
-         <!--左侧菜单-->
-    <menu-aside menu="index"></menu-aside>
-        <div class="b-panel">
-            <task-detail ></task-detail>
-        </div>
-    </section>
+        <common-head></common-head>
 
-        <!--通话录音-->
-        <transition name="audio">
-            <my-audio :layer="audio"></my-audio>
-        </transition>
-</div>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="task"></menu-aside>
+            <div class="b-panel">
+                <!-- <main-left></main-left> -->
+                <my-task></my-task>
+            </div>
+        </section>
+    </div>
 
-<!--左侧导航-->
-<template id="aside">
+    
+    <!--左侧导航-->
+    <template id="aside">
     <!-- 左侧菜单 -->
     <aside class="b-aside">
         <div class="menu-wrap">
@@ -188,8 +187,8 @@
     });
     Vue.component('menuAside', aside);
 </script>
-<!--顶部-->
-<template id="head">
+    <!--顶部-->
+    <template id="head">
     <header class="b-header">
         <div class="h-right">
             <div class="h-search">
@@ -282,13 +281,19 @@
     });
     Vue.component('commonHead', head);
 </script>
-<template id="taskDetail">
+    <!-- 我的任务 -->
+    <template id="myTask">
     <div class="main-box">
         <div class="small-nav-wrap">
             <div class="nav-box">
                 <label class="nav-title">
-                    电话任务<span> - {{taskTitle}}({{taskNum}}/{{taskTotal}})</span>
+                    任务列表
                 </label>
+                <div class="nav-right">
+                    <div class="task-btn btn btn-radius btn-primary">进行中</div>
+                    <div class="task-btn btn btn-radius">已完成</div>
+                    <!-- <label class="nav-btn" @click="taskAdd">新建任务</label> -->
+                </div>
             </div>
         </div>
         <div class="table-wrap">
@@ -297,72 +302,99 @@
     </div>
 </template>
 <script>
-    var taskDetail = Vue.extend({
-        template: '#taskDetail',
+    var myTask = Vue.extend({
+        template: '#myTask',
         data: function () {
             return {
-                taskTitle:'2月26日任务',
-                taskNum:'2',
-                taskTotal:'12'
             }
         },
         methods: {
+
         }
     });
-    Vue.component('taskDetail', taskDetail);
+    Vue.component('myTask', myTask);
 </script>
-    <!-- 语音播放 -->
-    <template id="audio">
-    <div v-if="layer.show" class="audio-wrap">
-        <div class="audio ">
-            <a class="close" @click="close">&times;</a>
-            <div class="audio-title">{{layer.name}}</div>
-            <div class="audio-company">{{layer.company}}</div>
-            <audio preload="none" v-audio :audio="layer.url"></audio>
-            <a :href="layer.url" class="audio-download">&#xe614;</a>
+    
+    
+    
+    <template id="layer">
+    <div class="modal" v-if="layer.show">
+        <div class="layer-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="submit" autocomplete="off">
+                    <div class="modal-header layer-head">
+                        <button type="button" class="close" @click="close">&times;</button>
+                        <h4 class="modal-title">{{layer.title}}</h4>
+                    </div>
+                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
+                        <slot></slot>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click="close">关闭</button>
+                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </template>
 <script>
-    var audio;
-    var myAudio = Vue.extend({
-        template: '#audio',
+    var layer = Vue.extend({
+        template: '#layer',
         props: ['layer'],
         data: function () {
             return {
-
+                maxHeight: document.body.clientHeight - 200
             }
         },
-        methods:{
-          close:function(){
-              console.log('121');
-              audio.pause();
-              vm.$data.audio.show = false;
-          }
+        methods: {
+            close: function (layer) {
+                console.log(this.$props);
+                this.$props.layer.show = false;
+                return false;
+            },
+            submit: function () {
+                console.log("彈框提交");
+                console.log(vm.$refs[this.$props.layer.layerName]);
+                vm.$refs[this.$props.layer.layerName].submit();
+                return false;
+            }
         },
-        directives: {
-            audio: {
-                inserted:function (el) {
-                    console.log(el);
-                    console.log(this);
-                    audio = audiojs.create(el);
-                    audio.load(vm.$data.audio.url);
-                    audio.play();
-                },
-                update: function (el) {
-                    console.log(el);
-                    console.log(this);
-//                    audio = audiojs.create(el);
-                    audio.load(vm.$data.audio.url);
-                    audio.play();
+        mounted: function () {
+            var _self = this;
+            window.onresize = function () {
+                _self.maxHeight = document.body.clientHeight - 200;
+            }
+        },
+        watch: {
+            maxHeight: function (val) {
+                var modalBody = document.getElementsByClassName('modal-body');
+                for (var i = 0; i < modalBody.length; i++) {
+                    modalBody[i].style.maxHeight = val + 'px';
                 }
             }
+        },
+        updated: function () {
+            var modalDialog = $(this.$el).find(".modal-dialog")[0];
+            $(modalDialog).css({
+                top: ($("body").height() - $(modalDialog).height()) / 2,
+                left: ($("body").width() - $(modalDialog).width()) / 2
+            });
+            $(modalDialog).bg_move({
+                    move: '.modal-header',
+                    closed: '.close'
+                });
         }
     });
-    Vue.component('myAudio', myAudio);
-</script> 
-<script src="js/scripts.js"></script>
-<script src="js/taskDetail.js"></script>
+
+    Vue.component('layer', layer);
+</script>
+    
+
+    <script src="js/scripts.js"></script>
+    <script src="js/mytask.js"></script>
 
 </body>
+
 </html>

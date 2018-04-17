@@ -9,7 +9,7 @@ function newcustomer() {
 }
 
 // common scripts
-(function() {
+$(function() {
   'use strict';
 
   $("[data-toggle='tooltip']").tooltip();
@@ -50,7 +50,7 @@ function newcustomer() {
   //     }
   // })
   // $(".select2").select2();
-})(jQuery);
+});
 
 //时间格式化
 Date.prototype.Format = function(fmt) {
@@ -272,10 +272,8 @@ function audioDownload(obj, e) {
 function tableResize() {
   $('.table-wrap').resize(function() {
     var elem = $(this);
-    console.log(elem);
     if ($('#jqxtable').length > 0) {
       $('#jqxtable').jqxGrid('beginupdate');
-      console.log($('.table-wrap').width());
       $('#jqxtable').jqxGrid('width', $('.table-wrap').width());
       $('#jqxtable').jqxGrid('endupdate');
     }
@@ -285,15 +283,40 @@ function tableResize() {
     //     .text( this.tagName + ' width: ' + elem.width() + ', height: ' + elem.height() );
   });
   // $('.table-wrap').on('resize',function () {
-  console.log('111');
-  console.log($('#jqxtable'));
   if ($('#jqxtable').length > 0) {
     $('#jqxtable').jqxGrid('beginupdate');
-    console.log($('.table-wrap').width());
     $('#jqxtable').jqxGrid('width', $('.table-wrap').width());
     $('#jqxtable').jqxGrid('endupdate');
   }
   // })
 }
-
-$(function() {});
+//客户详情切换，拨打电话切换
+function tags(obj) {
+  var $obj = $(obj);
+  var objli = $obj.parent('.tags-li');
+  if (objli.hasClass('active')) {
+    return false;
+  }
+  var index = objli.index('.tags-li');
+  var tags = objli.parents('.tags');
+  var tagsMain = tags.next();
+  var tagsShow = tagsMain.find('.tags-con-li:eq(' + index + ')');
+  tags.find('.tags-li').removeClass('active');
+  objli.addClass('active');
+  tagsMain.find('.tags-con-li').removeClass('active');
+  tagsShow.addClass('active');
+}
+//客户详情，拨打电话修改字段
+function changed(data, ref) {
+  if (!isNaN(data.name)) {
+    vm.$refs[ref].$data.messages.customFileds[data.name].value = data.value;
+    vm.$refs[ref].$data.messages.customFileds[data.name].text = data.text;
+    if (data.input == 'true') {
+      vm.$refs[ref].$data.messages.customFileds[data.name].selectShow = true;
+    } else {
+      vm.$refs[ref].$data.messages.customFileds[data.name].selectShow = false;
+    }
+  } else {
+    vm.$refs[ref].$data.messages[data.name].value = data.value;
+  }
+}

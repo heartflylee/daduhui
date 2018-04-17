@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>客户</title>
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
+    <title>我的任务详情</title>
     <!--公共-->
     <link type="image/x-icon" href="img/favicon.ico" rel="icon">
 
@@ -35,144 +37,66 @@
 <script type="text/javascript" src="js/respond.min.js"></script>
 <script type="text/javascript" src="js/placeholder.js"></script>
 <![endif]-->
-    <!--表格-->
-<!-- 
-    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
 
-    <script src="js/jqx/jqxcalendar.js"></script>
-    <script src="js/jqx/jqxdatetimeinput.js"></script>
-    <script src="js/jqx/globalize.js"></script>
-
-    <script src="js/jqx/globalize.culture.ch-CN.js"></script> -->
 
     <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
     <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
     <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
     <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
     <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
     <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
     <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
 
-    <script src="js/jqx/jqxcalendar.js"></script>
-    <script src="js/jqx/jqxdatetimeinput.js"></script>
-    <script src="js/jqx/globalize.js"></script>
+    <!-- 日历插件 -->
+    <script type="text/javascript" src="js/jqx/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcalendar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxtooltip.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.js"></script>
+    <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
 
-    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
 </head>
+
 <body>
-<div id="app">
-     <!-- Preloader -->
-  <div class="preloader">
+    <!-- Preloader -->
+    <div class="preloader">
         <div class="cssload-speeding-wheel"></div>
     </div>
-     <!--header-->
-     <common-head></common-head>
-     <section class="b-main">
-         <!--左侧菜单-->
-         <menu-aside menu="index"></menu-aside>
-         <div class="b-panel">
-                <customer-head @layer="layer"></customer-head>
-                <customer-table></customer-table>
-         </div>
-     </section>
-        
-    <!-- 表格内详情显示 -->
-    <div class="panels" id="panels-detail"></div>
-    <!--客户详情-->
-    <transition name="detail">
-        <keep-alive v-if="layers.customerDetail.show">
-            <customer-detail :layer="layers.customerDetail" @layer="layer"></customer-detail>
-        </keep-alive>
-    </transition>
+    <div id="app">
 
-    <!--新建客户-->
-    <transition name="layer">
-        <layer :layer="layers.customerAdd" >
-            <customer-add ref="customerAdd"></customer-add>
-        </layer>
-    </transition>
+        <!--header-->
+        <common-head></common-head>
 
-    <transition name="layer">
-        <layer :layer="layers.tableHead">
-            <table-head ref="tableHead"></table-head>
-        </layer>
-    </transition>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="task"></menu-aside>
+            <div class="b-panel">
+                <!-- <main-left></main-left> -->
+                <mytask-detail></mytask-detail>
+            </div>
+        </section>
+        <!--拨打电话-->
+        <transition name="detail">
+            <keep-alive v-if="layers.callDetail.show">
+                <call-detail :layer="layers.callDetail" @layer="layer" ref="callDetail"></call-detail>
+            </keep-alive>
+        </transition>
 
-    <!--工商信息-->
-    <transition name="layer">
-        <layer :layer="layers.business">
-            <business></business>
-        </layer>
-    </transition>
-
-    <transition name="audio">
-        <my-audio :layer="audio"></my-audio>
-    </transition>
-</div>
-
-<!--include('../component/customer/detail.html')-->
-<!--&lt;!&ndash;新增客户&ndash;&gt;-->
-<!--include('../component/layer/layer.html',{"layer":"customer","layerTitle":"新建客户","layerFrame":"../customer/addcustomer.html","submit":"true","submitBtn":"customAdd()","close":"false","closeBtn":""})-->
-<!--&lt;!&ndash; 自定义表头 &ndash;&gt;-->
-<!--include('../component/layer/layer.html',{"layer":"customHead","layerTitle":"编辑显示字段","layerFrame":"../customer/cusomHead.html","submit":"true","submitBtn":"customSubmit()","close":"false","closeBtn":""})-->
-<!--&lt;!&ndash;调用企信获得的企业信息&ndash;&gt;-->
-<!--include('../component/layer/layer.html',{"layer":"business","layerTitle":"工商信息","layerFrame":"../qixin/qixin.html","submit":"false","submitBtn":"","close":"false","closeBtn":""})-->
-<!--&lt;!&ndash; 音频播放 &ndash;&gt;-->
-<!--include('../component/layer/layer.html',{"layer":"audio","layerTitle":"通话录音","layerFrame":"../audio/audio.html","submit":"false","submitBtn":"","close":"true","closeBtn":"audioClose()"})-->
-
-
-<template id="inputRow">
-    <div class="m-row">
-        <div class="m-name " :class="{required:rows.required}">
-            {{rows.name}}
-        </div>
-        <div class="m-info m-input" v-if="rows.input">
-            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"
-            />
-            <div v-if="rows.enter" class="enter-btn" :class="rows.icon">
-                <i></i>{{rows.text}}</div>
-        </div>
-        <div class="m-info" v-else>
-            {{rows.value}}
-        </div>
+        <!--新建客户-->
+        <transition name="layer">
+            <layer :layer="layers.customerAdd">
+                <customer-add ref="customerAdd"></customer-add>
+            </layer>
+        </transition>
     </div>
-</template>
-<script>
-    var inputRow = Vue.extend({
-        template: '#inputRow',
-        props: ['rows']
-    });
-    Vue.component('inputRow', inputRow);
-</script>
-<!--左侧导航-->
-<template id="aside">
+
+    
+    <!--左侧导航-->
+    <template id="aside">
     <!-- 左侧菜单 -->
     <aside class="b-aside">
         <div class="menu-wrap">
@@ -276,8 +200,8 @@
     });
     Vue.component('menuAside', aside);
 </script>
-<!--顶部-->
-<template id="head">
+    <!--顶部-->
+    <template id="head">
     <header class="b-header">
         <div class="h-right">
             <div class="h-search">
@@ -370,182 +294,221 @@
     });
     Vue.component('commonHead', head);
 </script>
-<!--客户头部-->
-<template id="customer-head">
-    <div class="small-nav-wrap">
-        <div class="nav-box">
-            <div class="index-select">
-                <div class="select-show">
-                    <label>全部客户</label>
-                    <i class="t-arrow icon"></i>
-                </div>
-                <div class="select-wrap">
-                    <div class="date-select-box">
-                        <ul>
-                            <li class="date-select selected">
-                                全部客户
-                            </li>
-                            <li class="date-select">
-                                我负责的客户
-                            </li>
-                        </ul>
+    <!-- 我的任务 -->
+    <template id="mytaskDetail">
+    <div class="main-box">
+        <div class="small-nav-wrap">
+            <div class="nav-box">
+                <div class="index-select">
+                    <div class="select-show">
+                        <label>企业分配</label>
+                        <i class="t-arrow icon"></i>
+                    </div>
+                    <div class="select-wrap">
+                        <div class="date-select-box">
+                            <ul>
+                                <li class="date-select selected">
+                                    企业分配
+                                </li>
+                                <li class="date-select">
+                                    我的客户
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="nav-right">
-                <div class="export">
-                    <i class="icon-export icon"></i> 导出
-                </div>
-                <div class="drop-button">
-                    <label class="drop-name" @click="customerAdd">新建客户</label>
-                    <i class="icon icon-drop-button"></i>
+                <div class="nav-right">
+                    <div class="task-btn btn btn-radius btn-primary">未完成</div>
+                    <div class="task-btn btn btn-radius">预约</div>
+                    <div class="task-btn btn btn-radius">二次外呼</div>
+                    <!-- <label class="nav-btn" @click="taskAdd">新建任务</label> -->
                 </div>
             </div>
         </div>
-        <div class="table-setting" v-if="">
-            <div class="table-nav-right">
-                <i class="table-nav-close icon" onclick="settingHide()">&times;</i>
-            </div>
-            <div class="table-nav-list">
-                <ul>
-                    <li class="table-nav">
-                        已选中<label class="count-select">1</label>项
-                    </li>
-                    <li class="table-nav" @click="change">
-                        <i class="table-icon icon-change icon"></i>
-                        <div class="table-nav-main">变更负责人</div>
-                    </li>
-                    <li class="table-nav">
-                        <i class="table-icon icon-delete icon"></i>
-                        <div class="table-nav-main">删除</div>
-                    </li>
-                </ul>
-            </div>
+        <div class="table-wrap">
+            <div class="jqxtable task" id="jqxtable"></div>
         </div>
     </div>
-
 </template>
 <script>
-    var customerHead = Vue.extend({
-        template:'#customer-head',
-        data:function () {
-            return{
-
+    var mytaskDetail = Vue.extend({
+        template: '#mytaskDetail',
+        data: function () {
+            return {
             }
         },
-        methods:{
-            customerAdd:function () {
-                this.$emit('layer','customerAdd');
-            },
-            change:function(){
-                this.$emit('layer','changeContact');
-                
-            }        
+        methods: {
+
         }
     });
-    Vue.component('customerHead',customerHead);
-</script>
-<!--客户表格-->
-<template id="customer-table">
-    <div class="table-wrap">
-        <div class="jqxtable customer" id="jqxtable"></div>
+    Vue.component('mytaskDetail', mytaskDetail);
+</script> <template id="inputRow">
+    <div class="m-row">
+        <div class="m-name " :class="{required:rows.required}">
+            {{rows.name}}
+        </div>
+        <div class="m-info m-input" v-if="rows.input">
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"
+            />
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon">
+                <i></i>{{rows.text}}</div>
+        </div>
+        <div class="m-info" v-else>
+            {{rows.value}}
+        </div>
     </div>
 </template>
 <script>
+    var inputRow = Vue.extend({
+        template: '#inputRow',
+        props: ['rows']
+    });
+    Vue.component('inputRow', inputRow);
+</script>
+    
+    <template id="select2-template">
+    <select>
+        <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
+        <slot></slot>
+    </select>
+</template>
 
-
-    var customerTable = Vue.extend({
-        template: '#customer-table',
-        data: function () {
-            return {}
+<script>
+    Vue.component('select2', {
+        props: ['options', 'value','name','optiondefault'],
+        template: '#select2-template',
+        mounted: function () {
+            console.log("123123")
+            var vm = this
+            $(this.$el)
+            // init select2
+                .select2({ data: this.options })
+                .val(this.value)
+                .trigger('change')
+                // emit event on change.
+                .on('change', function () {
+                    vm.$emit('input', this.value)
+                })
         },
-        created: function () {
-//            var url = "json/customer-table.json";
-//
-//            this.$http.get(url).then(function (data) {
-//                var json = JSON.parse(data.bodyText);
-//                console.log(data);
-//                console.log(json);
-//
-//
-//
-////                this.data=eval("(" + json +")");
-//            }, function (response) {
-//                console.info(response);
-//            })
+        watch: {
+            value: function (value) {
+                // update value
+                $(this.$el).val(value).trigger('change');
+            },
+            options: function (options) {
+                console.log(options);
+                // update options
+                $(this.$el).select2({ data: options })
+            }
+        },
+        destroyed: function () {
+            $(this.$el).off().select2('destroy')
+        }
+    })
+
+</script> <template id="layer">
+    <div class="modal" v-if="layer.show">
+        <div class="layer-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form @submit.prevent="submit" autocomplete="off">
+                    <div class="modal-header layer-head">
+                        <button type="button" class="close" @click="close">&times;</button>
+                        <h4 class="modal-title">{{layer.title}}</h4>
+                    </div>
+                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
+                        <slot></slot>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click="close">关闭</button>
+                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var layer = Vue.extend({
+        template: '#layer',
+        props: ['layer'],
+        data: function () {
+            return {
+                maxHeight: document.body.clientHeight - 200
+            }
+        },
+        methods: {
+            close: function (layer) {
+                console.log(this.$props);
+                this.$props.layer.show = false;
+                return false;
+            },
+            submit: function () {
+                console.log("彈框提交");
+                console.log(vm.$refs[this.$props.layer.layerName]);
+                vm.$refs[this.$props.layer.layerName].submit();
+                return false;
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            window.onresize = function () {
+                _self.maxHeight = document.body.clientHeight - 200;
+            }
+        },
+        watch: {
+            maxHeight: function (val) {
+                var modalBody = document.getElementsByClassName('modal-body');
+                for (var i = 0; i < modalBody.length; i++) {
+                    modalBody[i].style.maxHeight = val + 'px';
+                }
+            }
+        },
+        updated: function () {
+            var modalDialog = $(this.$el).find(".modal-dialog")[0];
+            $(modalDialog).css({
+                top: ($("body").height() - $(modalDialog).height()) / 2,
+                left: ($("body").width() - $(modalDialog).width()) / 2
+            });
+            $(modalDialog).bg_move({
+                    move: '.modal-header',
+                    closed: '.close'
+                });
         }
     });
-    Vue.component('customerTable', customerTable);
 
+    Vue.component('layer', layer);
 </script>
-<!--客户详情-->
-<template id="customerDetail">
+    <!-- 拨打电话 -->
+    <template id="callDetail">
     <div class="modal layer-detail-wrap" v-if="layer.show">
-        <div class="layer-bg" @click="close"></div>
+        <div class="layer-bg"></div>
         <div class="modal-dialog" @click="modifyDefault($event)">
             <div class="layer-detail">
-                <div class="detail-h">
+                <!-- <div class="detail-h ">
                     <div class="detail-title">
                         <div class="detail-h-r">
-                            <div class="h-r-box">
-                                <div class="h-r-li">
-                                    <div class="h-r-btn" @click="customerModify">
-                                        <i class="h-r-icon icon-edit icon"></i>
-                                        <label class="h-r-main">编辑</label>
-                                    </div>
-                                </div>
-                                <div class="h-r-li">
-                                    <div class="h-r-btn" @click="customerAdd">
-                                        <i class="h-r-icon icon-add icon"></i>
-                                        <label class="h-r-main">新建客户</label>
-                                    </div>
-                                </div>
-                                <div class="h-r-li dropdown">
-                                    <div class="h-r-btn " data-toggle="dropdown">
-                                        <i class="h-r-icon icon-menu icon"></i>
-                                    </div>
-                                    <div class="h-r-drop dropdown-menu">
-                                        <div class="h-d-list">
-                                            <a class="h-d-li" href="javascript:void(0)">
-                                                删除
-                                            </a>
-                                            <a class="h-d-li" @click="changeContactBtn">
-                                                变更负责人
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="detail-h-m">
-                            <i class="title-icon icon-contact icon"></i>
-                            <div class="h-m-company">
-                                {{messages.userName.value}}
-                            </div>
-                            <!-- <div class="qixin-btn" @click="businessShow">
-                                <i class="icon"></i> 工商信息
-                            </div> -->
-                        </div>
-                    </div>
-                    <div class="d-message">
-                        <head-message :message="messages.cellphone"></head-message>
-                        <head-message :message="messages.createdTime"></head-message>
-                        <head-message :message="messages.lastActionTime"></head-message>
-                        <head-message :message="messages.progress"></head-message>
-                        <head-message :message="messages.lastAction"></head-message>
-                        <head-message :message="messages.userName"></head-message>
 
-                        <!--include("../detail/detail-head-message.html")-->
+                        </div>
                     </div>
-                </div>
-                <div class="detail-main">
+                </div> -->
+                <div class="detail-main call-detail-main">
+                    <div class="h-r-box detail-top-Btn">
+                        <div class="h-r-li">
+                            <div class="h-r-btn " @click="customerAdd">
+                                <i class="h-r-icon icon-add icon"></i>
+                                <label class="h-r-main">新建客户</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="detail-left">
                         <div class="tags">
                             <div class="tags-li active">
-                                <a href="javascript:void(0)" onclick="tags(this)">详细信息</a>
+                                <a href="javascript:void(0)" @click="tagChange($event)">呼出电话</a>
                             </div>
                             <div class="tags-li">
-                                <a href="javascript:void(0)" onclick="tags(this)">时间轴</a>
+                                <a href="javascript:void(0)" @click="tagChange($event)">电话标记</a>
                             </div>
                         </div>
                         <div class="tags-main">
@@ -603,15 +566,112 @@
                                         其他
                                     </div>
                                     <div class="message-content">
-
                                         <detail-message :message="messages.dataSources" name="dataSources"></detail-message>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tags-con-li">
-                                <detail-line :list="detailLineList"></detail-line>
 
                             </div>
+                            <div class="tags-con-li">
+                                <div class="call-main">
+                                    <div class="message-li message-row bor-b-dashed message-noHover">
+                                        <div class="message-name required">
+                                            销售进度
+                                        </div>
+                                        <div class="message-main">
+                                            <div class="progress-tag" v-for="item in progress" @click="setProgress(item)" :class="item == callSubmit.progress?'active':''">{{item}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-li message-row message-noHover">
+                                        <div class="message-name required">
+                                            沟通意向
+                                        </div>
+                                        <div class="message-main">
+                                            <div class="tag-main">
+                                                <div class="tag-main-name">
+                                                    有意向
+                                                </div>
+                                                <div class="tag-radius-box">
+                                                    <div class="tag-radius" v-for="item in calltips.intentions" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="tag-main">
+                                                <div class="tag-main-name">
+                                                    无意向
+                                                </div>
+                                                <div class="tag-radius-box">
+                                                    <div class="tag-radius" v-for="item in calltips.noIntentions" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="tag-main">
+                                                <div class="tag-main-name">
+                                                    资料错误
+                                                </div>
+                                                <div class="tag-radius-box">
+                                                    <div class="tag-radius" v-for="item in calltips.dataErrors" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="tag-main">
+                                                <div class="tag-main-name">
+                                                    二次外呼
+                                                </div>
+                                                <div class="tag-radius-box">
+                                                    <div class="tag-radius" v-for="item in calltips.twiceCalls" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <detail-message :message="messages.remark" name="remark" row="true"></detail-message>
+                                </div>
+                                <div class="message-box">
+                                    <div class="message-t">
+                                        发送挂机短信
+                                    </div>
+                                    <div class="message-content">
+                                        <detail-message :message="callMessage.modal" name="callMessage" row="true"></detail-message>
+                                        <div class="message-li message-row">
+                                            <div class="message-name">
+                                                短信内容
+                                            </div>
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    {{callMessage.content.value}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary">发送</button>
+                                    </div>
+                                </div>
+                                <div class="message-box">
+                                    <div class="message-t">
+                                        发送挂机邮件
+                                    </div>
+                                    <div class="message-content">
+                                        <detail-message :message="callEmail.modal" name="callEmail" row="true"></detail-message>
+                                        <detail-message :message="callEmail.title" name="callEmailTitle" row="true"></detail-message>
+
+                                        <div class="message-li message-row">
+                                            <div class="message-name">
+                                                邮件内容
+                                            </div>
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    <editor id="editor_id" height="200px" width="100%" :content="callEmail.content.value" :afterChange="afterChange()" pluginsPath="js/kindeditor/plugins/"
+                                                        :loadStyleMode="false" @on-content-change="onContentChange"></editor>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary">发送</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="call-bottom-box" v-if="callStatus">
+                            通话中：0'33"
+                            <button class="btn btn-primary" @click="stopCall">挂断电话</button>
+                        </div>
+                        <div class="call-bottom-box" v-if="!callStatus">
+                            通话总时长：01'33"
+                            <button class="btn btn-primary" @click="submitCall">提交电话结果</button>
                         </div>
                     </div>
                 </div>
@@ -712,61 +772,13 @@
         }
     });
 
-    var detailLine = Vue.extend({
-        template: '<div class="time-line">' +
-            '<div class="line-box" v-for="line in list">\n' +
-            '    <div class="line-time">{{line.time}}</div>\n' +
-            '<div class="line-main" v-if="line.type == 1">' +
-            '        <div class="line-t">\n' +
-            '            <label class="color color-big">{{line.editor}}</label> 与\n' +
-            '            <label class="color">{{line.customer}}</label> 进行电话沟通\n' +
-            '        </div>\n' +
-            '        <div class="talk-time">\n' +
-            '            通话时长：{{line.callTime}}<label class="video-box"><i class="icon video" :data-url="line.callDuration" :data-name="line.customer" :data-company="line.company" onclick="audioPlay(this,event)"></i> <i class="icon download" data-url="voice/demo.mp3" onclick="audioDownload(this,event)"></i></label>\n' +
-            '        </div>\n' +
-            '        <div class="line-block">\n' +
-            '            沟通结果：{{line.actionType}}\n' +
-            '        </div>\n' +
-            '        <div class="line-block">\n' +
-            '            电话备注：{{line.remark}}\n' +
-            '        </div>\n' +
-            '</div>' +
-            '    <div class="line-main" v-if="line.type == 2">\n' +
-            '        <div class="line-t">\n' +
-            '            <label class="color color-big">{{line.editor}}</label> 给\n' +
-            '            <label class="color">{{line.customer}}</label> 发送挂机短信\n' +
-            '        </div>\n' +
-            '        <div class="line-block">\n' +
-            '            短信模板：{{line.messageName}}\n' +
-            '        </div>\n' +
-            '        <div class="line-block">\n' +
-            '            短信状态：<label class="color">{{line.messageState}}</label>\n' +
-            '        </div>\n' +
-            '</div>' +
-            '<div class="line-main" v-if="line.type == 3">\n' +
-            '        <div class="line-t">\n' +
-            '            <label class="color color-big">{{line.editor}}</label> 创建了联系人\n' +
-            '            <label class="color">{{line.customer}}</label>\n' +
-            '        </div>\n' +
-            '</div>' +
-            '    <div class="line-main" v-if="line.type == 4">\n' +
-            '        <div class="line-t">\n' +
-            '            <label class="color color-big">{{line.editor}}</label> 创建了客户\n' +
-            '            <a class="line-href" href="javascript:void(0)">{{line.company}}</a>\n' +
-            '        </div>\n' +
-            '    </div>\n' +
-            '</div>' +
-            '</div>\n',
-        props: ['list']
-    });
 
-
-
-    var customerDetail = Vue.extend({
-        template: '#customerDetail',
+    var callDetail = Vue.extend({
+        template: '#callDetail',
         props: ['layer'],
         data: function () {
             return {
+                callStatus: true,
                 messages: {
                     customerId: "",
                     remark: { name: "客户备注", value: "", type: "input" },
@@ -791,8 +803,38 @@
                         { name: '购房用途', value: '1,2', text: '111,222', type: 'select', multiple: true, options: '[{"name":"111","value":"1"},{"name":"222","value":"2"},{"name":"333","value":"3"}]' }
                     ],
                 },
-
                 detailLineList: [],
+                progress: ['无需求', '初步沟通', '确认需求', '报价', '面谈', '成单', '输单'],
+                calltips: {
+                    intentions: ['有意向', '有意向1'],
+                    noIntentions: ['无意向', '无意向1'],
+                    dataErrors: ['资料错误', '资料错误1'],
+                    twiceCalls: ['二次外呼', '二次外呼1'],
+                },
+                callSubmit: {
+                    calltips: '',
+                    progress: ''
+                },
+                callMessage: {
+                    modal: {
+                        name: '短信模板', value: '选择模板', type: 'select', options: '选择模板,'
+                    },
+                    content: {
+                        name: '短信内容', value: '', type: 'input'
+                    }
+                },
+                callEmail: {
+                    modal: {
+                        name: '邮件模板', value: '选择模板', type: 'select', options: '选择模板,'
+                    },
+                    content: {
+                        name: '邮件内容', value: '', type: 'input'
+                    },
+                    title: {
+                        name: '邮件标题', value: '', type: 'input'
+                    }
+                }
+
             }
         },
         methods: {
@@ -804,245 +846,71 @@
             //     console.log('客户详情工商信息（企信宝）');
             //     this.$emit('layer', 'business');
             // },
+            //新建客户
             customerAdd: function () {
                 this.$emit('layer', 'customerAdd');
-            },
-            customerModify: function () {
-                this.$emit('layer', 'customerModify');
             },
 
             modifyDefault: function (e) {
                 if ($(e.target).isChildAndSelfOf(".message-li")) {
                     $(".editor[data-toggle='MessageEditor']").each(function () {
                         if (!$(e.target).isChildAndSelfOf(this)) {
-                            var obj = $(this);
-                            $(this).MessageEditor({ editor: false, callback: 'changed(data,"customerDetail")' }, this)
+                            $(this).MessageEditor({ editor: false, callback: 'changed(data,"callDetail")' }, this)
                         }
                     })
                 }
                 else {
                     $(".editor[data-toggle='MessageEditor']").each(function () {
-                        var obj = $(this);
-                        obj.MessageEditor({ editor: false, callback: 'changed(data,"customerDetail")' }, this)
+                        $(this).MessageEditor({ editor: false, callback: 'changed(data,"callDetail")' }, this)
                     })
                 }
             },
-            changeContactBtn: function () {
-                //变更跟进人
-                vm.$data.layers.changeContact.show = true;
+            //设置沟通结果
+            setProgress: function (val) {
+                this.$data.callSubmit.progress = val;
+            },
+            //设置电话标签
+            setcalltips: function (val) {
+                this.$data.callSubmit.calltips = val;
+            },
+            //挂断电话按钮
+            stopCall: function () {
+                this.$data.callStatus = false;
+                $('.call-detail-main .tags-li,.call-detail-main .tags-con-li').removeClass("active");
+                $('.call-detail-main .tags-li:eq(1),.call-detail-main .tags-con-li:eq(1)').addClass("active");
+            },
+            //判断是否客户切换
+            tagChange: function (event) {
+                if (this.$data.callStatus == true) {
+                    return false;
+                }
+                tags(event.target);
+            },
+            //提交电话结果
+            submitCall: function () {
+                this.close();
+            },
+            onContentChange: function (val) {
+                this.$data.callEmail.content.value = val;
+                console.log(this.$data.callEmail.content.value);
+            },
+            afterChange: function () {
             }
         },
         components: {
             "headMessage": headMessage,
             "detailMessage": detailMessage,
-            'customfiledsMessage': customFiledsMessage,
-            "detailLine": detailLine,
+            "customfiledsMessage": customFiledsMessage,
         },
         activated: function () {
-            // var message = this.$props.layer.message;
-            // var $messages = this.$data.messages;
-            // $messages.customerId = message.cusid;
-            // $messages.userName.value = message.cusname;
-            // $messages.cellphone.value = message.cellphone;
-            // $messages.createdTime.value = message.createdTime;
-            // $messages.lastActionTime.value = message.lastActionTime;
-            // $messages.progress.value = message.progress;
-            // $messages.lastAction.value = message.lastAction;
-
-            // //            this.$data.messages.comIndustry.value = message.comIndustry;
-            // $messages.registCapi.value = message.registCapi;
-            // $messages.comType.value = message.comType;
-            // $messages.comAdress.value = message.comAdress;
-            //            this.$data.messages.postcode.value = message.postcode;
-
-
-
-
-            //时间轴列表
-            var detailLineUrl = "json/detail-line.json";
-
-            this.$http.get(detailLineUrl, {}).then(function (data) {
-                var json = JSON.parse(data.bodyText);
-                this.$data.detailLineList = json;
-                console.log(this);
-            }, function (response) {
-                console.info(response);
-            });
+            //组件激活调用，初始绑定数据
 
         }
     });
-    Vue.component('customerDetail', customerDetail);
+    Vue.component('callDetail', callDetail);
 </script>
-<!--弹框-->
-<template id="layer">
-    <div class="modal" v-if="layer.show">
-        <div class="layer-bg"></div>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form @submit.prevent="submit" autocomplete="off">
-                    <div class="modal-header layer-head">
-                        <button type="button" class="close" @click="close">&times;</button>
-                        <h4 class="modal-title">{{layer.title}}</h4>
-                    </div>
-                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
-                        <slot></slot>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" @click="close">关闭</button>
-                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</template>
-<script>
-    var layer = Vue.extend({
-        template: '#layer',
-        props: ['layer'],
-        data: function () {
-            return {
-                maxHeight: document.body.clientHeight - 200
-            }
-        },
-        methods: {
-            close: function (layer) {
-                console.log(this.$props);
-                this.$props.layer.show = false;
-                return false;
-            },
-            submit: function () {
-                console.log("彈框提交");
-                console.log(vm.$refs[this.$props.layer.layerName]);
-                vm.$refs[this.$props.layer.layerName].submit();
-                return false;
-            }
-        },
-        mounted: function () {
-            var _self = this;
-            window.onresize = function () {
-                _self.maxHeight = document.body.clientHeight - 200;
-            }
-        },
-        watch: {
-            maxHeight: function (val) {
-                var modalBody = document.getElementsByClassName('modal-body');
-                for (var i = 0; i < modalBody.length; i++) {
-                    modalBody[i].style.maxHeight = val + 'px';
-                }
-            }
-        },
-        updated: function () {
-            var modalDialog = $(this.$el).find(".modal-dialog")[0];
-            $(modalDialog).css({
-                top: ($("body").height() - $(modalDialog).height()) / 2,
-                left: ($("body").width() - $(modalDialog).width()) / 2
-            });
-            $(modalDialog).bg_move({
-                    move: '.modal-header',
-                    closed: '.close'
-                });
-        }
-    });
-
-    Vue.component('layer', layer);
-</script>
-<!--工商信息（企信宝）-->
-<template id="business">
-    <div class="message">
-        <!--<business-row :data="company"></business-row>-->
-        <!--<business-row :data="comType"></business-row>-->
-        <!--<business-row :data="industry"></business-row>-->
-        <!--<business-row :data="openName"></business-row>-->
-        <!--<business-row :data="registCapi"></business-row>-->
-        <!--<business-row :data="mainProduce"></business-row>-->
-        <!--<business-row :data="registAdress"></business-row>-->
-        <!--<business-row :data="comAdress"></business-row>-->
-        <!--<business-row :data="telephone"></business-row>-->
-        <input-row :rows="company"></input-row>
-        <input-row :rows="comType"></input-row>
-        <input-row :rows="industry"></input-row>
-        <input-row :rows="openName"></input-row>
-        <input-row :rows="registCapi"></input-row>
-        <input-row :rows="mainProduce"></input-row>
-        <input-row :rows="registAdress"></input-row>
-        <input-row :rows="comAdress"></input-row>
-        <input-row :rows="telephone"></input-row>
-    </div>
-</template>
-
-<script>
-    //    var businessRow = Vue.extend({
-    //        template: '<div class="m-row">\n' +
-    //        '            <div class="m-name">\n' +
-    //        '                {{data.name}}：\n' +
-    //        '            </div>\n' +
-    //        '            <div class="m-info">\n' +
-    //        '                {{data.value}}\n' +
-    //        '            </div>\n' +
-    //        '        </div>',
-    //        props: ['data']
-    //    })
-    var business = Vue.extend({
-        template: '#business',
-        props: [],
-        data: function () {
-            return {
-                company: {
-                    name: "公司名称", value: "", input: false, required: false
-                },
-                comType: {
-                    name: "公司类型", value: "", input: false, required: false
-                },
-                industry: {
-                    name: "行业", value: "", input: false, required: false
-                },
-                openName: {
-                    name: "法定代表人", value: "", input: false, required: false
-                },
-                registCapi: {
-                    name: "注册资金", value: "", input: false, required: false
-                },
-                mainProduce: {
-                    name: "经营范围", value: "", input: false, required: false
-                },
-                registAdress: {
-                    name: "注册地址", value: "", input: false, required: false
-                },
-                comAdress: {
-                    name: "办公地址", value: "", input: false, required: false
-                },
-                telephone: {
-                    name: "电话", value: "", input: false, required: false
-                }
-            }
-        },
-        components: {
-//            'businessRow': businessRow
-            'inputRow': inputRow
-        },
-        created: function () {
-            var url = "json/business.json";
-
-            this.$http.get(url).then(function (data) {
-                var json = JSON.parse(data.bodyText);
-                console.log(data);
-                console.log(json);
-                for (var i = 0; i < json.length; i++) {
-                    this[json[i].name].value = json[i].value;
-                }
-
-//                this.data=eval("(" + json +")");
-            }, function (response) {
-                console.info(response);
-            })
-        }
-    });
-
-    Vue.component('business', business);
-</script>
-<!--新建客户-->
-<template id="customer-add">
+    <!--新建客户-->
+    <template id="customer-add">
     <div class="message add-message">
         <div class="m-row">
             <div class="m-name required">
@@ -1257,8 +1125,7 @@
         }
     });
     Vue.component('customerAdd', customerAdd);
-</script>
-<template id="autocomplete">
+</script> <template id="autocomplete">
     <div class="autocomplete-wrap">
         <input type="text"
                :id="id"
@@ -1407,115 +1274,12 @@
 
 </script>
 
+    
 
-<!--自定义表头-->
-<template id="table-head">
-    <div class="list-wrap">
-        <div class="list-left">
-            <div class="list-t">
-                隐藏字段
-            </div>
-            <div id="list-left" v-listbox="left"></div>
-        </div>
-        <div class="move-list">
-            <a href="javascript:listMove(0);"><i class="icon-list icon icon-list-left"></i></a>
-            <a href="javascript:listMove(1);"><i class="icon-list icon icon-list-right"></i></a>
-        </div>
-        <div class="list-right">
-            <div class="list-t">
-                显示字段
-            </div>
-            <div id="list-right" v-listbox="right"></div>
-        </div>
-        <div class="move-list">
-            <a href="javascript:listMove(2);"><i class="icon-list icon icon-list-up"></i></a>
-            <a href="javascript:listMove(3);"><i class="icon-list icon icon-list-down"></i></a>
-        </div>
-    </div>
-</template>
-<script>
-
-
-    var tableHead = Vue.extend({
-        template: '#table-head',
-        data: function () {
-            return {
-                left: leftsource,
-                right: rightsource
-            }
-        },
-        methods: {
-            submit: function () {
-                console.log('提交');
-                customSubmit();
-            }
-        },
-        directives: {
-            listbox: function (el, val) {
-                console.log(val);
-                $(el).jqxListBox({width: 200, height: 335, multiple: true, scrollBarSize: 7, source: val.value});
-            }
-
-        }
-    });
-
-    Vue.component('tableHead', tableHead);
-</script>
-
-<template id="audio">
-    <div v-if="layer.show" class="audio-wrap">
-        <div class="audio ">
-            <a class="close" @click="close">&times;</a>
-            <div class="audio-title">{{layer.name}}</div>
-            <div class="audio-company">{{layer.company}}</div>
-            <audio preload="none" v-audio :audio="layer.url"></audio>
-            <a :href="layer.url" class="audio-download">&#xe614;</a>
-        </div>
-    </div>
-</template>
-<script>
-    var audio;
-    var myAudio = Vue.extend({
-        template: '#audio',
-        props: ['layer'],
-        data: function () {
-            return {
-
-            }
-        },
-        methods:{
-          close:function(){
-              console.log('121');
-              audio.pause();
-              vm.$data.audio.show = false;
-          }
-        },
-        directives: {
-            audio: {
-                inserted:function (el) {
-                    console.log(el);
-                    console.log(this);
-                    audio = audiojs.create(el);
-                    audio.load(vm.$data.audio.url);
-                    audio.play();
-                },
-                update: function (el) {
-                    console.log(el);
-                    console.log(this);
-//                    audio = audiojs.create(el);
-                    audio.load(vm.$data.audio.url);
-                    audio.play();
-                }
-            }
-        }
-    });
-    Vue.component('myAudio', myAudio);
-</script>
-
-<script src="js/scripts.js"></script>
-<script src="js/customer.js"></script>
-<script src="js/MessageEditor.js"></script>
-<script src="js/customerDetail.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/MessageEditor.js"></script>
+    <script src="js/mytaskDetail.js"></script>
 
 </body>
+
 </html>

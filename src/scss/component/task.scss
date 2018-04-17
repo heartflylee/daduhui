@@ -1,32 +1,38 @@
-.task-row{
-  width:500px;
+.task-row {
+  width: 500px;
   margin: 0 auto;
   @include clearfix;
-  .m-row{
-    width:190px;
+  .m-row {
+    width: 190px;
     float: left;
     //display: inline-block;
-    &:first-child{
-      width:270px;
+    &:first-child {
+      width: 270px;
       margin-right: 40px;
     }
   }
 }
-.nav-title{
+.nav-title {
   font-weight: bold;
   font-size: 18px;
-  span{
+  span {
     font-weight: normal;
   }
 }
 
-.tasktype-default{
-color: #999;
+.tasktype-default {
+  color: #999;
 }
-.tasktype-info{
+.tasktype-info {
   color: #4e606e;
-  }
-  .tasktype-danger{
-    color: #c11920;
-    }
-    
+}
+.tasktype-danger {
+  color: #c11920;
+}
+.cell-text {
+  display: inline-block;
+  line-height: 40px;
+}
+.btn-radius {
+  border-radius: 20px;
+}

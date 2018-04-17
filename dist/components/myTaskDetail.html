@@ -1,0 +1,48 @@
+<template id="mytaskDetail">
+    <div class="main-box">
+        <div class="small-nav-wrap">
+            <div class="nav-box">
+                <div class="index-select">
+                    <div class="select-show">
+                        <label>企业分配</label>
+                        <i class="t-arrow icon"></i>
+                    </div>
+                    <div class="select-wrap">
+                        <div class="date-select-box">
+                            <ul>
+                                <li class="date-select selected">
+                                    企业分配
+                                </li>
+                                <li class="date-select">
+                                    我的客户
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <div class="task-btn btn btn-radius btn-primary">未完成</div>
+                    <div class="task-btn btn btn-radius">预约</div>
+                    <div class="task-btn btn btn-radius">二次外呼</div>
+                    <!-- <label class="nav-btn" @click="taskAdd">新建任务</label> -->
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="jqxtable task" id="jqxtable"></div>
+        </div>
+    </div>
+</template>
+<script>
+    var mytaskDetail = Vue.extend({
+        template: '#mytaskDetail',
+        data: function () {
+            return {
+            }
+        },
+        methods: {
+
+        }
+    });
+    Vue.component('mytaskDetail', mytaskDetail);
+</script>

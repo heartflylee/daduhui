@@ -99,14 +99,14 @@
         template: '<li class="m-nav menu-list" :class=" \'nav-left\' + index" v-if="content.subShow">\n' +
             '    <a class="nav-info" href="javascript:void(0)">\n' +
             '        <i class="icon m-icon" :class="content.icon" ></i>\n' +
-            '        <label>{{content.title}}</label>\n' +
+            '        <label :class="content.tips == true?\'menu-tips\':\'\'">{{content.title}}</label>\n' +
             '        <i v-if="content.sub.length>0" class="icon-sign"></i>\n' +
             '    </a>\n' +
             '    <ul class="m-second-list child-list" v-if="content.sub.length>0" >\n' +
             '        <li class="m-second" v-for="sub in content.sub">\n' +
             '            <a :href="sub.href">\n' +
             '                <i></i>\n' +
-            '                <label>{{sub.title}}</label>\n' +
+            '                <label :class="sub.tips == true?\'menu-tips\':\'\'">{{sub.title}}</label>\n' +
             '            </a>\n' +
             '        </li>\n' +
             '    </ul>\n' +
@@ -114,7 +114,7 @@
             '<li class="m-nav " v-else>\n' +
             '    <a class=\'nav-info\' :href="content.href">\n' +
             '        <i class="icon m-icon" :class="content.icon"></i>\n' +
-            '        <label>{{content.title}}</label>\n' +
+            '        <label :class="content.tips == true?\'menu-tips\':\'\'">{{content.title}}</label>\n' +
             '        <i class="icon-sign"></i>\n' +
             '    </a>\n' +
             '</li>',
@@ -130,6 +130,7 @@
                     icon: "icon-m1",
                     subShow: true,
                     active: "",
+                    href: 'index.html',
                     sub: []
                 },
                 customer: {
@@ -154,6 +155,7 @@
                     href: "",
                     subShow: true,
                     active: "",
+                    tips: true,
                     sub: [{
                         title: "电话任务",
                         href: "task.html"
@@ -163,7 +165,12 @@
                     }, {
                         title: "邮件任务",
                         href: "taskEmail.html"
-                    }]
+                    }, {
+                        title: '我的任务',
+                        href: 'myTask.html',
+                        tips: true
+                    }
+                    ]
                 }
             }
         },
