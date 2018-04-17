@@ -627,7 +627,9 @@ var defaultCulumns = {
       if (value == '') return '';
       else {
         return (
+          '<span  class="cell-text">' +
           value +
+          '</span>' +
           ' <i class="icon v-icon icon-phone" onclick="callDetailBtn();" ></i>'
         );
       }
@@ -690,8 +692,9 @@ var defaultCulumns = {
       if (value == '') return '';
       else {
         return (
-          '通话时长：' +
+          '<span  class="cell-text">通话时长：' +
           value +
+          '</span>' +
           ' <i class="icon v-icon video play" onclick="audioPlay(this,event);" data-url="' +
           rowData.callDuration +
           '" data-name ="' +

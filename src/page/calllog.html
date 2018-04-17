@@ -3,32 +3,45 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
-    <title>我的任务详情</title>
+    <title>通话历史</title>
     <!--公共-->
     @@include("../component/common.html",{"style":"normal"})
-
+    <!--表格-->
 
     <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
     <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
     <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
     <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
     <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
     <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
     <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
     <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
 
-    <!-- 日历插件 -->
-    <script type="text/javascript" src="js/jqx/jqxdatetimeinput.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxcalendar.js"></script>
-    <script type="text/javascript" src="js/jqx/jqxtooltip.js"></script>
-    <script type="text/javascript" src="js/jqx/globalize.js"></script>
-    <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
 
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="js/kindeditor/themes/default/default.css" />
+    <link rel="stylesheet" href="js/kindeditor/plugins/code/prettify.css" />
+    <script charset="utf-8" src="js/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="js/kindeditor/lang/zh-CN.js"></script>
+    <script charset="utf-8" src="js/kindeditor/plugins/code/prettify.js"></script>
+
+
+    <script src="js/kindeditor/kindeditor-all.js"></script>
 </head>
 
 <body>
@@ -37,18 +50,19 @@
         <div class="cssload-speeding-wheel"></div>
     </div>
     <div id="app">
-
         <!--header-->
         <common-head></common-head>
-
         <section class="b-main">
             <!--左侧菜单-->
-            <menu-aside menu="task"></menu-aside>
+            <menu-aside menu="index"></menu-aside>
             <div class="b-panel">
-                <!-- <main-left></main-left> -->
-                <mytask-detail></mytask-detail>
+                <call-Log></call-Log>
             </div>
         </section>
+
+        <!-- 表格内详情显示 -->
+        <div class="panels" id="panels-detail"></div>
+
         <!--拨打电话-->
         <transition name="detail">
             <keep-alive v-if="layers.callDetail.show">
@@ -62,28 +76,39 @@
                 <customer-add ref="customerAdd"></customer-add>
             </layer>
         </transition>
+
+        <!--通话录音-->
+        <transition name="audio">
+            <my-audio :layer="audio"></my-audio>
+        </transition>
     </div>
 
-    <!-- @@include('../components/staffSelect.html') -->
+    @@include('../components/inputRow.html')
+    <!-- 富文本编辑器 -->
+    @@include('../components/editor.html')
+
     <!--左侧导航-->
     @@include('../components/aside.html')
     <!--顶部-->
     @@include('../components/head.html')
-    <!-- 富文本编辑器 -->
-    @@include('../components/editor.html')
-    <!-- 我的任务 -->
-    @@include('../components/myTaskDetail.html') @@include('../components/inputRow.html')
-    <!-- @@include('../components/inputTime.html') -->
-    @@include('../components/select2.html') @@include('../components/layer.html')
-    <!-- 拨打电话 -->
+    <!--拨打电话-->
     @@include('../components/callDetail.html')
+    <!--弹框-->
+    @@include('../components/layer.html')
+    <!--工商信息（企信宝）-->
+    <!-- @@include('../components/business.html') -->
     <!--新建客户-->
     @@include('../components/customerAdd.html') @@include('../components/autocomplete.html')
-    <!-- @@include('../components/taskAdd.html') -->
+    <!-- 语音播放 -->
+    @@include('../components/audio.html')
+    <!--selected-->
+    @@include('../components/select2.html')
+    <!-- 通话历史 -->
+    @@include('../components/calllog.html')
 
     <script src="js/scripts.js"></script>
+    <script src="js/calllog.js"></script>
     <script src="js/MessageEditor.js"></script>
-    <script src="js/mytaskDetail.js"></script>
 
 </body>
 

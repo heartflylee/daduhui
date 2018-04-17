@@ -1,0 +1,27 @@
+<template id="callLog">
+    <div class="main-box">
+        <div class="small-nav-wrap">
+            <div class="nav-box">
+                <label class="nav-title">
+                    通话历史
+                </label>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="jqxtable task" id="jqxtable"></div>
+        </div>
+    </div>
+</template>
+<script>
+    var callLog = Vue.extend({
+        template: '#callLog',
+        data: function () {
+            return {
+            }
+        },
+        methods: {
+
+        }
+    });
+    Vue.component('callLog', callLog);
+</script>
