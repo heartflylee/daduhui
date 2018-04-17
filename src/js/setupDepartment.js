@@ -99,6 +99,22 @@ var vm = new Vue({
       console.log('设置为管理员');
       this.$data.layers.setManager.show = true;
     },
+    addDepart: function(ztreeNode) {
+      //新建部门
+      console.log(ztreeNode);
+      this.$data.layers.departmentAdd.show = true;
+    },
+    modifyDepart: function(ztreeNode) {
+      //编辑部门
+      console.log(ztreeNode);
+      this.$data.layers.departmentModify.show = true;
+      this.$data.layers.departmentModify.message.value = ztreeNode.name;
+    },
+    removeDepart: function(ztreeNode) {
+      //删除部门
+      console.log(ztreeNode);
+      console.log('删除部门');
+    },
   },
 });
 

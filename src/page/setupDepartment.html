@@ -56,7 +56,7 @@
                 </div>
                 <div class="setup-main">
                     <div class="setup-left department-left">
-                        <ztree editor="true" id="ztreeEditor" ref="ztreeEditor"></ztree>
+                        <ztree id="ztreeEditor" ref="ztreeEditor" @add="addDepart" @modify="modifyDepart" @remove="removeDepart"></ztree>
                         <div class="companyCode-wrap">
                             <div class="companyCode-text">
                                 企业串码
@@ -193,6 +193,8 @@
     @@include('../components/layer.html')
     <!-- 树形图 -->
     @@include('../components/ztree.html')
+    <!-- 树形图 -->
+    @@include('../components/departztree.html')
     <!-- 编辑员工 -->
     @@include('../components/staffModify.html')
     <!-- 解绑员工 -->

@@ -191,7 +191,7 @@
   }
   span {
     float: left;
-    display: inline-block;
+    // display: inline-block;
     margin-left: 8px;
     margin-top: ($head-liH - 30)/2;
     padding: 0 10px;
@@ -351,4 +351,7 @@
       content: '\e65f';
     }
   }
+}
+.text-danger {
+  color: #c11920;
 }

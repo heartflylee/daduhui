@@ -2,10 +2,9 @@
     <ul class="ztree" :id="id"></ul>
 </template>
 <script>
-
     var departZtree = Vue.extend({
         template: '#departZtree',
-        props: ['editor', 'id'],
+        props: ['id'],
         data: function () {
             return {
                 departSetting: {
@@ -33,7 +32,6 @@
                     async: {
                         enable: true
                     }
-
                 },
                 zNodes: [
                     {
@@ -62,33 +60,22 @@
                 ]
             }
         },
-        methods:{
-    //变更中选择部门
-     departSelect:function(event, treeId, treeNode) {
-         console.log("123123123")
-         console.log(treeNode)
-         var _self =this;
-        if (treeNode != null) {
-            // vm.$refs.selectDepart.$data.depart = treeNode.name;
-            // vm.$refs.selectDepart.$data.departShow = false;
-            
-            // $("#department").val(treeNode.name);
-            var zTree = $.fn.zTree.getZTreeObj(_self.$props.id);
-            zTree.selectNode(treeNode);
-            _self.$emit('treeselect',treeNode.name);
-            // $("#departTree-wrap").hide();
-        }
-    }
+        methods: {
+            //变更中选择部门
+            departSelect: function (event, treeId, treeNode) {
+                var _self = this;
+                if (treeNode != null) {
+                    var zTree = $.fn.zTree.getZTreeObj(_self.$props.id);
+                    zTree.selectNode(treeNode);
+                    _self.$emit('treeselect', treeNode.name);
+                }
+            }
         },
         mounted() {
             var _self = this;
-                $.fn.zTree.init($("#" + _self.$props.id), _self.$data.departSetting, _self.$data.zNodes);
-        
+            $.fn.zTree.init($("#" + _self.$props.id), _self.$data.departSetting, _self.$data.zNodes);
         }
     });
     Vue.component('departZtree', departZtree);
-  
-
-
 
 </script>

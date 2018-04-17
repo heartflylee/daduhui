@@ -35,7 +35,7 @@
   top: $header-h;
   // top:0;
   right: 0;
-  left:auto;
+  left: auto;
   bottom: 0;
   min-width: 800px;
   width: calc(100% - 280px);
@@ -56,17 +56,18 @@
   background: #4e606e;
   font-size: 16px;
   color: #fff;
-cursor: move;
+  cursor: move;
 }
 
 .modal-dialog {
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
-.modal-body{
+.modal-body {
   overflow-y: auto;
 }
-.layer-text-content{
-padding: 20px 0;
+.layer-text-content {
+  padding: 20px 0;
+  font-size: 14px;
   text-align: center;
 }
 // .layer-leave, .layer-enter {
@@ -92,8 +93,3 @@ padding: 20px 0;
 //     // transform: translate3d(100%, 0, 0);
 //   }
 // }
-
-
-
-
-

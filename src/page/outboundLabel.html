@@ -49,106 +49,117 @@
         <setup-head></setup-head>
         <section class="b-main">
             <!--左侧菜单-->
-            <setup-aside menu="department"></setup-aside>
+            <setup-aside menu="outbound"></setup-aside>
             <div class="b-panel">
                 <div class="setup-title">
                     外呼标签
                     <div class="setupTable-right">
-                                <div class="select-box setup-right-depart">
-                                        <div class="select-text" @click="selectClick" :class="departShow == true?'select-down':''">
-                                            {{depart}}
-                                            <b></b>
-                                        </div>
-                                        <div class="selectDown-wrap" v-if="departShow">
-                                            <depart-ztree editor="false" id="departZtree" ref="departZtree" @treeselect="treeNode"></depart-ztree>
-                                        </div>
-                                    </div>
+                        <div class="select-box setup-right-depart">
+                            <div class="select-text" @click="selectClick" :class="departShow == true?'select-down':''">
+                                {{depart}}
+                                <b></b>
+                            </div>
+                            <div class="selectDown-wrap" v-if="departShow">
+                                <depart-ztree id="leftZtree" ref="leftZtree" @treeselect="treeNode"></depart-ztree>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="setup-main">
                     <div class="setup-left department-left outbound">
-                        <ztree editor="true" id="ztreeEditor" ref="ztreeEditor"></ztree>
+                        <depart-ztree id="ztreeEditor" ref="ztreeEditor" @treeselect="treeselect"></depart-ztree>
                     </div>
                     <div class="setup-right">
-                            <form class="calltips-wrap" @submit.prevent="submit">
-                                    <div class="tag-main">
-                                        <div class="tag-main-name">
-                                            有意向
-                                        </div>
-                                        <div class="tag-radius-box">
-                                            <calltips v-for="item in calltips.intentions" :tips="item" ></calltips>
-                                            <div class="calltips" @click="addTips('intentions')"><label class="calltips-add">+</label> </div>
-                                        </div>
+                        <form class="calltips-wrap" @submit.prevent="submit">
+                            <div class="tag-main">
+                                <div class="tag-main-name">
+                                    有意向
+                                </div>
+                                <div class="tag-radius-box">
+                                    <calltips v-for="item in calltips.intentions" :tips="item"></calltips>
+                                    <div class="calltips" @click="addTips('intentions')">
+                                        <label class="calltips-add">+</label>
                                     </div>
-                                    <div class="tag-main">
-                                        <div class="tag-main-name">
-                                            无意向
-                                        </div>
-                                        <div class="tag-radius-box">
-                                                <calltips v-for="item in calltips.noIntentions" :tips="item" ></calltips>
-                                                <div class="calltips" @click="addTips('noIntentions')"><label class="calltips-add">+</label> </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div class="tag-main">
+                                <div class="tag-main-name">
+                                    无意向
+                                </div>
+                                <div class="tag-radius-box">
+                                    <calltips v-for="item in calltips.noIntentions" :tips="item"></calltips>
+                                    <div class="calltips" @click="addTips('noIntentions')">
+                                        <label class="calltips-add">+</label>
                                     </div>
-                                    <div class="tag-main">
-                                        <div class="tag-main-name">
-                                            资料错误
-                                        </div>
-                                        <div class="tag-radius-box">
-                                                <calltips v-for="item in calltips.dataErrors"  :tips="item"></calltips>
-                                                <div class="calltips" @click="addTips('dataErrors')"><label class="calltips-add">+</label> </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div class="tag-main">
+                                <div class="tag-main-name">
+                                    资料错误
+                                </div>
+                                <div class="tag-radius-box">
+                                    <calltips v-for="item in calltips.dataErrors" :tips="item"></calltips>
+                                    <div class="calltips" @click="addTips('dataErrors')">
+                                        <label class="calltips-add">+</label>
                                     </div>
-                                    <div class="tag-main">
-                                        <div class="tag-main-name">
-                                            二次外呼
-                                        </div>
-                                        <div class="tag-radius-box">
-                                                <calltips v-for="item in calltips.twiceCalls"  :tips="item"></calltips>
-                                                <div class="calltips" @click="addTips('twiceCalls')"><label class="calltips-add">+</label> </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div class="tag-main">
+                                <div class="tag-main-name">
+                                    二次外呼
+                                </div>
+                                <div class="tag-radius-box">
+                                    <calltips v-for="item in calltips.twiceCalls" :tips="item"></calltips>
+                                    <div class="calltips" @click="addTips('twiceCalls')">
+                                        <label class="calltips-add">+</label>
                                     </div>
-                                    <div class="btn-box">
-                                            <button class="btn btn-primary" type="submit">保存标签组</button>
-                                        </div>
-                                    </form>
-                              
+                                </div>
+                            </div>
+                            <div class="btn-box">
+                                <button class="btn btn-primary" type="submit">保存标签组</button>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
         </section>
- 
-        <!-- <transition name="layer">
-            <layer :layer="layers.departmentAdd">
-                <department-add ref="departmentAdd" :message="layers.departmentAdd.message"></department-add>
+
+        <transition name="layer">
+            <layer :layer="layers.departSelect">
+                <depart-select ref="departSelect" :depart="depart">
+                </depart-select>
             </layer>
-        </transition> -->
+        </transition>
 
     </div>
 
 
 
-    <!-- <template id="setManager">
-        <div class="layer-text-content">设置为管理员后该员工可看到本部门及下属部门的数据，是否继续</div>
+    <template id="departSelect">
+        <div class="layer-text-content">
+            是否使用
+            <lable class="text-danger">{{depart}}标签组</lable>
+            覆盖当前标签组</div>
     </template>
     <script>
-        var setManager = Vue.extend({
-            template: '#setManager',
+        var departSelect = Vue.extend({
+            template: '#departSelect',
+            props: ['depart'],
             methods: {
                 submit: function () {
-                    console.log('设置为管理员');
+                    console.log('覆盖当前标签组');
                 }
             }
         });
-        Vue.component('setManager', setManager);
-    </script> -->
+        Vue.component('departSelect', departSelect);
+    </script>
     <!--左侧导航-->
     @@include('../components/setupAside.html')
     <!--顶部-->
     @@include('../components/setupHead.html')
     <!--弹框-->
-    @@include('../components/layer.html')
-
-    @@include('../components/calltips.html')
+    @@include('../components/layer.html') @@include('../components/calltips.html')
     <!-- 树形图 -->
     @@include('../components/departztree.html')
 
