@@ -5,7 +5,7 @@
                 模板标题
             </div>
             <div class="m-info m-input">
-                <input class="input" v-model="title.value" :disabled="view == 'true'" />
+                <input class="input" v-model="title.value" :disabled="view == 'true'" placeholder="请输入模板标题" />
             </div>
         </div>
         <div class="m-row">
@@ -13,7 +13,7 @@
                 模板签名
             </div>
             <div class="m-info m-input">
-                <input class="input" v-model="name.value" :disabled="view == 'true'" />
+                <input class="input" v-model="name.value" :disabled="view == 'true'" placeholder="请输入模板签名" />
                 <div class="input-tips">
                     <i class="icon icon-tips"></i>
                     <div class="tips-box">
@@ -27,7 +27,7 @@
                 模板内容
             </div>
             <div class="m-info m-input">
-                <textarea class="textarea" @input="textareaInput" v-model="content.value" :disabled="view == 'true'"></textarea>
+                <textarea class="textarea" @input="textareaInput" v-model="content.value" :disabled="view == 'true'" placeholder="请输入模板内容"></textarea>
                 <div class="count-box">
                     已输入{{textLength}}字
                 </div>
@@ -71,7 +71,7 @@
                     <select2 :options="options" v-model="item.value" :disabled="view == 'true'"></select2>
                 </div>
                 <div class="params-input" v-show="item.value == '网址'">
-                    <input type="text" class="input" v-model="item.content" :disabled="view == 'true'" />
+                    <input type="text" class="input" v-model="item.content" :disabled="view == 'true'" placeholder="请输入网址" />
                 </div>
                 <a href="javascript:void(0);" class="closed" v-show="($index == params.length-1) && (view != 'true') " @click="removeParams">&times;</a>
             </div>

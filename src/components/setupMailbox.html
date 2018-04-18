@@ -1,0 +1,50 @@
+<template id="setupMailbox">
+    <div class="setupMailbox">
+        <input-row :rows="email"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                邮箱密码
+            </div>
+            <div class="m-info m-input">
+                <input type="password" class="input" v-model="password.value" placeholder="请输入邮箱密码" />
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                确认密码
+            </div>
+            <div class="m-info m-input">
+                <input type="password" class="input" v-model="repassword.value" placeholder="请再次输入邮箱密码" />
+                <span class="text-danger">如绑定QQ邮箱请在此处填写QQ邮箱授权码</span>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                邮箱类型
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="emailType.options" v-model="emailType.value"></select2>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var setupMailbox = Vue.extend({
+        template: '#setupMailbox',
+        data: function () {
+            return {
+                email: { name: "邮箱地址", value: "", input: true, required: true },
+                password: { name: "邮箱密码", value: "", input: true, required: true },
+                repassword: { name: "确认密码", value: "", input: true, required: true },
+                emailType: { name: "邮箱类型", value: "", input: false, options: ['IMPA', 'POP3', 'SMTP'], required: true },
+
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("邮箱账号设置");
+            }
+        }
+    });
+    Vue.component('setupMailbox', setupMailbox);
+</script>

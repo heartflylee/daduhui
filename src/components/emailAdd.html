@@ -1,0 +1,62 @@
+<template id="emailAdd">
+    <div class="messageAdd-wrap">
+        <div class="m-row">
+            <div class="m-name required">
+                模板标题
+            </div>
+            <div class="m-info m-input">
+                <input type="text" class="input" v-model="title.value" placeholder="请输入模板标题" />
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                邮件标题
+            </div>
+            <div class="m-info m-input">
+                <input type="text" class="input" v-model="emailTitle.value" placeholder="请输入邮件标题" />
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                邮件内容
+            </div>
+            <div class="m-info m-input">
+                <editor ref="editor" id="editor_id" height="300px" width="100%" :content="content.value" :afterChange="afterChange()" pluginsPath="js/kindeditor/plugins/"
+                    :loadStyleMode="false" @on-content-change="onContentChange"></editor>
+                <div class="">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var emailAdd = Vue.extend({
+        template: '#emailAdd',
+        props: ['view', 'id'],
+        data: function () {
+            return {
+                title: { name: "模板标题", input: true, value: "", required: true },
+                emailTitle: { name: "邮件标题", input: true, value: "", required: true },
+                content: { name: "邮件内容", value: "" },
+                attach: []
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("新建模板");
+            },
+            onContentChange: function (val) {
+                this.$data.content.value = val;
+                console.log(this.$data.content.value);
+            },
+            afterChange: function () {
+            }
+        },
+        mounted: function () {
+            var _self = this;
+
+        }
+    });
+    Vue.component('emailAdd', emailAdd);
+</script>

@@ -137,16 +137,15 @@
     Vue.component('inputRow', inputRow);
 </script>
     <!-- 富文本编辑器 -->
-    
-<template id="editor">
-    <div class="kindeditor">
-      <textarea :id="id" name="content" v-model="outContent"></textarea>
-    </div>
-  </template>
-  <script>
+    <template id="editor">
+  <div class="kindeditor">
+    <textarea :id="id" name="content" v-model="outContent"></textarea>
+  </div>
+</template>
+<script>
   var editor = Vue.extend({
     template: '#editor',
-    data :function() {
+    data: function () {
       return {
         editor: null,
         outContent: this.$props.content
@@ -302,7 +301,7 @@
         default: '\t'
       },
       cssPath: {
-        type: [ String, Array ]
+        type: [String, Array]
       },
       cssData: {
         type: String
@@ -418,15 +417,15 @@
       }
     },
     watch: {
-      content :function(val) {
+      content: function (val) {
         this.editor && val !== this.outContent && this.editor.html(val)
       },
-      outContent :function(val) {
+      outContent: function (val) {
         this.$emit('update:content', val)
         this.$emit('on-content-change', val)
       }
     },
-    mounted :function() {
+    mounted: function () {
       // 初始访问时创建
       this.initEditor()
     },
@@ -434,19 +433,19 @@
      * keep-alive 会用到进入时调用activated 离开时调用deactivated
      * 初始访问 created、mounted 切换时deactivated 再次进入时 activated
      */
-    activated:function () {
+    activated: function () {
       // keep-alive 进入时创建
       this.initEditor()
     },
-    deactivated:function () {
+    deactivated: function () {
       // keep-alive 离开时移除
       this.removeEditor()
     },
     methods: {
-      removeEditor :function() {
+      removeEditor: function () {
         window.KindEditor.remove('#' + this.id)
       },
-      initEditor :function() {
+      initEditor: function () {
         var _this = this
         _this.removeEditor()
         _this.editor = window.KindEditor.create('#' + this.id, {
@@ -485,7 +484,6 @@
           colorTable: _this.colorTable,
           afterCreate: _this.afterCreate,
           afterChange: function () {
-            console.log(_this.afterChange)
             _this.outContent = this.html()
           },
           afterTab: _this.afterTab,
@@ -517,9 +515,8 @@
       }
     }
   });
-  Vue.component('editor',editor);
-  </script>
-  
+  Vue.component('editor', editor);
+</script>
 
     <!--左侧导航-->
     <template id="aside">
