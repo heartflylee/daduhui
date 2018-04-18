@@ -1,0 +1,127 @@
+<template id="messageAdd">
+    <div class="messageAdd-wrap">
+        <div class="m-row">
+            <div class="m-name required">
+                模板标题
+            </div>
+            <div class="m-info m-input">
+                <input class="input" v-model="title.value" :disabled="view == 'true'" />
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                模板签名
+            </div>
+            <div class="m-info m-input">
+                <input class="input" v-model="name.value" :disabled="view == 'true'" />
+                <div class="input-tips">
+                    <i class="icon icon-tips"></i>
+                    <div class="tips-box">
+                        3-8个字，必须有中文，不能有符号，模板审核通过后才可调用，受运营商限制 每个工作日9点统一提交给运营商审核。
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                模板内容
+            </div>
+            <div class="m-info m-input">
+                <textarea class="textarea" @input="textareaInput" v-model="content.value" :disabled="view == 'true'"></textarea>
+                <div class="count-box">
+                    已输入{{textLength}}字
+                </div>
+                <div class="input-tips">
+                    <i class="icon icon-tips"></i>
+                    <div class="tips-box">
+                        <div class="tips-title">计费规则</div>
+                        <p class="tips-text">运营商将按照短信字数计费，70字为一条</p>
+                        <p class="tips-text">1.姓名（可在APP端进行设置）参数将默认按照3个字计算；但名字如超过3个字，短信将按照多条计费；</p>
+                        <p class="tips-text">2.电话（为现在登陆账号的注册手机号）参数将默认按照11个字计算；</p>
+                        <p class="tips-text">3.网址由于网址会由系统生成短链接，将默认按照24个字计算。</p>
+                        <p class="tips-text text-danger">*以上费用均由运营商短信发送规则制定</p>
+                        <div class="tips-title">编辑说明</div>
+                        <p class="tips-text">运营商将按照短信字数计费，70字为一条</p>
+                        <p class="tips-text">示例：您好，我是刚才跟您通过电话的{1}，我的个人手机号码是{2}，如果您需要了解更多内容欢迎访问我们的网址{3}。</p>
+                        <p class="tips-text text-danger">
+                            <span style="float: left;">注：</span>
+                            <div style="display: inline-block;">
+                                <p class="tips-text text-danger">示例中的参数{1}代表发送人姓名</p>
+                                <p class="tips-text text-danger">参数{2}代表发送人手机号</p>
+                                <p class="tips-text text-danger">参数{3}代表网址；</p>
+                            </div>
+                        </p>
+                        <p class="tips-text text-danger">模板内容必须为半角字符，全角字符将影响到审核和短信下发，其中的参数必须从{1}开始顺序排列</p>
+                        <p class="tips-text">模版内容不可含有空格、换行、以及【】，否则自动删除非法字符</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                <a href="javascript:void(0);" class="m-link" v-show="params.length < 3" @click="addParams">+添加参数</a>
+            </div>
+        </div>
+        <div class="m-row" v-for="item,$index in params">
+            <div class="m-name">
+                参数{{'{'+($index+1)+'}'}}
+            </div>
+            <div class="m-info m-input">
+                <div class="params-input">
+                    <select2 :options="options" v-model="item.value" :disabled="view == 'true'"></select2>
+                </div>
+                <div class="params-input" v-show="item.value == '网址'">
+                    <input type="text" class="input" v-model="item.content" :disabled="view == 'true'" />
+                </div>
+                <a href="javascript:void(0);" class="closed" v-show="($index == params.length-1) && (view != 'true') " @click="removeParams">&times;</a>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var messageAdd = Vue.extend({
+        template: '#messageAdd',
+        props: ['view', 'id'],
+        data: function () {
+            return {
+                title: { name: "模板标题", input: true, value: "", required: true },
+                name: { name: "模板签名", input: true, value: "", required: true },
+                content: { name: "模板内容", input: true, value: "", required: true },
+                textLength: 0,
+                options: ['姓名', '手机号码', '网址'],
+                params: []
+            }
+        },
+        methods: {
+            textareaInput: function () {
+                this.$data.textLength = this.$data.content.value.length;
+            },
+            addParams: function () {
+                if (this.$props.view == 'true') {
+                    return false;
+                }
+                this.$data.params.push({
+                    value: "",
+                    content: "http://"
+                });
+            },
+            removeParams: function () {
+                this.$data.params.pop();
+            },
+            submit: function () {
+                console.log("新建模板");
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            if (_self.$props.id != undefined) {
+                _self.params = [
+                    { value: "姓名", content: "" },
+                    { value: "网址", content: "http://www.baidu.com" }
+                ];
+            }
+            _self.textareaInput();
+        }
+    });
+    Vue.component('messageAdd', messageAdd);
+</script>

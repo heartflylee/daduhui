@@ -49,33 +49,31 @@
         <setup-head></setup-head>
         <section class="b-main">
             <!--左侧菜单-->
-            <setup-aside menu="outbound"></setup-aside>
+            <setup-aside menu="message"></setup-aside>
             <div class="b-panel">
                 <div class="setup-title">
                     短信设置
                     <div class="setupTable-right">
-                        <button class="btn btn-primary">新建短信模板</button>
+                        <button class="btn btn-primary" @click="addModel">新建短信模板</button>
                     </div>
                 </div>
                 <div class="setup-main">
-                    <div class="table-wrap">
-                        <div class="jqxtable" id="jqxtable"></div>
-                    </div>
+                    <div class="jqxtable" id="jqxtable"></div>
                 </div>
             </div>
         </section>
 
-        <!-- <transition name="layer">
-            <layer :layer="layers.departSelect">
-                <depart-select ref="departSelect" :depart="depart">
-                </depart-select>
+        <transition name="layer">
+            <layer :layer="layers.modelAdd">
+                <message-add ref="modelAdd"></message-add>
             </layer>
-        </transition> -->
-
+        </transition>
+        <transition name="layer">
+            <layer :layer="layers.modelView">
+                <message-add ref="modelView" view="true" :id="viewId"></message-add>
+            </layer>
+        </transition>
     </div>
-
-
-
 
     <!--左侧导航-->
     @@include('../components/setupAside.html')
@@ -83,6 +81,8 @@
     @@include('../components/setupHead.html')
     <!--弹框-->
     @@include('../components/layer.html')
+    <!-- 新建短信模板 -->
+    @@include('../components/messageAdd.html') @@include('../components/select2.html')
 
     <script src="js/scripts.js"></script>
     <script src="js/setupMessage.js"></script>
