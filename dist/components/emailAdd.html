@@ -5,7 +5,7 @@
                 模板标题
             </div>
             <div class="m-info m-input">
-                <input class="input" v-model="title.value" placeholder="请输入模板标题" />
+                <input type="text" class="input" v-model="title.value" placeholder="请输入模板标题" />
             </div>
         </div>
         <div class="m-row">
@@ -13,7 +13,7 @@
                 邮件标题
             </div>
             <div class="m-info m-input">
-                <input class="input" v-model="emailTitle.value" placeholder="请输入邮件标题" />
+                <input type="text" class="input" v-model="emailTitle.value" placeholder="请输入邮件标题" />
             </div>
         </div>
         <div class="m-row">
@@ -23,7 +23,14 @@
             <div class="m-info m-input">
                 <editor ref="editor" id="editor_id" height="300px" width="100%" :content="content.value" :afterChange="afterChange()" pluginsPath="js/kindeditor/plugins/"
                     :loadStyleMode="false" @on-content-change="onContentChange"></editor>
-                <div></div>
+                <div class="attach-box">
+                    <div class="attach" v-for="(item,$index) in attach">
+                        <label>{{item.text}}</label>
+                        <a class="m-link" href="javascript:void(0);" @click="removeAttach($index)">删除</a>
+                    </div>
+                    <a href="javascript:void(0);" class="m-link" @click="upload($event)">+上传附件</a>
+                    <input type="file" ref="files" class="files" @change="uploadFile($event)" />
+                </div>
             </div>
         </div>
     </div>
@@ -31,13 +38,13 @@
 <script>
     var emailAdd = Vue.extend({
         template: '#emailAdd',
-        props: ['view', 'id'],
+        props: ['id'],
         data: function () {
             return {
                 title: { name: "模板标题", input: true, value: "", required: true },
                 emailTitle: { name: "邮件标题", input: true, value: "", required: true },
                 content: { name: "邮件内容", value: "" },
-                attach: []
+                attach: [],
             }
         },
         methods: {
@@ -49,11 +56,33 @@
                 console.log(this.$data.content.value);
             },
             afterChange: function () {
+            },
+            upload: function (event) {
+                $(event.target).next().click();
+            },
+            uploadFile: function (event) {
+                var file = event.target.files;
+                var _self = this;
+                _self.$data.attach.push({
+                    text: file[0].name,
+                    id: parseInt(Math.random() * 30)
+                });
+            },
+            removeAttach: function (index) {
+                this.$data.attach.splice(index, 1);
             }
+
         },
         mounted: function () {
             var _self = this;
-
+            if (_self.$props.id != undefined && _self.$props.id != '') {
+                _self.$data.title.value = "标题";
+                _self.$data.emailTitle.value = "邮件标题";
+                _self.$data.content.value = "邮件内容";
+                _self.$data.attach = [{
+                    text: '附件.text',
+                }];
+            }
         }
     });
     Vue.component('emailAdd', emailAdd);

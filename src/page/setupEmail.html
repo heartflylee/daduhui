@@ -66,7 +66,7 @@
                     <div class="setupTable-right">
                         <label class="title-text" v-if="email != ''">已设置邮箱{{email}}</label>
                         <label class="title-text" v-else>未设置邮箱</label>
-                        <button class="btn btn-primary">修改邮箱账号</button>
+                        <button class="btn btn-primary" @click="modifyMailbox">修改邮箱账号</button>
                         <button class="btn btn-primary" @click="addModel">新建邮件模板</button>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
         </transition>
         <transition name="layer">
             <layer :layer="layers.modelView">
-                <email-add ref="modelView" view="true" :id="viewId"></email-add>
+                <email-add ref="modelView" :id="viewId"></email-add>
             </layer>
         </transition>
 

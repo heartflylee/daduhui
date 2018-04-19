@@ -388,3 +388,15 @@
   font-size: 14px;
   font-weight: normal;
 }
+input[type='file'].files {
+  display: none;
+}
+.attach-box {
+  padding: 15px 0;
+  .m-link {
+    margin-top: 10px;
+  }
+}
+.attach {
+  line-height: 25px;
+}

@@ -28,7 +28,7 @@ var vm = new Vue({
         modelView: {
           title: '查看邮件模板',
           show: false,
-          submit: false,
+          submit: true,
           layerName: 'modelView',
         },
         mailbox: {
@@ -53,6 +53,9 @@ var vm = new Vue({
     addModel: function() {
       console.log('234234');
       this.layer('modelAdd');
+    },
+    modifyMailbox: function() {
+      this.layer('mailbox');
     },
   },
 });

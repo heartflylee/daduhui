@@ -96,7 +96,7 @@
                     <div class="setupTable-right">
                         <label class="title-text" v-if="email != ''">已设置邮箱{{email}}</label>
                         <label class="title-text" v-else>未设置邮箱</label>
-                        <button class="btn btn-primary">修改邮箱账号</button>
+                        <button class="btn btn-primary" @click="modifyMailbox">修改邮箱账号</button>
                         <button class="btn btn-primary" @click="addModel">新建邮件模板</button>
                     </div>
                 </div>
@@ -113,7 +113,13 @@
         </transition>
         <transition name="layer">
             <layer :layer="layers.modelView">
-                <email-add ref="modelView" view="true" :id="viewId"></email-add>
+                <email-add ref="modelView" :id="viewId"></email-add>
+            </layer>
+        </transition>
+
+        <transition name="layer">
+            <layer :layer="layers.mailbox">
+                <setup-mailbox ref="mailbox"></setup-mailbox>
             </layer>
         </transition>
     </div>
@@ -697,7 +703,7 @@
                 模板标题
             </div>
             <div class="m-info m-input">
-                <input class="input" v-model="title.value" placeholder="请输入模板标题" />
+                <input type="text" class="input" v-model="title.value" placeholder="请输入模板标题" />
             </div>
         </div>
         <div class="m-row">
@@ -705,7 +711,7 @@
                 邮件标题
             </div>
             <div class="m-info m-input">
-                <input class="input" v-model="emailTitle.value" placeholder="请输入邮件标题" />
+                <input type="text" class="input" v-model="emailTitle.value" placeholder="请输入邮件标题" />
             </div>
         </div>
         <div class="m-row">
@@ -715,7 +721,14 @@
             <div class="m-info m-input">
                 <editor ref="editor" id="editor_id" height="300px" width="100%" :content="content.value" :afterChange="afterChange()" pluginsPath="js/kindeditor/plugins/"
                     :loadStyleMode="false" @on-content-change="onContentChange"></editor>
-                <div></div>
+                <div class="attach-box">
+                    <div class="attach" v-for="(item,$index) in attach">
+                        <label>{{item.text}}</label>
+                        <a class="m-link" href="javascript:void(0);" @click="removeAttach($index)">删除</a>
+                    </div>
+                    <a href="javascript:void(0);" class="m-link" @click="upload($event)">+上传附件</a>
+                    <input type="file" ref="files" class="files" @change="uploadFile($event)" />
+                </div>
             </div>
         </div>
     </div>
@@ -723,13 +736,13 @@
 <script>
     var emailAdd = Vue.extend({
         template: '#emailAdd',
-        props: ['view', 'id'],
+        props: ['id'],
         data: function () {
             return {
                 title: { name: "模板标题", input: true, value: "", required: true },
                 emailTitle: { name: "邮件标题", input: true, value: "", required: true },
                 content: { name: "邮件内容", value: "" },
-                attach: []
+                attach: [],
             }
         },
         methods: {
@@ -741,11 +754,33 @@
                 console.log(this.$data.content.value);
             },
             afterChange: function () {
+            },
+            upload: function (event) {
+                $(event.target).next().click();
+            },
+            uploadFile: function (event) {
+                var file = event.target.files;
+                var _self = this;
+                _self.$data.attach.push({
+                    text: file[0].name,
+                    id: parseInt(Math.random() * 30)
+                });
+            },
+            removeAttach: function (index) {
+                this.$data.attach.splice(index, 1);
             }
+
         },
         mounted: function () {
             var _self = this;
-
+            if (_self.$props.id != undefined && _self.$props.id != '') {
+                _self.$data.title.value = "标题";
+                _self.$data.emailTitle.value = "邮件标题";
+                _self.$data.content.value = "邮件内容";
+                _self.$data.attach = [{
+                    text: '附件.text',
+                }];
+            }
         }
     });
     Vue.component('emailAdd', emailAdd);
@@ -789,6 +824,93 @@
         }
     })
 
+</script> <template id="inputRow">
+    <div class="m-row">
+        <div class="m-name " :class="{required:rows.required}">
+            {{rows.name}}
+        </div>
+        <div class="m-info m-input" v-if="rows.input">
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"
+            />
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon">
+                <i></i>{{rows.text}}</div>
+        </div>
+        <div class="m-info" v-else>
+            {{rows.value}}
+        </div>
+    </div>
+</template>
+<script>
+    var inputRow = Vue.extend({
+        template: '#inputRow',
+        props: ['rows']
+    });
+    Vue.component('inputRow', inputRow);
+</script>
+    <template id="setupMailbox">
+    <div class="setupMailbox">
+        <input-row :rows="email"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                邮箱密码
+            </div>
+            <div class="m-info m-input">
+                <input type="password" class="input" v-model="password.value" placeholder="请输入邮箱密码" />
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                确认密码
+            </div>
+            <div class="m-info m-input">
+                <input type="password" class="input" v-model="repassword.value" placeholder="请再次输入邮箱密码" />
+                <span class="text-danger">如绑定QQ邮箱请在此处填写QQ邮箱授权码</span>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                邮箱类型
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="emailType.options" v-model="emailType.value"></select2>
+            </div>
+        </div>
+        <input-row :rows="sendName"></input-row>
+        <input-row :rows="sendHost"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                端口类型
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="portType.options" v-model="portType.value"></select2>
+            </div>
+        </div>
+        <input-row :rows="port"></input-row>
+    </div>
+</template>
+<script>
+    var setupMailbox = Vue.extend({
+        template: '#setupMailbox',
+        data: function () {
+            return {
+                email: { name: "邮箱地址", value: "", input: true, required: true },
+                password: { name: "邮箱密码", value: "", input: true, required: true },
+                repassword: { name: "确认密码", value: "", input: true, required: true },
+                emailType: { name: "邮箱类型", value: "", input: false, options: ['IMPA', 'POP3', 'SMTP'], required: true },
+                sendName: { name: "发件人名称", value: '', input: true, required: true },
+                sendHost: { name: "发件服务器地址", value: '', input: true, required: true },
+                portType: { name: "端口类型", value: '', input: false, required: true, options: ['普通端口', 'SSL端口'] },
+                port: { name: "发件服务器端口", value: '', input: true, required: true },
+
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("邮箱账号设置");
+            }
+        }
+    });
+    Vue.component('setupMailbox', setupMailbox);
 </script>
 
     <script src="js/scripts.js"></script>
