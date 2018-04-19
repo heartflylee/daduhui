@@ -25,6 +25,7 @@
   padding: 0 10px;
   margin-left: 222px;
   position: relative;
+  overflow: auto;
 }
 .ztree {
   overflow: auto;
@@ -399,4 +400,63 @@ input[type='file'].files {
 }
 .attach {
   line-height: 25px;
+}
+.b-panel {
+  &.setup-team {
+    background: transparent;
+    border: 0;
+  }
+}
+.team-box {
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #d4d4d4;
+  position: relative;
+  margin-bottom: 10px;
+  &.team-sea {
+    height: 300px;
+  }
+}
+.sea-title {
+  padding: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+.sea-wrap {
+  @include clearfix;
+}
+.sea-box {
+  float: left;
+  padding: 10px 0;
+  min-width: 120px;
+  text-align: center;
+}
+.sea-head {
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: contain;
+}
+.sea-name {
+  margin: 10px 0;
+}
+.m-info {
+  .switch-on,
+  .switch-off {
+    margin-top: 5px;
+    width: 50px;
+  }
+}
+.callDown-box {
+  .row {
+    margin: 10px 20px;
+  }
+}
+.input-box {
+  display: inline-block;
+  width: 80px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }

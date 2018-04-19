@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>已解绑员工</title>
+    <title>团队设置</title>
     <!--公共-->
     <link type="image/x-icon" href="img/favicon.ico" rel="icon">
 
@@ -37,6 +37,7 @@
 <script type="text/javascript" src="js/placeholder.js"></script>
 <![endif]-->
     <!--表格-->
+
     <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
     <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
     <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
@@ -62,6 +63,14 @@
 
     <script src="js/jqx/globalize.culture.ch-CN.js"></script>
 
+    <link rel="stylesheet" href="css/zTreeStyle.css">
+    <script src="js/jquery.ztree.core.js"></script>
+    <script src="js/jquery.ztree.exedit.js"></script>
+
+    <link rel="stylesheet" href="css/switch.css">
+    <script src="js/switch.js"></script>
+
+
 </head>
 
 <body>
@@ -74,77 +83,85 @@
         <setup-head></setup-head>
         <section class="b-main">
             <!--左侧菜单-->
-            <setup-aside menu="department"></setup-aside>
-            <div class="b-panel">
-                <div class="setup-title">
-                    已解绑员工
+            <setup-aside menu="team"></setup-aside>
+            <div class="b-panel setup-team">
+                <div class="team-box team-sea">
+                    <div class="setup-title">
+                        企业公海设置
+                    </div>
+                    <div class="setup-main">
+                        <div class="setup-left department-left outbound">
+                            <depart-ztree id="ztreeEditor" ref="ztreeEditor" @treeselect="treeselect"></depart-ztree>
+                        </div>
+                        <div class="setup-right">
+                            <div class="sea-title">企业公海使用权</div>
+                            <div class="sea-wrap">
+                                <div class="sea-box" v-for="item in seaList">
+                                    <img class="sea-head" :src="item.headUrl" />
+                                    <div class="sea-name">{{item.name}}</div>
+                                    <label class="check-box">
+                                        <input type="checkbox" v-model="item.check" @change="checkChange(item.id,item.check)">
+                                        <i></i>
+                                        允许使用
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="setup-main">
-                    <div class="jqxtable" id="jqxtable"></div>
+                <div class="team-box callDown">
+                    <div class="setup-title">
+                        挂机时间设置
+                    </div>
+                    <div class="callDown-box">
+                        <div class="row">
+                            <div class="m-name">
+                                挂机时间开关
+                            </div>
+                            <div class="m-info m-input">
+                                <span :class="'switch-'+(calldownSwitch == true ? 'on':'off')" id="calldownSwitch"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="m-name">
+                                挂机时间设置
+                            </div>
+                            <div class="m-info m-input">
+                                <div class="input-box">
+                                    <input type="text" class="input" :disabled="calldownSwitch == false" />
+                                </div>秒（1-60秒）
+                                <div class="text-danger">
+                                    开启开关并设定时间后，销售人员拨打电话时无法在该时间之内主动挂断电话
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-primary" :disabled="calldownSwitch == false" @click="submit">提交</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="team-box callDown">
+                    <div class="setup-title">
+                        隐藏号码设置
+                    </div>
+                    <div class="callDown-box">
+                        <div class="row">
+                            <div class="m-name">
+                                隐藏号码开关
+                            </div>
+                            <div class="m-info m-input">
+                                <span :class="'switch-'+(hiddenPhoneSwitch == true ? 'on':'off')" id="hiddenPhoneSwitch"></span>
+                                <div class="text-danger">开启开关后，管理员与销售将无法看到完整的手机、座机号码</div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </section>
-
-        <transition name="layer">
-            <layer :layer="layers.cancellation">
-                <cancellation ref="cancellation"></cancellation>
-            </layer>
-        </transition>
-
     </div>
 
-    <template id="cancellation">
-        <div class="cancellation-wrap">
-            <div class="cancellation-text">
-                短信验证码已发送
-            </div>
-            <div class="cancellation-box">
-                <div class="btn-box">
-                    <button class="btn" :class="isDisabled==true?'':'btn-primary'" :disabled="isDisabled" @click="getCode">{{btnText}}</button>
-                </div>
-                <div class="input-box">
-                    <input type="text" class="input" placeholder="请输入验证码" v-model="code">
-                </div>
-            </div>
-        </div>
-    </template>
-    <script>
-        var cancellation = Vue.extend({
-            template: '#cancellation',
-            data: function () {
-                return {
-                    code: '',
-                    isDisabled: true,
-                    btnText: '60s后重新获取'
-                }
-            },
-            methods: {
-                getCode: function () {
-                    console.log("获取验证码");
-                    var time, long = 60, _self = this;
-                    _self.$data.isDisabled = true;
-                    _self.$data.btnText = long + 's后重新获取';
-                    time = setInterval(function () {
-                        long--;
-                        _self.$data.btnText = long + 's后重新获取';
-                        if (long <= 0) {
-                            clearInterval(time);
-                            _self.$data.btnText = "获取短信验证码";
-                            _self.$data.isDisabled = false;
-                        }
-                    }, 1000);
-                },
-                submit: function () {
-                    console.log("注销账号");
-                },
-
-            },
-            mounted: function () {
-                this.getCode();
-            }
-        });
-        Vue.component('cancellation', cancellation);
-    </script>
     <!--左侧导航-->
     <template id="setupAside">
     <!-- 左侧菜单 -->
@@ -261,84 +278,91 @@
     });
     Vue.component('setupHead', setupHead);
 </script>
-
-    <!--弹框-->
-    <template id="layer">
-    <div class="modal" v-if="layer.show">
-        <div class="layer-bg"></div>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form @submit.prevent="submit" autocomplete="off">
-                    <div class="modal-header layer-head">
-                        <button type="button" class="close" @click="close">&times;</button>
-                        <h4 class="modal-title">{{layer.title}}</h4>
-                    </div>
-                    <div class="modal-body" :style="{maxHeight:maxHeight+'px'}">
-                        <slot></slot>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" @click="close">关闭</button>
-                        <input type="submit" class="btn btn-primary" v-if="layer.submit" value="提交" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <!-- 树形图 -->
+    <template id="departZtree">
+    <ul class="ztree" :id="id"></ul>
 </template>
 <script>
-    var layer = Vue.extend({
-        template: '#layer',
-        props: ['layer'],
+    var departZtree = Vue.extend({
+        template: '#departZtree',
+        props: ['id'],
         data: function () {
             return {
-                maxHeight: document.body.clientHeight - 200
+                departSetting: {
+                    view: {
+                        selectedMulti: false,
+                        // showIcon: false,
+                        fontCss: {
+                            "font-weight": "bold"
+                        }
+                    },
+                    check: {
+                        enable: false
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    },
+                    edit: {
+                        enable: false
+                    },
+                    callback: {
+                        onClick: this.departSelect
+                    },
+                    async: {
+                        enable: true
+                    }
+                },
+                zNodes: [
+                    {
+                        name: "全公司", open: true,
+                        children: [
+                            {
+                                name: "销售部",
+                                children: [
+                                    { name: "销售部1" },
+                                    { name: "销售部2" },
+                                    { name: "销售部3" },
+                                    { name: "销售部4" }
+                                ]
+                            },
+                            {
+                                name: "市场部",
+                                children: [
+                                    { name: "市场部1" },
+                                    { name: "市场部2" },
+                                    { name: "市场部3" },
+                                    { name: "市场部4市场部4市场部4市场部4市场部4" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         },
         methods: {
-            close: function (layer) {
-                console.log(this.$props);
-                this.$props.layer.show = false;
-                return false;
-            },
-            submit: function () {
-                console.log("彈框提交");
-                console.log(vm.$refs[this.$props.layer.layerName]);
-                vm.$refs[this.$props.layer.layerName].submit();
-                return false;
-            }
-        },
-        mounted: function () {
-            var _self = this;
-            window.onresize = function () {
-                _self.maxHeight = document.body.clientHeight - 200;
-            }
-        },
-        watch: {
-            maxHeight: function (val) {
-                var modalBody = document.getElementsByClassName('modal-body');
-                for (var i = 0; i < modalBody.length; i++) {
-                    modalBody[i].style.maxHeight = val + 'px';
+            //变更中选择部门
+            departSelect: function (event, treeId, treeNode) {
+                var _self = this;
+                if (treeNode != null) {
+                    var zTree = $.fn.zTree.getZTreeObj(_self.$props.id);
+                    zTree.selectNode(treeNode);
+                    _self.$emit('treeselect', treeNode.name);
                 }
             }
         },
-        updated: function () {
-            var modalDialog = $(this.$el).find(".modal-dialog")[0];
-            $(modalDialog).css({
-                top: ($("body").height() - $(modalDialog).height()) / 2,
-                left: ($("body").width() - $(modalDialog).width()) / 2
-            });
-            $(modalDialog).bg_move({
-                    move: '.modal-header',
-                    closed: '.close'
-                });
+        mounted() {
+            var _self = this;
+            $.fn.zTree.init($("#" + _self.$props.id), _self.$data.departSetting, _self.$data.zNodes);
         }
     });
+    Vue.component('departZtree', departZtree);
 
-    Vue.component('layer', layer);
 </script>
 
     <script src="js/scripts.js"></script>
-    <script src="js/unbundlingList.js"></script>
+    <script src="js/setupTeam.js"></script>
 
 </body>
 

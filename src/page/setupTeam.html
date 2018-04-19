@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>团队设置</title>
+    <!--公共-->
+    @@include("../component/common.html",{"style":"normal"})
+    <!--表格-->
+
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxinput.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxmenu.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.edit.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcombobox.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxgrid.columnsreorder.js"></script>
+
+    <script src="js/jqx/jqxcalendar.js"></script>
+    <script src="js/jqx/jqxdatetimeinput.js"></script>
+    <script src="js/jqx/globalize.js"></script>
+
+    <script src="js/jqx/globalize.culture.ch-CN.js"></script>
+
+    <link rel="stylesheet" href="css/zTreeStyle.css">
+    <script src="js/jquery.ztree.core.js"></script>
+    <script src="js/jquery.ztree.exedit.js"></script>
+
+    <link rel="stylesheet" href="css/switch.css">
+    <script src="js/switch.js"></script>
+
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+        <!--header-->
+        <setup-head></setup-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <setup-aside menu="team"></setup-aside>
+            <div class="b-panel setup-team">
+                <div class="team-box team-sea">
+                    <div class="setup-title">
+                        企业公海设置
+                    </div>
+                    <div class="setup-main">
+                        <div class="setup-left department-left outbound">
+                            <depart-ztree id="ztreeEditor" ref="ztreeEditor" @treeselect="treeselect"></depart-ztree>
+                        </div>
+                        <div class="setup-right">
+                            <div class="sea-title">企业公海使用权</div>
+                            <div class="sea-wrap">
+                                <div class="sea-box" v-for="item in seaList">
+                                    <img class="sea-head" :src="item.headUrl" />
+                                    <div class="sea-name">{{item.name}}</div>
+                                    <label class="check-box">
+                                        <input type="checkbox" v-model="item.check" @change="checkChange(item.id,item.check)">
+                                        <i></i>
+                                        允许使用
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-box callDown">
+                    <div class="setup-title">
+                        挂机时间设置
+                    </div>
+                    <div class="callDown-box">
+                        <div class="row">
+                            <div class="m-name">
+                                挂机时间开关
+                            </div>
+                            <div class="m-info m-input">
+                                <span :class="'switch-'+(calldownSwitch == true ? 'on':'off')" id="calldownSwitch"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="m-name">
+                                挂机时间设置
+                            </div>
+                            <div class="m-info m-input">
+                                <div class="input-box">
+                                    <input type="text" class="input" :disabled="calldownSwitch == false" />
+                                </div>秒（1-60秒）
+                                <div class="text-danger">
+                                    开启开关并设定时间后，销售人员拨打电话时无法在该时间之内主动挂断电话
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-primary" :disabled="calldownSwitch == false" @click="submit">提交</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="team-box callDown">
+                    <div class="setup-title">
+                        隐藏号码设置
+                    </div>
+                    <div class="callDown-box">
+                        <div class="row">
+                            <div class="m-name">
+                                隐藏号码开关
+                            </div>
+                            <div class="m-info m-input">
+                                <span :class="'switch-'+(hiddenPhoneSwitch == true ? 'on':'off')" id="hiddenPhoneSwitch"></span>
+                                <div class="text-danger">开启开关后，管理员与销售将无法看到完整的手机、座机号码</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!--左侧导航-->
+    @@include('../components/setupAside.html')
+    <!--顶部-->
+    @@include('../components/setupHead.html')
+    <!-- 树形图 -->
+    @@include('../components/departztree.html')
+
+    <script src="js/scripts.js"></script>
+    <script src="js/setupTeam.js"></script>
+
+</body>
+
+</html>
