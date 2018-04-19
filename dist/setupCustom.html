@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>已解绑员工</title>
+    <title>自定义字段设置</title>
     <!--公共-->
     <link type="image/x-icon" href="img/favicon.ico" rel="icon">
 
@@ -37,6 +37,7 @@
 <script type="text/javascript" src="js/placeholder.js"></script>
 <![endif]-->
     <!--表格-->
+
     <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
     <script type="text/javascript" src="js/jqx/jqxdata.js"></script>
     <script type="text/javascript" src="js/jqx/jqxbuttons.js"></script>
@@ -62,6 +63,11 @@
 
     <script src="js/jqx/globalize.culture.ch-CN.js"></script>
 
+    <link rel="stylesheet" href="css/zTreeStyle.css">
+    <script src="js/jquery.ztree.core.js"></script>
+    <script src="js/jquery.ztree.exedit.js"></script>
+
+
 </head>
 
 <body>
@@ -74,10 +80,14 @@
         <setup-head></setup-head>
         <section class="b-main">
             <!--左侧菜单-->
-            <setup-aside menu="department"></setup-aside>
+            <setup-aside menu="custom"></setup-aside>
             <div class="b-panel">
                 <div class="setup-title">
-                    已解绑员工
+                    自定义字段
+                    <div class="setupTable-right">
+                        <button class="btn btn-danger" @click="removeCustom">删除字段</button>
+                        <button class="btn btn-primary" @click="addModel">新建字段</button>
+                    </div>
                 </div>
                 <div class="setup-main">
                     <div class="jqxtable" id="jqxtable"></div>
@@ -85,66 +95,39 @@
             </div>
         </section>
 
+        <!-- <transition name="layer">
+            <layer :layer="layers.modelAdd">
+                <email-add ref="modelAdd"></email-add>
+            </layer>
+        </transition> -->
+
         <transition name="layer">
-            <layer :layer="layers.cancellation">
-                <cancellation ref="cancellation"></cancellation>
+            <layer :layer="layers.addReport">
+                <add-report ref="addReport"></add-report>
             </layer>
         </transition>
-
     </div>
 
-    <template id="cancellation">
-        <div class="cancellation-wrap">
-            <div class="cancellation-text">
-                短信验证码已发送
-            </div>
-            <div class="cancellation-box">
-                <div class="btn-box">
-                    <button class="btn" :class="isDisabled==true?'':'btn-primary'" :disabled="isDisabled" @click="getCode">{{btnText}}</button>
-                </div>
-                <div class="input-box">
-                    <input type="text" class="input" placeholder="请输入验证码" v-model="code">
-                </div>
-            </div>
-        </div>
+    <template id="addReport">
+        <input-row :rows="report"></input-row>
     </template>
     <script>
-        var cancellation = Vue.extend({
-            template: '#cancellation',
+        var addReport = Vue.extend({
+            template: '#addReport',
             data: function () {
                 return {
-                    code: '',
-                    isDisabled: true,
-                    btnText: '60s后重新获取'
+                    report: { name: '图表名称', value: '', input: true, required: true },
                 }
             },
             methods: {
-                getCode: function () {
-                    console.log("获取验证码");
-                    var time, long = 60, _self = this;
-                    _self.$data.isDisabled = true;
-                    _self.$data.btnText = long + 's后重新获取';
-                    time = setInterval(function () {
-                        long--;
-                        _self.$data.btnText = long + 's后重新获取';
-                        if (long <= 0) {
-                            clearInterval(time);
-                            _self.$data.btnText = "获取短信验证码";
-                            _self.$data.isDisabled = false;
-                        }
-                    }, 1000);
-                },
                 submit: function () {
-                    console.log("注销账号");
-                },
-
-            },
-            mounted: function () {
-                this.getCode();
+                    console.log("生成图表提交");
+                }
             }
         });
-        Vue.component('cancellation', cancellation);
+        Vue.component('addReport', addReport);
     </script>
+
     <!--左侧导航-->
     <template id="setupAside">
     <!-- 左侧菜单 -->
@@ -261,7 +244,6 @@
     });
     Vue.component('setupHead', setupHead);
 </script>
-
     <!--弹框-->
     <template id="layer">
     <div class="modal" v-if="layer.show">
@@ -335,10 +317,32 @@
     });
 
     Vue.component('layer', layer);
-</script>
+</script> <template id="inputRow">
+    <div class="m-row">
+        <div class="m-name " :class="{required:rows.required}">
+            {{rows.name}}
+        </div>
+        <div class="m-info m-input" v-if="rows.input">
+            <input type="text" class="input" :placeholder="rows.placeholder == undefined ? '请输入'+rows.name:rows.placeholder" v-model="rows.value"
+            />
+            <div v-if="rows.enter" class="enter-btn" :class="rows.icon">
+                <i></i>{{rows.text}}</div>
+        </div>
+        <div class="m-info" v-else>
+            {{rows.value}}
+        </div>
+    </div>
+</template>
+<script>
+    var inputRow = Vue.extend({
+        template: '#inputRow',
+        props: ['rows']
+    });
+    Vue.component('inputRow', inputRow);
+</script> 
 
     <script src="js/scripts.js"></script>
-    <script src="js/unbundlingList.js"></script>
+    <script src="js/setupCustom.js"></script>
 
 </body>
 

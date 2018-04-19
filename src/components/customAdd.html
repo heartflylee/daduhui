@@ -1,0 +1,46 @@
+<template id="customAdd">
+    <div class="customAdd">
+        <input-row :rows="customName"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                字段类型
+            </div>
+            <div class="m-info m-input">
+                <div class="radio-wrap">
+                    <label class="radio-box">
+                        <input type="radio" name="type" v-model="type" value="单选">
+                        <i></i>单选</label>
+                    <label class="radio-box">
+                        <input type="radio" name="type" v-model="type" value="多选">
+                        <i></i>多选</label>
+                    <label class="radio-box">
+                        <input type="radio" name="type" v-model="type" value="文本">
+                        <i></i>文本</label>
+                </div>
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var customAdd = Vue.extend({
+        template: '#customAdd',
+        data: function () {
+            return {
+                customName: { name: "字段名称", value: '', input: true, required: true },
+                type: ''
+            }
+        },
+        methods: {
+
+        },
+        watch: {
+            type: function (val) {
+
+            }
+        }
+    });
+    Vue.component('customAdd', customAdd);
+</script>
