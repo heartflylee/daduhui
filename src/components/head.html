@@ -82,7 +82,9 @@
             //头部搜索
             Hsearch: function () {
                 if (this.search.trim() == "") {
-                    alert("", "搜索内容不能为空");
+                    // alert("", "搜索内容不能为空");
+                    toastr.warning('搜索内容不能为空');
+
                     return false;
                 }
                 window.location.href = "customer.html";

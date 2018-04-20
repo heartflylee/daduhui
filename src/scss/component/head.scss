@@ -166,6 +166,9 @@ $h-p-t: 13px;
   &.active {
     display: block;
   }
+  .small-nav-wrap & {
+    top: 28px;
+  }
 }
 
 a.dropli {
@@ -181,9 +184,16 @@ a.dropli {
     width: 70px;
     margin: 0 auto;
     cursor: pointer;
+    .small-nav-wrap & {
+      width: auto;
+      text-align: left;
+    }
   }
   &:hover {
     background: #f0f0f0;
+  }
+  .small-nav-wrap & {
+    padding: 0 5px;
   }
 }
 

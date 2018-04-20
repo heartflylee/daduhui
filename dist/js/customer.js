@@ -136,16 +136,40 @@ var vm = new Vue({
           submit: true,
           layerName: 'changeContact',
         },
+        taskAdd: {
+          title: '新建任务',
+          show: false,
+          submit: true,
+          layerName: 'taskAdd',
+        },
+        taskmessageAdd: {
+          title: '新建任务',
+          show: false,
+          submit: true,
+          layerName: 'taskmessageAdd',
+        },
+        taskemailAdd: {
+          title: '新建任务',
+          show: false,
+          submit: true,
+          layerName: 'taskemailAdd',
+        },
+        export: {
+          title: '导入客户',
+          show: false,
+          submit: true,
+          layerName: 'export',
+        },
       },
     };
   },
   methods: {
     closeLayer: function(layer) {
       console.log(layer);
-      this.layers[layer].show = false;
+      this.$data.layers[layer].show = false;
     },
     layer: function(layer) {
-      this.layers[layer].show = true;
+      this.$data.layers[layer].show = true;
     },
   },
 });
@@ -1349,23 +1373,23 @@ function customSubmit() {
 // }
 
 //显示表格中的详情
-function showDetail(obj, e) {
-  var offset = $(obj).offset();
-  var panels = $('#panels-detail');
-  var top = offset.top + 40;
-  var left = offset.left;
-  panels.html($(obj).data().title);
-  panels.show();
-  if (top + panels.outerHeight() >= $(window).height()) {
-    top -= panels.outerHeight() + 40;
-  }
-  if (left + panels.outerWidth() >= $(window).width()) {
-    left -= panels.outerWidth();
-  }
+// function showDetail(obj, e) {
+//   var offset = $(obj).offset();
+//   var panels = $('#panels-detail');
+//   var top = offset.top + 40;
+//   var left = offset.left;
+//   panels.html($(obj).data().title);
+//   panels.show();
+//   if (top + panels.outerHeight() >= $(window).height()) {
+//     top -= panels.outerHeight() + 40;
+//   }
+//   if (left + panels.outerWidth() >= $(window).width()) {
+//     left -= panels.outerWidth();
+//   }
 
-  panels.css({ top: top, left: left });
-  e.stopPropagation();
-}
+//   panels.css({ top: top, left: left });
+//   e.stopPropagation();
+// }
 
 $(document).click(function(e) {
   $('#panels-detail').hide();

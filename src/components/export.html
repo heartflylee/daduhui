@@ -1,0 +1,40 @@
+<template id="exportWrap">
+    <div class="export-wrap">
+        <div class="export-input">
+            <button class="btn btn-primary" @click="exportBtn">浏览</button>
+            <div class="exportFileName" @click="exportBtn">{{file == ''?'请选择客户导入模板':file}}</div>
+            <input type="file" id="exportFile" class="file" @change="uploadFile($event)">
+        </div>
+        <div class="export-text">
+            <p>使用说明</p>
+            <p>1.请上传后缀名为xls的文件；</p>
+            <p>2.数据请勿放在合并的单元格中，且导入文件小于2MB；</p>
+            <p>3.为保证您导入的客户数据有效，请下载
+                <a href="javascript:void(0)">客户导入模板</a>，编辑后上传。</p>
+        </div>
+    </div>
+</template>
+<script>
+    var exportWrap = Vue.extend({
+        template: '#exportWrap',
+        data: function () {
+            return {
+                file: ''
+            }
+        },
+        methods: {
+            exportBtn: function () {
+                $("#exportFile").click();
+            },
+            submit: function () {
+                console.log("导入客户");
+            },
+            uploadFile: function (event) {
+                var file = event.target.files;
+                var _self = this;
+                _self.$data.file = file[0].name;
+            },
+        }
+    })
+    Vue.component('exportWrap', exportWrap);
+</script>

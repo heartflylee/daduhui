@@ -9,28 +9,41 @@
 
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/beAlert.css">
-<link rel="stylesheet" href="css/select2.css">
-
+<!-- <link rel="stylesheet" href="css/beAlert.css"> -->
+<link rel="stylesheet" href="css/toastr.css">
+<link rel="stylesheet" href="css/select2.css"> 
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/jqxgrid.css">
-
-
+<link rel="stylesheet" href="css/jqxgrid.css">  
 <script src="js/vue.min.js"></script>
 <script src="js/vue-resource@1.3.4.js"></script>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/jquery.autocomplete.js"></script>
 <script src="js/resize.js"></script>
-<script src="js/beAlert.js"></script>
+<!-- <script src="js/beAlert.js"></script> -->
+<script src="js/toastr.js"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "positionClass": "toast-top-center",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
 <script src="js/select2.js"></script>
 <script src="js/drag.js"></script>
 <!--<script src="js/jsDate/laydate.js"></script>-->
 <!--<script src="js/layDate/laydate.js"></script>-->
 <!---->
 
-<script src="js/audio.js"></script>
-
+<script src="js/audio.js"></script> 
 <!--[if lt IE 10]>
 <script type="text/javascript" src="js/html5shiv.js"></script>
 <script type="text/javascript" src="js/respond.min.js"></script>
@@ -129,29 +142,42 @@
             </layer>
         </transition>
 
-
         <!--变更负责人-->
         <transition name="layer">
             <layer :layer="layers.changeContact">
                 <change-contact ref="changeContact"></change-contact>
             </layer>
         </transition>
-
+        <!--电话任务-->
+        <transition name="layer">
+            <layer :layer="layers.taskAdd">
+                <task-add ref="taskAdd"></task-add>
+            </layer>
+        </transition>
+        <!--短信任务-->
+        <transition name="layer">
+            <layer :layer="layers.taskmessageAdd">
+                <taskmessage-add ref="taskmessageAdd"></taskmessage-add>
+            </layer>
+        </transition>
+        <!--邮件任务-->
+        <transition name="layer">
+            <layer :layer="layers.taskemailAdd">
+                <taskemail-add ref="taskemailAdd"></taskemail-add>
+            </layer>
+        </transition>
+        <!--导入客户-->
+        <transition name="layer">
+            <layer :layer="layers.export">
+                <export-wrap ref="export"></export-wrap>
+            </layer>
+        </transition>
         <!--通话录音-->
         <transition name="audio">
             <my-audio :layer="audio"></my-audio>
         </transition>
     </div>
 
-    <!--include('../component/customer/detail.html')-->
-    <!--&lt;!&ndash;新增客户&ndash;&gt;-->
-    <!--include('../component/layer/layer.html',{"layer":"customer","layerTitle":"新建客户","layerFrame":"../customer/addcustomer.html","submit":"true","submitBtn":"customAdd()","close":"false","closeBtn":""})-->
-    <!--&lt;!&ndash; 自定义表头 &ndash;&gt;-->
-    <!--include('../component/layer/layer.html',{"layer":"customHead","layerTitle":"编辑显示字段","layerFrame":"../customer/cusomHead.html","submit":"true","submitBtn":"customSubmit()","close":"false","closeBtn":""})-->
-    <!--&lt;!&ndash;调用企信获得的企业信息&ndash;&gt;-->
-    <!--include('../component/layer/layer.html',{"layer":"business","layerTitle":"工商信息","layerFrame":"../qixin/qixin.html","submit":"false","submitBtn":"","close":"false","closeBtn":""})-->
-    <!--&lt;!&ndash; 音频播放 &ndash;&gt;-->
-    <!--include('../component/layer/layer.html',{"layer":"audio","layerTitle":"通话录音","layerFrame":"../audio/audio.html","submit":"false","submitBtn":"","close":"true","closeBtn":"audioClose()"})-->
     <template id="inputRow">
     <div class="m-row">
         <div class="m-name " :class="{required:rows.required}">
@@ -844,7 +870,9 @@
             //头部搜索
             Hsearch: function () {
                 if (this.search.trim() == "") {
-                    alert("", "搜索内容不能为空");
+                    // alert("", "搜索内容不能为空");
+                    toastr.warning('搜索内容不能为空');
+
                     return false;
                 }
                 window.location.href = "customer.html";
@@ -879,9 +907,14 @@
                 <div class="export">
                     <i class="icon-export icon"></i> 导出
                 </div>
-                <div class="drop-button">
+                <div class="drop-button dropdown">
                     <label class="drop-name" @click="customerAdd">新建客户</label>
-                    <i class="icon icon-drop-button"></i>
+                    <i class="icon icon-drop-button" data-toggle="dropdown"></i>
+                    <div class="dropdown-menu dropdown-box">
+                        <a class="dropli" href="javascript:void(0);" @click="exportBtn">
+                            <label>导入客户</label>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -892,7 +925,8 @@
             <div class="table-nav-list">
                 <ul>
                     <li class="table-nav">
-                        已选中<label class="count-select">1</label>项
+                        已选中
+                        <label class="count-select">1</label>项
                     </li>
                     <li class="table-nav" @click="change">
                         <i class="table-icon icon-change icon"></i>
@@ -902,6 +936,18 @@
                         <i class="table-icon icon-delete icon"></i>
                         <div class="table-nav-main">删除</div>
                     </li>
+                    <li class="table-nav" @click="taskAdd">
+                        <i class="table-icon icon-call icon"></i>
+                        <div class="table-nav-main">电话任务</div>
+                    </li>
+                    <li class="table-nav" @click="taskmessageAdd">
+                        <i class="table-icon icon-message icon"></i>
+                        <div class="table-nav-main">短信任务</div>
+                    </li>
+                    <li class="table-nav" @click="taskemailAdd">
+                        <i class="table-icon icon-email icon"></i>
+                        <div class="table-nav-main">邮件任务</div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -910,23 +956,37 @@
 </template>
 <script>
     var customerHead = Vue.extend({
-        template:'#customer-head',
-        data:function () {
-            return{
+        template: '#customer-head',
+        data: function () {
+            return {
 
             }
         },
-        methods:{
-            customerAdd:function () {
-                this.$emit('layer','customerAdd');
+        methods: {
+            customerAdd: function () {
+                this.$emit('layer', 'customerAdd');
             },
-            change:function(){
-                this.$emit('layer','changeContact');
-                
-            }        
+            change: function () {
+                this.$emit('layer', 'changeContact');
+
+            },
+            taskAdd: function () {
+                this.$emit('layer', 'taskAdd');
+            },
+            taskemailAdd: function () {
+                this.$emit('layer', 'taskemailAdd');
+
+            },
+            taskmessageAdd: function () {
+                this.$emit('layer', 'taskmessageAdd');
+
+            },
+            exportBtn: function () {
+                this.$emit('layer', 'export');
+            }
         }
     });
-    Vue.component('customerHead',customerHead);
+    Vue.component('customerHead', customerHead);
 </script>
     <!--客户表格-->
     <template id="customer-table">
@@ -1860,8 +1920,6 @@
 
     Vue.component('layer', layer);
 </script>
-    <!--工商信息（企信宝）-->
-    
     <!--新建客户-->
     <template id="customer-add">
     <div class="message add-message">
@@ -2029,9 +2087,11 @@
                 console.log('新建客户组件提交');
                 console.log(this.$data.rows);
                 vm.layers.customerAdd.show = false;
-                alert("", "添加成功", function () {
-                    //新增客户弹框隐藏
-                }, { type: "success" });
+                // alert("", "添加成功", function () {
+                //     //新增客户弹框隐藏
+                // }, { type: "success" });
+                toastr.success('添加成功');
+
             },
             comValue: function (data) {
                 console.log(data);
@@ -2389,9 +2449,11 @@
                 console.log('编辑客户组件提交');
                 console.log(this.$data.rows);
                 vm.layers.customerAdd.show = false;
-                alert("", "修改成功", function () {
-                    //新增客户弹框隐藏
-                }, { type: "success" });
+                // alert("", "修改成功", function () {
+                //     //新增客户弹框隐藏
+                // }, { type: "success" });
+                toastr.success('修改成功');
+
             },
             comValue: function (data) {
                 console.log(data);
@@ -2626,8 +2688,408 @@
         }
     })
 
-</script>
+</script> <template id="inputTime">
+    <div class="input-time">
+        <div class="input" v-time="date"></div>
+        <input type="hidden" v-model="date" :id="id">
+    </div>
+</template>
+<script>
+    var inputTime = Vue.extend({
+        template: '#inputTime',
+        props: ['time', 'id'],
+        data: function () {
+            return {
+                date: new Date().Format('yyyy-MM-dd')
+            }
+        },
+        directives: {
+            time: {
+                inserted: function (el, date) {
+                    console.log(this);
+                    var _slef = this;
+                    $(el).jqxDateTimeInput({
+                        width: '100%',
+                        height: '40px',
+                        culture: 'ch-CN',
+                        formatString: 'yyyy-MM-dd',
+                        min: new Date(new Date() - 24 * 60 * 60 * 1000)
+                    });
+                    $(el).on('close', function (event) {
+                        date.value = event.args.date.Format('yyyy-MM-dd');
+                        $(event.target).next().val(event.args.date.Format('yyyy-MM-dd'));
+                    });
 
+                }
+            }
+        }
+    });
+</script>
+    <!-- 电话任务 -->
+    <template id="taskAdd">
+    <div class="task-wrap">
+        <input-row :rows="rows.taskName"></input-row>
+        <div class="task-row">
+            <!--<input-row :rows="rows.startTime"></input-row>-->
+            <div class="m-row">
+                <div class="m-name required">
+                    开始时间
+                </div>
+                <div class="m-info m-input">
+                    <input-time :time="rows.startTime.time" ref="inputTime" id="startTime"></input-time>
+                    <!--<select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">-->
+                    <!--</select2>-->
+                </div>
+            </div>
+            <div class="m-row">
+                <div class="m-name required">
+                    任务周期
+                </div>
+                <div class="m-info m-input">
+                    <select2 :options="rows.cycle.options" v-model="rows.cycle.value" name="任务周期">
+                    </select2>
+                </div>
+            </div>
+        </div>
+        <div class="task-row">
+            <input-row :rows="rows.preNumber"></input-row>
+            <div class="m-row">
+                <div class="m-name required">
+                    重复次数
+                </div>
+                <div class="m-info m-input">
+                    <select2 :options="rows.repetitions.options" v-model="rows.repetitions.value" name="重复次数">
+                    </select2>
+                </div>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                执行坐席
+            </div>
+            <div class="m-info m-input">
+                <staff-select multiple="false" ref="staffSelect" id="staffSelect"></staff-select>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                数据来源
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
+                </select2>
+                <div class="m-tip tip-row">
+                    如果不添加数据来源，坐席将通过 “企业公海” “我的客户” 等来源查找数据。
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskAdd = Vue.extend({
+        template: '#taskAdd',
+        data: function () {
+            return {
+                rows: {
+                    taskName: {
+                        name: "任务名称", value: "", input: true, required: true
+                    },
+                    startTime: {
+                        name: "开始时间", value: "", input: true, required: true, time: { readonly: true, icon: "time", placeholder: "请选择开始时间", istime: false, format: "YYYY-MM-DD" }
+                    },
+                    preNumber: {
+                        name: "人均电话量", placeholder: "请输入电话数量", value: "", input: true, required: true
+                    },
+                    cycle: {
+                        name: "任务周期",
+                        value: "日",
+                        options: [{ id: "日", text: "日" }, { id: "周", text: "周" }, { id: "月", text: "月" }]
+                    },
+                    repetitions: {
+                        name: "重复次数",
+                        value: "不重复",
+                        options: [{ id: "不重复", text: "不重复" }, { id: "1", text: "1" }, { id: "2", text: "2" }, {
+                            id: "3",
+                            text: "3"
+                        }, { id: "4", text: "4" }, { id: "5", text: "5" }, { id: "6", text: "6" }, {
+                            id: "7",
+                            text: "7"
+                        }, { id: "8", text: "8" }, { id: "9", text: "9" }, { id: "10", text: "10" }, {
+                            id: "11",
+                            text: "11"
+                        }, { id: "12", text: "12" }]
+                    },
+                    data: {
+                        name: "数据来源",
+                        value: "0",
+                        optiondefault: true,
+                        options: []
+                    }
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log($("#startTime").val());
+                console.log($("#staffSelect").select2('data'));
+                console.log("新建任务提交");
+            }
+        },
+        components: {
+            'inputRow': inputRow,
+            'inputTime': inputTime,
+            'staffSelect': staffSelect
+        }
+    });
+    Vue.component('taskAdd', taskAdd);
+</script>
+    <!-- 短信任务 -->
+    <template id="taskmessageAdd">
+    <div class="task-wrap">
+        <input-row :rows="rows.taskName"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                短信模板
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.message.options" v-model="rows.message.value" name="短信模板" id="messageSelect">
+                </select2>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                短信内容
+            </div>
+            <div class="m-info m-input">
+                <textarea class="textarea" v-model="rows.messageContent.value" disabled="disabled"></textarea>
+            </div>
+        </div>
+
+        <div class="m-row">
+            <div class="m-name">
+                数据来源
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
+                </select2>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name">
+                绑定执行人
+            </div>
+            <div class="m-info m-input">
+                <staff-select multiple="false"></staff-select>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskmessageAdd = Vue.extend({
+        template: '#taskmessageAdd',
+        data: function () {
+            return {
+                rows: {
+                    taskName: {
+                        name: "任务名称", value: "", input: true, required: true
+                    },
+                    message: {
+                        name: "短信模板", value: "不重复", required: true,
+                        options: [{ id: "不重复", text: "不重复", content: '模板1' }, { id: "1", text: "1", content: '模板2' }, { id: "2", text: "2", content: '模板3' }, {
+                            id: "3",
+                            text: "3", content: '模板4'
+                        }, { id: "4", text: "4", content: '模板5' }, { id: "5", text: "5", content: '模板6' }, { id: "6", text: "6", content: '模板7' }, {
+                            id: "7",
+                            text: "7", content: '模板8'
+                        }, { id: "8", text: "8", content: '模板9' }]
+                    },
+                    messageContent: {
+                        name: "短信内容", value: "", input: true
+                    },
+                    data: {
+                        name: "数据来源",
+                        value: "0",
+                        optiondefault: true,
+                        options: []
+                    },
+                }
+            }
+        },
+        watch: {
+            'rows.message.value': {
+                handler: function (val, oldVal) {
+                    var _self = this;
+                    var options = _self.$data.rows.message.options;
+                    for (var i = 0; i < options.length; i++) {
+                        if (val == options[i].text) {
+                            _self.$data.rows.messageContent.value = options[i].content;
+                            return;
+                        }
+                    }
+                },
+                // 深度观察
+                deep: true
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("新建任务提交");
+            },
+
+        },
+        components: {
+            'inputRow': inputRow,
+            'inputTime': inputTime,
+            'staffSelect': staffSelect
+        }
+    });
+    Vue.component('taskmessageAdd', taskmessageAdd);
+</script>
+    <!-- 邮件任务 -->
+    <template id="taskemailAdd">
+    <div class="task-wrap">
+        <input-row :rows="rows.taskName"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                邮件模板
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.email.options" v-model="rows.email.value" name="短信模板">
+                </select2>
+            </div>
+        </div>
+        <input-row :rows="rows.emailTitle"></input-row>
+
+        <div class="m-row">
+            <div class="m-name required">
+                邮件内容
+            </div>
+            <div class="m-info m-input">
+                <!-- <textarea id="emailContent"></textarea> -->
+                <editor ref="editor" id="editor_id" height="500px" width="100%" :content="rows.emailContent.value" :afterChange="afterChange()"
+                    pluginsPath="js/kindeditor/plugins/" :loadStyleMode="false" @on-content-change="onContentChange"></editor>
+            </div>
+        </div>
+        <div class="m-row">
+            <div class="m-name required">
+                数据来源
+            </div>
+            <div class="m-info m-input">
+                <select2 :options="rows.data.options" optiondefault="true" v-model="rows.data.value" name="数据来源">
+                </select2>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var taskemailAdd = Vue.extend({
+        template: '#taskemailAdd',
+        data: function () {
+            return {
+                rows: {
+                    taskName: {
+                        name: "任务名称", value: "", input: true, required: true
+                    },
+                    email: {
+                        name: "邮件模板", value: "不重复", required: true,
+                        options: [{ id: "不重复", text: "不重复", title: '标题1', content: "模板1" }, { id: "1", text: "1", title: '标题2', content: "模板2" }, { id: "2", text: "2", title: '标题3', content: "模板3" }, {
+                            id: "3",
+                            text: "3", title: '标题4', content: "模板4"
+                        }, { id: "4", text: "4", title: '标题5', content: "模板5" }, { id: "5", text: "5", title: '标题6', content: "模板6" }, { id: "6", text: "6", title: '标题7', content: "模板7" }]
+                    },
+
+                    emailTitle: {
+                        name: "邮件标题", value: "", input: true, required: true
+                    },
+                    emailContent: {
+                        name: "邮件内容", value: "", input: true, required: true
+                    },
+                    data: {
+                        name: "数据来源",
+                        value: "0",
+                        optiondefault: true, required: true,
+                        options: []
+                    },
+                }
+            }
+        },
+        methods: {
+            submit: function () {
+                console.log("新建任务提交");
+            },
+            onContentChange: function (val) {
+                this.$data.rows.emailContent.value = val;
+                console.log(this.$data.rows.emailContent.value);
+            },
+            afterChange: function () {
+            }
+        },
+        watch: {
+            'rows.email.value': {
+                handler: function (val, oldVal) {
+                    var _self = this;
+                    var options = _self.$data.rows.email.options;
+                    for (var i = 0; i < options.length; i++) {
+                        if (val == options[i].text) {
+                            _self.$data.rows.emailTitle.value = options[i].title;
+                            _self.$data.rows.emailContent.value = options[i].content;
+                            return;
+                        }
+                    }
+                },
+                // 深度观察
+                deep: true
+            }
+        },
+        components: {
+            'inputRow': inputRow,
+            'inputTime': inputTime,
+            // 'editor':editor
+        }
+    });
+    Vue.component('taskemailAdd', taskemailAdd);
+</script>
+    <!-- 导入客户 -->
+    <template id="exportWrap">
+    <div class="export-wrap">
+        <div class="export-input">
+            <button class="btn btn-primary" @click="exportBtn">浏览</button>
+            <div class="exportFileName" @click="exportBtn">{{file == ''?'请选择客户导入模板':file}}</div>
+            <input type="file" id="exportFile" class="file" @change="uploadFile($event)">
+        </div>
+        <div class="export-text">
+            <p>使用说明</p>
+            <p>1.请上传后缀名为xls的文件；</p>
+            <p>2.数据请勿放在合并的单元格中，且导入文件小于2MB；</p>
+            <p>3.为保证您导入的客户数据有效，请下载
+                <a href="javascript:void(0)">客户导入模板</a>，编辑后上传。</p>
+        </div>
+    </div>
+</template>
+<script>
+    var exportWrap = Vue.extend({
+        template: '#exportWrap',
+        data: function () {
+            return {
+                file: ''
+            }
+        },
+        methods: {
+            exportBtn: function () {
+                $("#exportFile").click();
+            },
+            submit: function () {
+                console.log("导入客户");
+            },
+            uploadFile: function (event) {
+                var file = event.target.files;
+                var _self = this;
+                _self.$data.file = file[0].name;
+            },
+        }
+    })
+    Vue.component('exportWrap', exportWrap);
+</script>
     <script src="js/scripts.js"></script>
     <script src="js/customer.js"></script>
     <script src="js/MessageEditor.js"></script>

@@ -9,28 +9,41 @@
 
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/beAlert.css">
-<link rel="stylesheet" href="css/select2.css">
-
+<!-- <link rel="stylesheet" href="css/beAlert.css"> -->
+<link rel="stylesheet" href="css/toastr.css">
+<link rel="stylesheet" href="css/select2.css"> 
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/jqxgrid.css">
-
-
+<link rel="stylesheet" href="css/jqxgrid.css">  
 <script src="js/vue.min.js"></script>
 <script src="js/vue-resource@1.3.4.js"></script>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/jquery.autocomplete.js"></script>
 <script src="js/resize.js"></script>
-<script src="js/beAlert.js"></script>
+<!-- <script src="js/beAlert.js"></script> -->
+<script src="js/toastr.js"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "positionClass": "toast-top-center",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
 <script src="js/select2.js"></script>
 <script src="js/drag.js"></script>
 <!--<script src="js/jsDate/laydate.js"></script>-->
 <!--<script src="js/layDate/laydate.js"></script>-->
 <!---->
 
-<script src="js/audio.js"></script>
-
+<script src="js/audio.js"></script> 
 <!--[if lt IE 10]>
 <script type="text/javascript" src="js/html5shiv.js"></script>
 <script type="text/javascript" src="js/respond.min.js"></script>
@@ -95,11 +108,11 @@
             </div>
         </section>
 
-        <!-- <transition name="layer">
-            <layer :layer="layers.modelAdd">
-                <email-add ref="modelAdd"></email-add>
+        <transition name="layer">
+            <layer :layer="layers.customAdd">
+                <custom-add ref="customAdd"></custom-add>
             </layer>
-        </transition> -->
+        </transition>
 
         <transition name="layer">
             <layer :layer="layers.addReport">
@@ -339,7 +352,61 @@
         props: ['rows']
     });
     Vue.component('inputRow', inputRow);
-</script> 
+</script> <template id="customAdd">
+    <div class="customAdd">
+        <input-row :rows="customName"></input-row>
+        <div class="m-row">
+            <div class="m-name required">
+                字段类型
+            </div>
+            <div class="m-info m-input">
+                <div class="radio-wrap">
+                    <label class="radio-box">
+                        <input type="radio" name="type" v-model="type" value="单选">
+                        <i></i>单选</label>
+                    <label class="radio-box">
+                        <input type="radio" name="type" v-model="type" value="多选">
+                        <i></i>多选</label>
+                    <label class="radio-box">
+                        <input type="radio" name="type" v-model="type" value="文本">
+                        <i></i>文本</label>
+                </div>
+            </div>
+            <div class="custom-box">
+                <div class="m-row">
+                    <div class="m-name ">
+                        选项1
+                    </div>
+                    <div class="m-info m-input">
+                        <div class="custom-input">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    var customAdd = Vue.extend({
+        template: '#customAdd',
+        data: function () {
+            return {
+                customName: { name: "字段名称", value: '', input: true, required: true },
+                type: ''
+            }
+        },
+        methods: {
+
+        },
+        watch: {
+            type: function (val) {
+                console.log(val);
+            }
+        }
+    });
+    Vue.component('customAdd', customAdd);
+</script>
 
     <script src="js/scripts.js"></script>
     <script src="js/setupCustom.js"></script>

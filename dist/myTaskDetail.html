@@ -10,28 +10,41 @@
 
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/beAlert.css">
-<link rel="stylesheet" href="css/select2.css">
-
+<!-- <link rel="stylesheet" href="css/beAlert.css"> -->
+<link rel="stylesheet" href="css/toastr.css">
+<link rel="stylesheet" href="css/select2.css"> 
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/jqxgrid.css">
-
-
+<link rel="stylesheet" href="css/jqxgrid.css">  
 <script src="js/vue.min.js"></script>
 <script src="js/vue-resource@1.3.4.js"></script>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/jquery.autocomplete.js"></script>
 <script src="js/resize.js"></script>
-<script src="js/beAlert.js"></script>
+<!-- <script src="js/beAlert.js"></script> -->
+<script src="js/toastr.js"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "positionClass": "toast-top-center",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
 <script src="js/select2.js"></script>
 <script src="js/drag.js"></script>
 <!--<script src="js/jsDate/laydate.js"></script>-->
 <!--<script src="js/layDate/laydate.js"></script>-->
 <!---->
 
-<script src="js/audio.js"></script>
-
+<script src="js/audio.js"></script> 
 <!--[if lt IE 10]>
 <script type="text/javascript" src="js/html5shiv.js"></script>
 <script type="text/javascript" src="js/respond.min.js"></script>
@@ -289,7 +302,9 @@
             //头部搜索
             Hsearch: function () {
                 if (this.search.trim() == "") {
-                    alert("", "搜索内容不能为空");
+                    // alert("", "搜索内容不能为空");
+                    toastr.warning('搜索内容不能为空');
+
                     return false;
                 }
                 window.location.href = "customer.html";
@@ -1461,9 +1476,11 @@
                 console.log('新建客户组件提交');
                 console.log(this.$data.rows);
                 vm.layers.customerAdd.show = false;
-                alert("", "添加成功", function () {
-                    //新增客户弹框隐藏
-                }, { type: "success" });
+                // alert("", "添加成功", function () {
+                //     //新增客户弹框隐藏
+                // }, { type: "success" });
+                toastr.success('添加成功');
+
             },
             comValue: function (data) {
                 console.log(data);

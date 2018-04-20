@@ -10,28 +10,41 @@
 
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/beAlert.css">
-<link rel="stylesheet" href="css/select2.css">
-
+<!-- <link rel="stylesheet" href="css/beAlert.css"> -->
+<link rel="stylesheet" href="css/toastr.css">
+<link rel="stylesheet" href="css/select2.css"> 
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/jqxgrid.css">
-
-
+<link rel="stylesheet" href="css/jqxgrid.css">  
 <script src="js/vue.min.js"></script>
 <script src="js/vue-resource@1.3.4.js"></script>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/jquery.autocomplete.js"></script>
 <script src="js/resize.js"></script>
-<script src="js/beAlert.js"></script>
+<!-- <script src="js/beAlert.js"></script> -->
+<script src="js/toastr.js"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "positionClass": "toast-top-center",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
 <script src="js/select2.js"></script>
 <script src="js/drag.js"></script>
 <!--<script src="js/jsDate/laydate.js"></script>-->
 <!--<script src="js/layDate/laydate.js"></script>-->
 <!---->
 
-<script src="js/audio.js"></script>
-
+<script src="js/audio.js"></script> 
 <!--[if lt IE 10]>
 <script type="text/javascript" src="js/html5shiv.js"></script>
 <script type="text/javascript" src="js/respond.min.js"></script>
@@ -90,8 +103,8 @@
         </section>
 
         <transition name="layer">
-            <layer :layer="layers.taskAdd">
-                <task-add ref="taskAdd"></task-add>
+            <layer :layer="layers.taskemailAdd">
+                <taskemail-add ref="taskemailAdd"></taskemail-add>
             </layer>
         </transition>
     </div>
@@ -737,7 +750,9 @@
             //头部搜索
             Hsearch: function () {
                 if (this.search.trim() == "") {
-                    alert("", "搜索内容不能为空");
+                    // alert("", "搜索内容不能为空");
+                    toastr.warning('搜索内容不能为空');
+
                     return false;
                 }
                 window.location.href = "customer.html";
@@ -949,7 +964,7 @@
 
     Vue.component('layer', layer);
 </script>
-    <template id="taskAdd">
+    <template id="taskemailAdd">
     <div class="task-wrap">
         <input-row :rows="rows.taskName"></input-row>
         <div class="m-row">
@@ -969,8 +984,8 @@
             </div>
             <div class="m-info m-input">
                 <!-- <textarea id="emailContent"></textarea> -->
-                <editor ref="editor" id="editor_id" height="500px" width="100%" :content="rows.emailContent.value" :afterChange="afterChange()" pluginsPath="js/kindeditor/plugins/"
-                    :loadStyleMode="false" @on-content-change="onContentChange"></editor>
+                <editor ref="editor" id="editor_id" height="500px" width="100%" :content="rows.emailContent.value" :afterChange="afterChange()"
+                    pluginsPath="js/kindeditor/plugins/" :loadStyleMode="false" @on-content-change="onContentChange"></editor>
             </div>
         </div>
         <div class="m-row">
@@ -985,8 +1000,8 @@
     </div>
 </template>
 <script>
-    var taskAdd = Vue.extend({
-        template: '#taskAdd',
+    var taskemailAdd = Vue.extend({
+        template: '#taskemailAdd',
         data: function () {
             return {
                 rows: {
@@ -995,10 +1010,10 @@
                     },
                     email: {
                         name: "邮件模板", value: "不重复", required: true,
-                        options: [{ id: "不重复", text: "不重复" ,title:'标题1',content:"模板1"}, { id: "1", text: "1",title:'标题2',content:"模板2" }, { id: "2", text: "2" ,title:'标题3',content:"模板3"}, {
+                        options: [{ id: "不重复", text: "不重复", title: '标题1', content: "模板1" }, { id: "1", text: "1", title: '标题2', content: "模板2" }, { id: "2", text: "2", title: '标题3', content: "模板3" }, {
                             id: "3",
-                            text: "3",title:'标题4',content:"模板4"
-                        }, { id: "4", text: "4" ,title:'标题5',content:"模板5"}, { id: "5", text: "5" ,title:'标题6',content:"模板6"}, { id: "6", text: "6" ,title:'标题7',content:"模板7"}]
+                            text: "3", title: '标题4', content: "模板4"
+                        }, { id: "4", text: "4", title: '标题5', content: "模板5" }, { id: "5", text: "5", title: '标题6', content: "模板6" }, { id: "6", text: "6", title: '标题7', content: "模板7" }]
                     },
 
                     emailTitle: {
@@ -1027,13 +1042,13 @@
             afterChange: function () {
             }
         },
-        watch:{
-            'rows.email.value':{
-                handler:function(val,oldVal){
+        watch: {
+            'rows.email.value': {
+                handler: function (val, oldVal) {
                     var _self = this;
                     var options = _self.$data.rows.email.options;
-                    for(var i=0;i<options.length;i++){
-                        if(val == options[i].text){
+                    for (var i = 0; i < options.length; i++) {
+                        if (val == options[i].text) {
                             _self.$data.rows.emailTitle.value = options[i].title;
                             _self.$data.rows.emailContent.value = options[i].content;
                             return;
@@ -1041,7 +1056,7 @@
                     }
                 },
                 // 深度观察
-                deep:true
+                deep: true
             }
         },
         components: {
@@ -1050,7 +1065,7 @@
             // 'editor':editor
         }
     });
-    Vue.component('taskAdd', taskAdd);
+    Vue.component('taskemailAdd', taskemailAdd);
 </script>
 
     <script src="js/scripts.js"></script>

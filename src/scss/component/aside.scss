@@ -80,6 +80,9 @@ a.nav-info {
 
 .m-second a {
   font-size: 14px;
+  &:hover {
+    background: #dfe8f1;
+  }
 }
 
 .m-icon {
@@ -185,7 +188,7 @@ $setupMenu: '\e601' '\e65a' '\e643' '\e748' '\e63c' '\e639';
 .setup-menu-href {
   padding: 0 15px;
   display: block;
-  color: #4e606e;
+  color: #4d6679;
   &:hover,
   &.active {
     color: #2495cf;

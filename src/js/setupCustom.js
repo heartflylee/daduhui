@@ -28,11 +28,11 @@ var vm = new Vue({
   data: function() {
     return {
       layers: {
-        modelAdd: {
+        customAdd: {
           title: '新建字段',
           show: false,
           submit: true,
-          layerName: 'modelAdd',
+          layerName: 'customAdd',
         },
         addReport: {
           title: '生成图表',
@@ -53,7 +53,7 @@ var vm = new Vue({
     },
     addModel: function() {
       console.log('234234');
-      this.layer('modelAdd');
+      this.layer('customAdd');
     },
     removeCustom: function() {
       console.log('删除字段');

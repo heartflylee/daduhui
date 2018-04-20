@@ -164,9 +164,11 @@
                 console.log('新建客户组件提交');
                 console.log(this.$data.rows);
                 vm.layers.customerAdd.show = false;
-                alert("", "添加成功", function () {
-                    //新增客户弹框隐藏
-                }, { type: "success" });
+                // alert("", "添加成功", function () {
+                //     //新增客户弹框隐藏
+                // }, { type: "success" });
+                toastr.success('添加成功');
+
             },
             comValue: function (data) {
                 console.log(data);

@@ -23,9 +23,14 @@
                 <div class="export">
                     <i class="icon-export icon"></i> 导出
                 </div>
-                <div class="drop-button">
+                <div class="drop-button dropdown">
                     <label class="drop-name" @click="customerAdd">新建客户</label>
-                    <i class="icon icon-drop-button"></i>
+                    <i class="icon icon-drop-button" data-toggle="dropdown"></i>
+                    <div class="dropdown-menu dropdown-box">
+                        <a class="dropli" href="javascript:void(0);" @click="exportBtn">
+                            <label>导入客户</label>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,7 +41,8 @@
             <div class="table-nav-list">
                 <ul>
                     <li class="table-nav">
-                        已选中<label class="count-select">1</label>项
+                        已选中
+                        <label class="count-select">1</label>项
                     </li>
                     <li class="table-nav" @click="change">
                         <i class="table-icon icon-change icon"></i>
@@ -46,6 +52,18 @@
                         <i class="table-icon icon-delete icon"></i>
                         <div class="table-nav-main">删除</div>
                     </li>
+                    <li class="table-nav" @click="taskAdd">
+                        <i class="table-icon icon-call icon"></i>
+                        <div class="table-nav-main">电话任务</div>
+                    </li>
+                    <li class="table-nav" @click="taskmessageAdd">
+                        <i class="table-icon icon-message icon"></i>
+                        <div class="table-nav-main">短信任务</div>
+                    </li>
+                    <li class="table-nav" @click="taskemailAdd">
+                        <i class="table-icon icon-email icon"></i>
+                        <div class="table-nav-main">邮件任务</div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -54,21 +72,35 @@
 </template>
 <script>
     var customerHead = Vue.extend({
-        template:'#customer-head',
-        data:function () {
-            return{
+        template: '#customer-head',
+        data: function () {
+            return {
 
             }
         },
-        methods:{
-            customerAdd:function () {
-                this.$emit('layer','customerAdd');
+        methods: {
+            customerAdd: function () {
+                this.$emit('layer', 'customerAdd');
             },
-            change:function(){
-                this.$emit('layer','changeContact');
-                
-            }        
+            change: function () {
+                this.$emit('layer', 'changeContact');
+
+            },
+            taskAdd: function () {
+                this.$emit('layer', 'taskAdd');
+            },
+            taskemailAdd: function () {
+                this.$emit('layer', 'taskemailAdd');
+
+            },
+            taskmessageAdd: function () {
+                this.$emit('layer', 'taskmessageAdd');
+
+            },
+            exportBtn: function () {
+                this.$emit('layer', 'export');
+            }
         }
     });
-    Vue.component('customerHead',customerHead);
+    Vue.component('customerHead', customerHead);
 </script>

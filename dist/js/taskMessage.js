@@ -36,11 +36,11 @@ var vm = new Vue({
           show: false,
           message: {},
         },
-        taskAdd: {
+        taskmessageAdd: {
           title: '新建任务',
           show: false,
           submit: true,
-          layerName: 'taskAdd',
+          layerName: 'taskmessageAdd',
         },
       },
     };

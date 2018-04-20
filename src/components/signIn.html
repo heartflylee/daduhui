@@ -5,13 +5,13 @@
             <div class="login-box">
                 <form @submit.prevent="login" autocomplete="off">
                     <div class="input-box">
-                        <input type="text" class="input l-phone" placeholder="请输入手机号" v-model="user.phone"/>
+                        <input type="text" class="input l-phone" placeholder="请输入手机号" v-model="user.phone" />
                     </div>
                     <div class="input-box">
-                        <input type="password" class="input l-pwd" placeholder="请输入密码" v-model="user.psw"/>
+                        <input type="password" class="input l-pwd" placeholder="请输入密码" v-model="user.psw" />
                     </div>
                     <div class="input-box">
-                        <input type="submit" class="btn btn-primary l-submit" value="登 录"/>
+                        <input type="submit" class="btn btn-primary l-submit" value="登 录" />
                     </div>
                 </form>
             </div>
@@ -42,10 +42,10 @@
 <script>
     var signIn = Vue.extend({
         template: "#signIn",
-        props:['layer'],
+        props: ['layer'],
         data: function () {
             return {
-//                signIn: true,
+                //                signIn: true,
                 user: {
                     phone: "",
                     psw: ""
@@ -58,7 +58,9 @@
                     window.location.href = "index.html";
                 }
                 else {
-                    alert("", "请输入手机号或密码");
+                    // alert("", "请输入手机号或密码");
+                    toastr.warning('请输入手机号或密码');
+
                 }
             },
             showSignup: function () {

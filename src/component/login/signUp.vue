@@ -1,5 +1,5 @@
 <template>
-    <form id="f-signUp" @submit.prement="signUp">
+    <form id="f-signUp" @submit.prevent="signUp">
         <div class="s-input-box">
             <input type="text" class="input" v-model="user.phone" placeholder="请输入手机号"/>
         </div>
@@ -33,31 +33,34 @@
     </form>
 </template>
 <script>
-    Vue.extend({
-        data: {
-            user: {
-                phone: "",
-                psw: "",
-                repsw: ""
-            }
-        },
-        methods: {
-            signUp: function () {
-                if (this.user.phone.trim() == "") {
-                    alert("", "请输入手机号");
-                    return false;
-                }
-                if (this.user.psw.trim() == "") {
-                    alert("", "请输入密码");
-                    return false;
-                }
-                if (this.user.repsw == "") {
-                    alert("", "请再次输入密码");
-                    return false;
-                }
+Vue.extend({
+  data: {
+    user: {
+      phone: '',
+      psw: '',
+      repsw: '',
+    },
+  },
+  methods: {
+    signUp: function() {
+      if (this.user.phone.trim() == '') {
+        // alert("", "请输入手机号");
+        toastr.success('请输入手机号');
+        return false;
+      }
+      if (this.user.psw.trim() == '') {
+        toastr.success('请输入密码');
 
+        // alert('', '请输入密码');
+        return false;
+      }
+      if (this.user.repsw == '') {
+        toastr.success('请再次输入密码');
 
-            }
-        }
-    })
+        // alert('', '请再次输入密码');
+        return false;
+      }
+    },
+  },
+});
 </script>

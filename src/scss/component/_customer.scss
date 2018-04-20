@@ -65,6 +65,21 @@
   font-size: 20px;
   color: #999;
 }
+.icon-call:after {
+  content: '\e8d0';
+  font-size: 20px;
+  color: #999;
+}
+.icon-message:after {
+  content: '\e6ab';
+  font-size: 20px;
+  color: #999;
+}
+.icon-email:after {
+  content: '\e604';
+  font-size: 20px;
+  color: #999;
+}
 .v-icon.icon-phone {
   display: inline-block;
   margin-top: 8px;
@@ -332,4 +347,36 @@ $enterBtn: (
 
 .staff-name {
   text-align: center;
+}
+.export-input {
+  margin: 20px;
+  @include clearfix;
+  .btn {
+    float: right;
+    width: 60px;
+  }
+  input[type='file'] {
+    display: none;
+  }
+}
+.exportFileName {
+  margin-right: 70px;
+  padding: 0 15px;
+  height: 30px;
+  line-height: 30px;
+  background: #fff;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  color: #999;
+  font-size: 14px;
+}
+.export-text {
+  margin: 20px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #4e606e;
+  a {
+    color: #4e606e;
+    text-decoration: underline;
+  }
 }

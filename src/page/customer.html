@@ -99,29 +99,42 @@
             </layer>
         </transition>
 
-
         <!--变更负责人-->
         <transition name="layer">
             <layer :layer="layers.changeContact">
                 <change-contact ref="changeContact"></change-contact>
             </layer>
         </transition>
-
+        <!--电话任务-->
+        <transition name="layer">
+            <layer :layer="layers.taskAdd">
+                <task-add ref="taskAdd"></task-add>
+            </layer>
+        </transition>
+        <!--短信任务-->
+        <transition name="layer">
+            <layer :layer="layers.taskmessageAdd">
+                <taskmessage-add ref="taskmessageAdd"></taskmessage-add>
+            </layer>
+        </transition>
+        <!--邮件任务-->
+        <transition name="layer">
+            <layer :layer="layers.taskemailAdd">
+                <taskemail-add ref="taskemailAdd"></taskemail-add>
+            </layer>
+        </transition>
+        <!--导入客户-->
+        <transition name="layer">
+            <layer :layer="layers.export">
+                <export-wrap ref="export"></export-wrap>
+            </layer>
+        </transition>
         <!--通话录音-->
         <transition name="audio">
             <my-audio :layer="audio"></my-audio>
         </transition>
     </div>
 
-    <!--include('../component/customer/detail.html')-->
-    <!--&lt;!&ndash;新增客户&ndash;&gt;-->
-    <!--include('../component/layer/layer.html',{"layer":"customer","layerTitle":"新建客户","layerFrame":"../customer/addcustomer.html","submit":"true","submitBtn":"customAdd()","close":"false","closeBtn":""})-->
-    <!--&lt;!&ndash; 自定义表头 &ndash;&gt;-->
-    <!--include('../component/layer/layer.html',{"layer":"customHead","layerTitle":"编辑显示字段","layerFrame":"../customer/cusomHead.html","submit":"true","submitBtn":"customSubmit()","close":"false","closeBtn":""})-->
-    <!--&lt;!&ndash;调用企信获得的企业信息&ndash;&gt;-->
-    <!--include('../component/layer/layer.html',{"layer":"business","layerTitle":"工商信息","layerFrame":"../qixin/qixin.html","submit":"false","submitBtn":"","close":"false","closeBtn":""})-->
-    <!--&lt;!&ndash; 音频播放 &ndash;&gt;-->
-    <!--include('../component/layer/layer.html',{"layer":"audio","layerTitle":"通话录音","layerFrame":"../audio/audio.html","submit":"false","submitBtn":"","close":"true","closeBtn":"audioClose()"})-->
     @@include('../components/inputRow.html')
     <!-- 选择跟进人 -->
     @@include('../components/staffSelect.html')
@@ -144,8 +157,6 @@
     @@include('../components/callDetail.html')
     <!--弹框-->
     @@include('../components/layer.html')
-    <!--工商信息（企信宝）-->
-    <!-- @@include('../components/business.html') -->
     <!--新建客户-->
     @@include('../components/customerAdd.html') @@include('../components/autocomplete.html')
     <!--编辑客户-->
@@ -155,8 +166,15 @@
     <!-- 语音播放 -->
     @@include('../components/audio.html')
     <!--selected-->
-    @@include('../components/select2.html')
-
+    @@include('../components/select2.html') @@include('../components/inputTime.html')
+    <!-- 电话任务 -->
+    @@include('../components/taskAdd.html')
+    <!-- 短信任务 -->
+    @@include('../components/taskMessageAdd.html')
+    <!-- 邮件任务 -->
+    @@include('../components/taskEmailAdd.html')
+    <!-- 导入客户 -->
+    @@include('../components/export.html')
     <script src="js/scripts.js"></script>
     <script src="js/customer.js"></script>
     <script src="js/MessageEditor.js"></script>

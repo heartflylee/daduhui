@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0">
@@ -9,28 +10,41 @@
 
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/beAlert.css">
-<link rel="stylesheet" href="css/select2.css">
-
+<!-- <link rel="stylesheet" href="css/beAlert.css"> -->
+<link rel="stylesheet" href="css/toastr.css">
+<link rel="stylesheet" href="css/select2.css"> 
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/jqxgrid.css">
-
-
+<link rel="stylesheet" href="css/jqxgrid.css">  
 <script src="js/vue.min.js"></script>
 <script src="js/vue-resource@1.3.4.js"></script>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/jquery.autocomplete.js"></script>
 <script src="js/resize.js"></script>
-<script src="js/beAlert.js"></script>
+<!-- <script src="js/beAlert.js"></script> -->
+<script src="js/toastr.js"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "positionClass": "toast-top-center",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
 <script src="js/select2.js"></script>
 <script src="js/drag.js"></script>
 <!--<script src="js/jsDate/laydate.js"></script>-->
 <!--<script src="js/layDate/laydate.js"></script>-->
 <!---->
 
-<script src="js/audio.js"></script>
-
+<script src="js/audio.js"></script> 
 <!--[if lt IE 10]>
 <script type="text/javascript" src="js/html5shiv.js"></script>
 <script type="text/javascript" src="js/respond.min.js"></script>
@@ -57,36 +71,37 @@
     <script type="text/javascript" src="js/jqx/jqxtooltip.js"></script>
     <script type="text/javascript" src="js/jqx/globalize.js"></script>
     <script type="text/javascript" src="js/jqx/globalize.culture.ch-CN.js"></script>
- 
+
 </head>
+
 <body>
-     <!-- Preloader -->
-  <div class="preloader">
+    <!-- Preloader -->
+    <div class="preloader">
         <div class="cssload-speeding-wheel"></div>
     </div>
-<div id="app">
-    
+    <div id="app">
+
         <!--header-->
-        <common-head ></common-head>
-   
-    <section class="b-main">
-         <!--左侧菜单-->
-    <menu-aside menu="index"></menu-aside>
-        <div class="b-panel">
-            <!-- <main-left></main-left> -->
-            <main-task></main-task>
-        </div>
-    </section>
+        <common-head></common-head>
 
-    <transition name="layer">
-        <layer :layer="layers.taskAdd" >
-            <task-add ref="taskAdd"></task-add>
-        </layer>
-</transition>
-</div>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <menu-aside menu="index"></menu-aside>
+            <div class="b-panel">
+                <!-- <main-left></main-left> -->
+                <main-task></main-task>
+            </div>
+        </section>
+
+        <transition name="layer">
+            <layer :layer="layers.taskmessageAdd">
+                <taskmessage-add ref="taskmessageAdd"></taskmessage-add>
+            </layer>
+        </transition>
+    </div>
 
 
-<template id="staffSelect">
+    <template id="staffSelect">
     <div class="staff-select-wrap">
         <select v-selectstaff multiple="multiple" v-if="multiple == 'true'" :id="id" :disabled="idDisabled">
             <option v-for="staff in staffs" :data-img="staff.img" :value="staff.id">{{staff.value}}</option>
@@ -153,8 +168,8 @@
     });
     Vue.component('staffSelect', staffSelect);
 </script>
-<!--左侧导航-->
-<template id="aside">
+    <!--左侧导航-->
+    <template id="aside">
     <!-- 左侧菜单 -->
     <aside class="b-aside">
         <div class="menu-wrap">
@@ -262,8 +277,8 @@
     });
     Vue.component('menuAside', aside);
 </script>
-<!--顶部-->
-<template id="head">
+    <!--顶部-->
+    <template id="head">
     <header class="b-header">
         <div class="h-right">
             <div class="h-search">
@@ -347,7 +362,9 @@
             //头部搜索
             Hsearch: function () {
                 if (this.search.trim() == "") {
-                    alert("", "搜索内容不能为空");
+                    // alert("", "搜索内容不能为空");
+                    toastr.warning('搜索内容不能为空');
+
                     return false;
                 }
                 window.location.href = "customer.html";
@@ -355,8 +372,7 @@
         }
     });
     Vue.component('commonHead', head);
-</script>
-<template id="mainTask">
+</script> <template id="mainTask">
     <div class="main-box">
         <div class="small-nav-wrap">
             <div class="nav-box">
@@ -388,8 +404,7 @@
         }
     });
     Vue.component('mainTask', mainTask);
-</script>
-<template id="inputRow">
+</script> <template id="inputRow">
     <div class="m-row">
         <div class="m-name " :class="{required:rows.required}">
             {{rows.name}}
@@ -412,7 +427,7 @@
     });
     Vue.component('inputRow', inputRow);
 </script>
-<template id="inputTime">
+    <template id="inputTime">
     <div class="input-time">
         <div class="input" v-time="date"></div>
         <input type="hidden" v-model="date" :id="id">
@@ -448,8 +463,7 @@
             }
         }
     });
-</script>
-<template id="select2-template">
+</script> <template id="select2-template">
     <select>
         <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
         <slot></slot>
@@ -489,8 +503,7 @@
         }
     })
 
-</script>
-<template id="layer">
+</script> <template id="layer">
     <div class="modal" v-if="layer.show">
         <div class="layer-bg"></div>
         <div class="modal-dialog">
@@ -563,7 +576,7 @@
 
     Vue.component('layer', layer);
 </script>
-<template id="taskAdd">
+    <template id="taskmessageAdd">
     <div class="task-wrap">
         <input-row :rows="rows.taskName"></input-row>
         <div class="m-row">
@@ -580,10 +593,10 @@
                 短信内容
             </div>
             <div class="m-info m-input">
-                <textarea class="textarea"  v-model="rows.messageContent.value" disabled="disabled"></textarea>
+                <textarea class="textarea" v-model="rows.messageContent.value" disabled="disabled"></textarea>
             </div>
         </div>
-       
+
         <div class="m-row">
             <div class="m-name">
                 数据来源
@@ -604,69 +617,70 @@
     </div>
 </template>
 <script>
-    var taskAdd = Vue.extend({
-        template: '#taskAdd',
+    var taskmessageAdd = Vue.extend({
+        template: '#taskmessageAdd',
         data: function () {
             return {
                 rows: {
                     taskName: {
                         name: "任务名称", value: "", input: true, required: true
                     },
-                   message:{
-                    name: "短信模板", value: "不重复", required: true,
-                        options: [{id: "不重复", text: "不重复",content:'模板1'}, {id: "1", text: "1",content:'模板2'}, {id: "2", text: "2",content:'模板3'}, {
+                    message: {
+                        name: "短信模板", value: "不重复", required: true,
+                        options: [{ id: "不重复", text: "不重复", content: '模板1' }, { id: "1", text: "1", content: '模板2' }, { id: "2", text: "2", content: '模板3' }, {
                             id: "3",
-                            text: "3",content:'模板4'
-                        }, {id: "4", text: "4",content:'模板5'}, {id: "5", text: "5",content:'模板6'}, {id: "6", text: "6",content:'模板7'}, {
+                            text: "3", content: '模板4'
+                        }, { id: "4", text: "4", content: '模板5' }, { id: "5", text: "5", content: '模板6' }, { id: "6", text: "6", content: '模板7' }, {
                             id: "7",
-                            text: "7",content:'模板8'
-                        }, {id: "8", text: "8",content:'模板9'}]
-                   },
-                   messageContent:{
-                    name: "短信内容", value: "", input: true
-                   },
+                            text: "7", content: '模板8'
+                        }, { id: "8", text: "8", content: '模板9' }]
+                    },
+                    messageContent: {
+                        name: "短信内容", value: "", input: true
+                    },
                     data: {
                         name: "数据来源",
                         value: "0",
-                        optiondefault:true,
+                        optiondefault: true,
                         options: []
                     },
                 }
             }
         },
-        watch:{
-            'rows.message.value':{
-                handler:function(val,oldVal){
+        watch: {
+            'rows.message.value': {
+                handler: function (val, oldVal) {
                     var _self = this;
                     var options = _self.$data.rows.message.options;
-                    for(var i=0;i<options.length;i++){
-                        if(val == options[i].text){
+                    for (var i = 0; i < options.length; i++) {
+                        if (val == options[i].text) {
                             _self.$data.rows.messageContent.value = options[i].content;
                             return;
                         }
                     }
                 },
                 // 深度观察
-                deep:true
+                deep: true
             }
         },
-        methods:{
-          submit:function () {
-              console.log("新建任务提交");
-          },
-          
+        methods: {
+            submit: function () {
+                console.log("新建任务提交");
+            },
+
         },
         components: {
             'inputRow': inputRow,
             'inputTime': inputTime,
-            'staffSelect':staffSelect
+            'staffSelect': staffSelect
         }
     });
-    Vue.component('taskAdd', taskAdd);
+    Vue.component('taskmessageAdd', taskmessageAdd);
 </script>
 
-<script src="js/scripts.js"></script>
-<script src="js/taskMessage.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/taskMessage.js"></script>
 
 </body>
+
 </html>
