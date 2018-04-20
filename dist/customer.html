@@ -1317,7 +1317,7 @@
                     createdTime: { name: "创建时间", value: "" },
                     progress: { name: "销售进度", value: "", text: '', type: "select", options: '[{"name":"初步沟通","value":"1"},{"name":"确认需求","value":"2"},{"name":"报价","value":"3"},{"name":"面谈","value":"4"},{"name":"成单","value":"5"},{"name":"无需求","value":"6"},{"name":"输单","value":"7"},{"name":"未标记","value":"8"}]' },
                     userName: { name: "客户姓名", value: "", type: "input" },
-                    gender: { name: "性别", value: "", text: '', type: "select", options: '[{"name":"男","value":"man"},{"name":"女","value":"woman"}]' },
+                    gender: { name: "性别", value: "", text: '', type: "select", options: '[{"name":"男","value":"男"},{"name":"女","value":"女"}]' },
                     email: { name: "邮箱地址", value: "", type: "input" },
                     channel: { name: "渠道来源", value: "", type: "input" },
                     DecorationAdress: { name: "装修地址", value: "", type: "input" },
@@ -1383,7 +1383,7 @@
         },
         activated: function () {
             // var message = this.$props.layer.message;
-            // var $messages = this.$data.messages;
+            var $messages = this.$data.messages;
             // $messages.customerId = message.cusid;
             // $messages.userName.value = message.cusname;
             // $messages.cellphone.value = message.cellphone;
@@ -1399,7 +1399,8 @@
             //            this.$data.messages.postcode.value = message.postcode;
 
 
-
+            $messages.gender.text = "女";
+            $messages.gender.value = "女";
 
             //时间轴列表
             var detailLineUrl = "json/detail-line.json";

@@ -372,16 +372,29 @@
                         <i></i>文本</label>
                 </div>
             </div>
-            <div class="custom-box">
-                <div class="m-row">
-                    <div class="m-name ">
-                        选项1
+        </div>
+        <div class="custom-box" v-show="type=='单选'|| type=='多选'">
+            <div class="m-row" v-for="(item,$index) in options">
+                <div class="m-name" :class="$index==0?'required':''">
+                    选项{{$index+1}}
+                </div>
+                <div class="m-info m-input">
+                    <div class="custom-input" :class="type=='多选'?'custom-multiple':''">
+                        <input type="text" class="input" placeholder="请输入选项" v-model="item.value" />
                     </div>
-                    <div class="m-info m-input">
-                        <div class="custom-input">
-                            <input type="text" class="input" />
-                        </div>
+                    <div class="custom-check" v-if="type=='单选'">
+                        <label class="check-box">
+                            <input type="checkbox" v-model="item.check">
+                            <i></i>
+                            添加文本框
+                        </label>
                     </div>
+                    <a href="javascript:void(0);" class="custom-closed" v-show="$index!=0" @click="removeOption($index)">&times;</a>
+                </div>
+            </div>
+            <div class="m-row">
+                <div class="m-name ">
+                    <a class="m-link" href="javascript:void(0);" @click="addOptions">+ 添加选项</a>
                 </div>
             </div>
         </div>
@@ -393,15 +406,30 @@
         data: function () {
             return {
                 customName: { name: "字段名称", value: '', input: true, required: true },
-                type: ''
+                type: '',
+                options: []
             }
         },
         methods: {
-
+            addOptions: function () {
+                this.$data.options.push({
+                    value: '',
+                    check: false
+                });
+            },
+            removeOption: function (index) {
+                this.$data.options.splice(index, 1);
+            },
+            submit: function () {
+                console.log("自定义字段提交");
+            }
         },
         watch: {
             type: function (val) {
                 console.log(val);
+                if (val == '单选' || val == '多选') {
+                    this.$data.options = [{ value: '', check: false }];
+                }
             }
         }
     });

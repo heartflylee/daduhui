@@ -463,3 +463,23 @@ input[type='file'].files {
 .cell-text.setup-padding {
   padding-left: 12px;
 }
+.custom-input,
+.custom-check {
+  display: inline-block;
+  vertical-align: top;
+}
+.custom-input {
+  width: 250px;
+  margin-right: 10px;
+  &.custom-multiple {
+    width: 370px;
+  }
+}
+.custom-check {
+  margin-top: 10px;
+}
+.custom-closed {
+  line-height: 40px;
+  font-size: 28px;
+  color: #c11920;
+}
