@@ -1929,8 +1929,8 @@
                 公司名称：
             </div>
             <div class="m-info m-input">
-                <autocomplete id="company" classname="input" name="company" placeholder="请输入公司名称" url="json/company.json" param="value" limit="5"
-                    anchor="value" @value="comValue"></autocomplete>
+                <input-autocomplete id="company" classname="input" name="company" placeholder="请输入公司名称" url="json/company.json" param="value"
+                    limit="5" anchor="value" @value="comValue"></input-autocomplete>
             </div>
         </div>
         <input-row :rows="rows.customerName"></input-row>
@@ -2139,23 +2139,16 @@
         }
     });
     Vue.component('customerAdd', customerAdd);
-</script> <template id="autocomplete">
+</script> <template id="inputAutocomplete">
     <div class="autocomplete-wrap">
-        <input type="text"
-               :id="id"
-               :class="classname"
-               :name="name"
-               :placeholder="placeholder"
-               v-model="inputmodel"
-               @input="input(inputmodel)"
-               @blur="hideAll"
-               @focus="focus"/>
-        <div class="qixinbao" :class="business" @click="businessShow"><i></i>工商信息</div>
+        <input type="text" :id="id" :class="classname" :name="name" :placeholder="placeholder" v-model="inputmodel" @input="input(inputmodel)"
+            @blur="hideAll" @focus="focus" />
+        <div class="qixinbao" :class="business" @click="businessShow">
+            <i></i>工商信息</div>
         <div v-if="showList" :class='"autocomplete autocomplete-"+ name ' :id="'autocomplete-'+ name ">
             <ul>
                 <li v-for="data in json">
-                    <a href="javascript:void(0)"
-                       @click="selectList(data)">
+                    <a href="javascript:void(0)" @click="selectList(data)">
                         <b>{{ data[anchor] }}</b>
                     </a>
                 </li>
@@ -2165,8 +2158,8 @@
 </template>
 
 <script>
-    var autocomplete = Vue.extend({
-        template: '#autocomplete',
+    var inputAutocomplete = Vue.extend({
+        template: '#inputAutocomplete',
         props: {
             id: String,
             classname: String,
@@ -2207,7 +2200,7 @@
                 inputmodel: '',
                 json: [],
                 focusList: '',
-                business:""
+                business: ""
             }
         },
 
@@ -2217,12 +2210,12 @@
                 console.log("输入");
                 //触发调用getData方法
                 this.getData(val);
-                this.business="";
+                this.business = "";
             },
 
             //隐藏补全列表
             hideAll: function (e) {
-                var _self=this;
+                var _self = this;
                 //为了让blur方法延迟执行，以便能够成功执行click方法
                 setTimeout(function () {
                     _self.showList = false;
@@ -2243,8 +2236,8 @@
                 this.inputmodel = data.value;
                 //传递给父组件中的对象
                 this.showList = false;
-                this.$emit('value',data);
-                this.business="active";
+                this.$emit('value', data);
+                this.business = "active";
             },
 
             //获取数据
@@ -2253,41 +2246,42 @@
                 let self = this;
 
                 if (this.url != null) {
+                    $.get(self.$props.url + '?' + self.$props.param + '=' + val, function (data) {
+                        self.$data.json = data;
+                    })
+                    // let ajax = new XMLHttpRequest();
 
-                    let ajax = new XMLHttpRequest();
+                    // ajax.open('GET', `${this.url}?${this.param}=${val}`, true);
+                    // ajax.send();
 
-                    ajax.open('GET', `${this.url}?${this.param}=${val}`, true);
-                    ajax.send();
+                    // ajax.addEventListener('progress', function (data) {
+                    //     if (data.lengthComputable) {
+                    //     }
+                    // });
 
-                    ajax.addEventListener('progress', function (data) {
-                        if (data.lengthComputable) {
-                        }
-                    });
-
-                    ajax.addEventListener('loadend', function (data) {
-                        console.log(data);
-                        let json = JSON.parse(this.responseText);
-                        console.log(json);
-                        self.json = json;
-                    });
+                    // ajax.addEventListener('loadend', function (data) {
+                    //     console.log(data);
+                    //     let json = JSON.parse(this.responseText);
+                    //     console.log(json);
+                    //     self.json = json;
+                    // });
 
                 }
             },
-            businessShow:function(){
-                if(this.business ==""){
+            businessShow: function () {
+                if (this.business == "") {
                     return false;
                 }
                 vm.$data.layers.business.show = true;
 
-//                this.$emit('business',this.json);
+                //                this.$emit('business',this.json);
             }
 
         }
     });
-    Vue.component('autocomplete',autocomplete);
+    Vue.component('inputAutocomplete', inputAutocomplete);
 
 </script>
-
     <!--编辑客户-->
     <template id="customer-modify">
     <div class="message add-message">
