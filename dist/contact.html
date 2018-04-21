@@ -395,16 +395,16 @@
         <div class="nav-box">
             <div class="index-select">
                 <div class="select-show">
-                    <label>全部客户</label>
+                    <label>{{(type == '' || type== 'all')?'全部客户':'我负责的客户'}}</label>
                     <i class="t-arrow icon"></i>
                 </div>
                 <div class="select-wrap">
                     <div class="date-select-box">
                         <ul>
-                            <li class="date-select selected">
+                            <li class="date-select" :class="(type==''||type=='all')?'selected':''"  @click="typeChange($event,'all')">
                                 全部客户
                             </li>
-                            <li class="date-select">
+                            <li class="date-select" :class="(type=='mine')?'selected':''" @click="typeChange($event,'mine')">
                                 我负责的客户
                             </li>
                         </ul>
@@ -465,6 +465,7 @@
 <script>
     var customerHead = Vue.extend({
         template: '#customer-head',
+        props:['type'],
         data: function () {
             return {
 
@@ -491,6 +492,11 @@
             },
             exportBtn: function () {
                 this.$emit('layer', 'export');
+            },
+            typeChange:function(event,type){
+                this.$emit('typechange', type);
+                $(event.target).parents('.index-select').removeClass('active');
+
             }
         }
     });

@@ -161,6 +161,7 @@ var vm = new Vue({
           layerName: 'export',
         },
       },
+      type:'all'
     };
   },
   methods: {
@@ -171,6 +172,9 @@ var vm = new Vue({
     layer: function(layer) {
       this.$data.layers[layer].show = true;
     },
+    typeChange:function(type){
+      this.$data.type = type;
+    }
   },
 });
 

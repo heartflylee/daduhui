@@ -56,7 +56,7 @@
             <!--左侧菜单-->
             <menu-aside menu="index"></menu-aside>
             <div class="b-panel">
-                <customer-head @layer="layer"></customer-head>
+                <customer-head @layer="layer" :type="type" @typechange="typeChange"></customer-head>
                 <customer-table></customer-table>
             </div>
         </section>
