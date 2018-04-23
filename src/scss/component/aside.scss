@@ -163,6 +163,16 @@ $setupMenu: '\e601' '\e65a' '\e643' '\e748' '\e63c' '\e639';
   }
 }
 
+$secondMemu: (
+  m2-1: '\e639',
+  m2-2: '\e8d1',
+  m2-3: '\e644',
+  m3-1: '\e8d0',
+  m3-2: '\e6ab',
+  m3-3: '\e604',
+  m3-4: '\e684'
+);
+
 .m-second {
   i {
     position: absolute;
@@ -171,10 +181,15 @@ $setupMenu: '\e601' '\e65a' '\e643' '\e748' '\e63c' '\e639';
     @include icon;
     &:after {
       font-family: 'iconfont';
-      content: '\e637';
-      font-size: 13px;
+      font-size: 18px;
       font-style: normal;
-      color: #a6a6a6;
+      // color: #a6a6a6;
+      color: #4e606e;
+    }
+    @each $menu, $content in $secondMemu {
+      &.icon-#{$menu}:after {
+        content: $content;
+      }
     }
   }
 }

@@ -792,13 +792,60 @@
         },
         created: function () {
             var url = "json/staffList.json";
-            this.$http.get(url).then(function (data) {
-                var json = JSON.parse(data.bodyText);
-                console.log(json);
-                this.$data.staffs = json;
-            }, function (response) {
-                console.info(response);
-            });
+            // this.$http.get(url).then(function (data) {
+            //     var json = JSON.parse(data.bodyText);
+            //     console.log(json);
+            //     this.$data.staffs = json;
+            // }, function (response) {
+            //     console.info(response);
+            // });
+            var _self = this;
+            // $.get(url, function (data) {
+            //     console.log(data);
+            //     // var json = JSON.parse(data.bodyText);
+            //     // console.log(json);
+            //     _self.$data.staffs = data;
+            // });
+            var data = [
+                {
+                    "id": "1",
+                    "value": "艾云鹤",
+                    "manage": true,
+                    "img": "img/head-list.png"
+                },
+                {
+                    "id": "2",
+                    "value": "刘宇",
+                    "manage": false,
+                    "img": "img/head-list.png"
+                },
+                {
+                    "id": "3",
+                    "value": "王佳印",
+                    "manage": false,
+                    "img": "img/head-list.png"
+                },
+                {
+                    "id": "4",
+                    "value": "刘晓辉",
+                    "manage": false,
+                    "img": "img/head-list.png"
+                },
+                {
+                    "id": "5",
+                    "value": "艾云鹤1",
+                    "manage": false,
+                    "img": "img/head-list.png"
+                },
+                {
+                    "id": "6",
+                    "value": "刘宇1",
+                    "manage": false,
+                    "img": "img/head-list.png"
+                }
+            ];
+
+            _self.$data.staffs = data;
 
             if (this.$props.disabled == 'disabled') {
                 this.$data.idDisabled = true;
@@ -808,10 +855,14 @@
         directives: {
             selectstaff:
                 {
+                    inserted: function (el) {
+                        staffSelect(el);
+                    },
                     update: function (el) {
+                        staffSelect(el);
+                    },
+                    componentUpdated: function (el) {
                         console.log(el);
-                        //                        $(el).select2();
-                        //                        selectStaff(el);
                         staffSelect(el);
                     }
                 }

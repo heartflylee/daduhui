@@ -373,7 +373,7 @@
             '    <ul class="m-second-list child-list" v-if="content.sub.length>0" >\n' +
             '        <li class="m-second" v-for="sub in content.sub">\n' +
             '            <a :href="sub.href">\n' +
-            '                <i></i>\n' +
+            '                <i class="icon" :class="sub.icon"></i>\n' +
             '                <label :class="sub.tips == true?\'menu-tips\':\'\'">{{sub.title}}</label>\n' +
             '            </a>\n' +
             '        </li>\n' +
@@ -409,14 +409,17 @@
                     sub: [
                         {
                             title: "客户列表",
+                            icon: 'icon-m2-1',
                             href: "customer.html"
                         },
                         {
                             title: "企业公海",
+                            icon: 'icon-m2-2',
                             href: "contact.html"
                         },
                         {
                             title: '通话历史',
+                            icon: 'icon-m2-3',
                             href: 'calllog.html'
                         }
                     ]
@@ -430,15 +433,19 @@
                     tips: true,
                     sub: [{
                         title: "电话任务",
+                        icon: 'icon-m3-1',
                         href: "task.html"
                     }, {
                         title: "短信任务",
+                        icon: 'icon-m3-2',
                         href: "taskMessage.html"
                     }, {
                         title: "邮件任务",
+                        icon: 'icon-m3-3',
                         href: "taskEmail.html"
                     }, {
                         title: '我的任务',
+                        icon: 'icon-m3-4',
                         href: 'myTask.html',
                         tips: true
                     }
