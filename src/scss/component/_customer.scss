@@ -380,3 +380,13 @@ $enterBtn: (
     text-decoration: underline;
   }
 }
+
+.m-row.m-appointment {
+  width: 100%;
+  .input-time {
+    width: 200px;
+  }
+  input {
+    height: 40px;
+  }
+}

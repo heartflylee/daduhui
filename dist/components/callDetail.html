@@ -109,7 +109,18 @@
                                                     有意向
                                                 </div>
                                                 <div class="tag-radius-box">
-                                                    <div class="tag-radius" v-for="item in calltips.intentions" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                    <div class="tag-radius" v-for="item in calltips.intentions" @click="setcalltips(item,'0')" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="m-row m-appointment" v-show="callSubmit.index == 0">
+                                                <div class="m-name">
+                                                    预约时间
+                                                </div>
+                                                <div class="m-info m-input">
+                                                    <div class="input-time">
+                                                        <div class="input" v-time="callSubmit.date"></div>
+                                                        <input type="hidden" id="appointment">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="tag-main">
@@ -117,7 +128,7 @@
                                                     无意向
                                                 </div>
                                                 <div class="tag-radius-box">
-                                                    <div class="tag-radius" v-for="item in calltips.noIntentions" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                    <div class="tag-radius" v-for="item in calltips.noIntentions" @click="setcalltips(item,'1')" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
                                                 </div>
                                             </div>
                                             <div class="tag-main">
@@ -125,7 +136,7 @@
                                                     资料错误
                                                 </div>
                                                 <div class="tag-radius-box">
-                                                    <div class="tag-radius" v-for="item in calltips.dataErrors" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                    <div class="tag-radius" v-for="item in calltips.dataErrors" @click="setcalltips(item,'2')" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
                                                 </div>
                                             </div>
                                             <div class="tag-main">
@@ -133,7 +144,7 @@
                                                     二次外呼
                                                 </div>
                                                 <div class="tag-radius-box">
-                                                    <div class="tag-radius" v-for="item in calltips.twiceCalls" @click="setcalltips(item)" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
+                                                    <div class="tag-radius" v-for="item in calltips.twiceCalls" @click="setcalltips(item,'3')" :class="item == callSubmit.calltips?'active':''">{{item}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -330,8 +341,10 @@
                     twiceCalls: ['二次外呼', '二次外呼1'],
                 },
                 callSubmit: {
+                    index: '-1',
                     calltips: '',
-                    progress: ''
+                    progress: '',
+                    date: ''
                 },
                 callMessage: {
                     modal: {
@@ -388,8 +401,10 @@
                 this.$data.callSubmit.progress = val;
             },
             //设置电话标签
-            setcalltips: function (val) {
+            setcalltips: function (val, index) {
                 this.$data.callSubmit.calltips = val;
+                //判断为有意向
+                this.$data.callSubmit.index = index;
             },
             //挂断电话按钮
             stopCall: function () {
@@ -419,6 +434,24 @@
             "headMessage": headMessage,
             "detailMessage": detailMessage,
             "customfiledsMessage": customFiledsMessage,
+        },
+        directives: {
+            time: {
+                inserted: function (el, date) {
+                    console.log(this);
+                    var _slef = this;
+                    $(el).jqxDateTimeInput({
+                        width: '100%',
+                        height: '40px',
+                        culture: 'ch-CN',
+                        formatString: 'yyyy-MM-dd HH:mm:ss',
+                        min: new Date(new Date() + 60)
+                    });
+                    $(el).on('textchanged', function (event) {
+                        $(event.target).next().val(event.args.date.Format('yyyy-MM-dd hh:mm:ss'));
+                    });
+                }
+            }
         },
         activated: function () {
             //组件激活调用，初始绑定数据
