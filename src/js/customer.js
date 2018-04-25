@@ -161,7 +161,7 @@ var vm = new Vue({
           layerName: 'export',
         },
       },
-      type:'all'
+      type: 'all',
     };
   },
   methods: {
@@ -172,9 +172,9 @@ var vm = new Vue({
     layer: function(layer) {
       this.$data.layers[layer].show = true;
     },
-    typeChange:function(type){
+    typeChange: function(type) {
       this.$data.type = type;
-    }
+    },
   },
 });
 
@@ -487,6 +487,93 @@ var checkSource = {
   ],
 };
 
+var listSource = {
+  datatype: 'json',
+  datafields: [
+    { name: 'progress', type: 'string' },
+    { name: 'actState', type: 'string' },
+    { name: 'isDistribution', type: 'string' },
+    { name: 'mailState', type: 'string' },
+    { name: 'endcallMsgStatus', type: 'string' },
+    { name: 'actionType', type: 'string' },
+    { name: 'msgState', type: 'string' },
+  ],
+  localdata: [
+    {
+      progress: '未标记',
+      isDistribution: '未分配',
+      actState: '未沟通',
+      msgState: '发送成功',
+      mailState: '发送成功',
+      endcallMsgStatus: '发送成功',
+      actionType: '有意向',
+    },
+    {
+      progress: '初步沟通',
+      isDistribution: '已分配',
+      actState: '已沟通',
+      msgState: '打开链接',
+      mailState: '发送失败',
+      endcallMsgStatus: '打开链接',
+      actionType: '无意向',
+    },
+    {
+      progress: '确认需求',
+      isDistribution: '空',
+      actState: '空',
+      msgState: '发送失败',
+      mailState: '空',
+      endcallMsgStatus: '发送失败',
+      actionType: '资料错误',
+    },
+    {
+      progress: '报价',
+      isDistribution: '已分配',
+      actState: '已沟通',
+      msgState: '发送中',
+      mailState: '发送失败',
+      endcallMsgStatus: '发送中',
+      actionType: '二次呼叫',
+    },
+    {
+      progress: '面谈',
+      isDistribution: '已分配',
+      actState: '已沟通',
+      msgState: '空',
+      mailState: '发送失败',
+      endcallMsgStatus: '空',
+      actionType: '空',
+    },
+    {
+      progress: '成单',
+      isDistribution: '已分配',
+      actState: '已沟通',
+      msgState: '发送中',
+      mailState: '发送失败',
+      endcallMsgStatus: '发送中',
+      actionType: '二次呼叫',
+    },
+    {
+      progress: '无需求',
+      isDistribution: '已分配',
+      actState: '已沟通',
+      msgState: '发送中',
+      mailState: '发送失败',
+      endcallMsgStatus: '发送中',
+      actionType: '二次呼叫',
+    },
+    {
+      progress: '输单',
+      isDistribution: '已分配',
+      actState: '已沟通',
+      msgState: '发送中',
+      mailState: '发送失败',
+      endcallMsgStatus: '发送中',
+      actionType: '二次呼叫',
+    },
+  ],
+};
+
 function fileterCheck(filterPanel, datafield) {
   var filtercheck = $("<div class='filter-checkbox'></div>");
   var applyinput = $("<div class='filter-btn-box'></div>");
@@ -599,6 +686,126 @@ function fileterCheck(filterPanel, datafield) {
   $('#gridmenujqxtable').width('240px');
 }
 
+function fileterList(filterPanel, datafield) {
+  var filterlist = $("<div class='filter-List'></div>");
+  var applyinput = $("<div class='filter-btn-box'></div>");
+  var filterbutton = $('<span class="filter-button" tabindex="0" >筛选</span>');
+  applyinput.append(filterbutton);
+  var filterclearbutton = $(
+    '<span class="filter-button" tabindex="0" >清除</span>'
+  );
+  applyinput.append(filterclearbutton);
+
+  filterlist.jqxListBox({
+    width: 220,
+    height: 200,
+    scrollBarSize: 7,
+  });
+
+  // filtercheck.jqxListBox({
+  //   checkboxes: true,
+  //   width: 220,
+  //   height: 200,
+  //   scrollBarSize: 7,
+  // });
+  var filterBoxAdapter = new $.jqx.dataAdapter(listSource, {
+    uniqueDataFields: [datafield],
+    autoBind: true,
+  });
+  var uniqueRecords = filterBoxAdapter.records;
+  // uniqueRecords.splice(0, 0, '全部');
+  filterlist.jqxListBox({ source: uniqueRecords, displayMember: datafield });
+  // filterlist.jqxListBox('checkAll');
+  // }
+  filterPanel.append(filterlist);
+  filterPanel.append(applyinput);
+
+  var handleCheckChange = true;
+  filterlist.on('checkChange', function(event) {
+    if (!handleCheckChange) return;
+
+    if (event.args.label != '全部') {
+      handleCheckChange = false;
+      filterlist.jqxListBox('checkIndex', 0);
+      var checkedItems = filterlist.jqxListBox('getCheckedItems');
+      var items = filterlist.jqxListBox('getItems');
+
+      if (checkedItems.length == 1) {
+        filterlist.jqxListBox('uncheckIndex', 0);
+      } else if (items.length != checkedItems.length) {
+        filterlist.jqxListBox('indeterminateIndex', 0);
+      }
+      handleCheckChange = true;
+    } else {
+      handleCheckChange = false;
+      if (event.args.checked) {
+        filterlist.jqxListBox('checkAll');
+      } else {
+        filterlist.jqxListBox('uncheckAll');
+      }
+
+      handleCheckChange = true;
+    }
+  });
+
+  filterbutton.jqxButton();
+  filterclearbutton.jqxButton();
+
+  var $table = $('#jqxtable');
+
+  filterbutton.click(function() {
+    var filtergroup = new $.jqx.filter();
+    var checkedItems = filterlist.jqxListBox('getSelectedItems');
+    console.log(checkedItems);
+    if (checkedItems.length == 0) {
+      var filter_or_operator = 1;
+      var filtervalue = '';
+      var filtercondition = 'CONTAINS';
+      var filter = filtergroup.createfilter(
+        'stringfilter',
+        filtervalue,
+        filtercondition
+      );
+      filtergroup.addfilter(filter_or_operator, filter);
+    } else {
+      for (var i = 0; i < checkedItems.length; i++) {
+        var filter_or_operator = 1;
+        var filtervalue = checkedItems[i].label;
+        var filtercondition = 'equal';
+        if (filtervalue == '空') {
+          filtervalue = '';
+        }
+        var filter = filtergroup.createfilter(
+          'stringfilter',
+          filtervalue,
+          filtercondition
+        );
+        filtergroup.addfilter(filter_or_operator, filter);
+      }
+    }
+
+    $table.jqxGrid('addfilter', datafield, filtergroup);
+    $table.jqxGrid('applyfilters');
+    $table.jqxGrid('closemenu');
+  });
+  filterbutton.keydown(function(event) {
+    if (event.keyCode === 13) {
+      filterbutton.trigger('click');
+    }
+  });
+  filterclearbutton.click(function() {
+    $table.jqxGrid('removefilter', datafield);
+    $table.jqxGrid('applyfilters');
+    $table.jqxGrid('closemenu');
+  });
+  filterclearbutton.keydown(function(event) {
+    if (event.keyCode === 13) {
+      filterclearbutton.trigger('click');
+    }
+  });
+  $('#gridmenujqxtable').width('240px');
+}
+
 //全部表头
 var defaultCulumns = {
   header: {
@@ -637,6 +844,7 @@ var defaultCulumns = {
       }
       return '<i></i><div class="jqx-grid-cell-left-align">' + value + '</div>';
     },
+    // filtertype: 'list',
     filtertype: 'custom',
     createfilterpanel: function(datafield, filterPanel) {
       buildFilterPanel(filterPanel, datafield);
@@ -679,10 +887,10 @@ var defaultCulumns = {
     width: 120,
     cellbeginedit: cellbeginedit,
     // filtertype: 'dropdownlist',
-    columntype: 'combobox',
+    // columntype: 'combobox',
     filtertype: 'custom',
     createfilterpanel: function(datafield, filterPanel) {
-      fileterCheck(filterPanel, datafield);
+      fileterList(filterPanel, datafield);
     },
     // createfilterpanel: function (datafield, filterPanel) {
     //     buildFilterPanel(filterPanel, datafield);

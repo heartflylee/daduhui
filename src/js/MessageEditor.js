@@ -62,10 +62,7 @@
           .attr('placeholder', '请输入' + data.nametext)
           .attr('value', data.value)
           .appendTo(this.$text)
-          .focus()
-          .on('blur', function() {
-            that.removeEditor();
-          });
+          .focus();
       } else if (data.type == 'select') {
         // var select = data.option.split(',');
         console.log(JSON);

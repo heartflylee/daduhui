@@ -1642,7 +1642,18 @@
                                         发送挂机短信
                                     </div>
                                     <div class="message-content">
-                                        <detail-message :message="callMessage.modal" name="callMessage" row="true"></detail-message>
+                                        <!-- <detail-message :message="callMessage.modal" name="callMessage" row="true"></detail-message> -->
+                                        <div class="message-li message-row">
+                                            <div class="message-name">
+                                                短信模板
+                                            </div>
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    <select2 :options="callMessage.modal.options" optiondefault="true" v-model="callMessage.modal.value" name="邮件模板" style="width:85%;">
+                                                    </select2>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="message-li message-row">
                                             <div class="message-name">
                                                 短信内容
@@ -1661,8 +1672,34 @@
                                         发送挂机邮件
                                     </div>
                                     <div class="message-content">
+                                        <div class="message-li message-row">
+                                            <div class="message-name">
+                                                邮件模板
+                                            </div>
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    <select2 :options="callEmail.modal.options" optiondefault="true" v-model="callEmail.modal.value" name="邮件模板" style="width:85%;">
+                                                    </select2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="message-li message-row">
+                                            <div class="message-name">
+                                                邮件标题
+                                            </div>
+                                            <div class="message-main">
+                                                <div class="message-text">
+                                                    <input type="text" class="input" v-model="callEmail.title.value">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- modal: { name: '邮件模板', value: '选择模板', type: 'select', options: '[{"name":"选择模板","value":"选择模板"},{"name":"选择模板1","value":"选择模板1"},{"name":"选择模板2","value":"选择模板2"}]'
+                                        }, content: { name: '邮件内容', value: '', type: 'input' }, title: { name: '邮件标题', value:
+                                        '', type: 'input' }
+
                                         <detail-message :message="callEmail.modal" name="callEmail" row="true"></detail-message>
-                                        <detail-message :message="callEmail.title" name="callEmailTitle" row="true"></detail-message>
+                                        <detail-message :message="callEmail.title" name="callEmailTitle" row="true"></detail-message> -->
 
                                         <div class="message-li message-row">
                                             <div class="message-name">
@@ -1834,7 +1871,7 @@
                 },
                 callMessage: {
                     modal: {
-                        name: '短信模板', value: '选择模板', type: 'select', options: '[{"name":"选择模板","value":"选择模板"},{"name":"选择模板1","value":"选择模板1"},{"name":"选择模板2","value":"选择模板2"}]'
+                        name: '短信模板', value: '选择模板', type: 'select', options: [{ id: 0, text: "选择模板", content: "模板内容" }, { id: "选择模板1", text: "选择模板1", content: "模板1内容" }, { id: "选择模板2", text: "选择模板2", content: "模板2内容" }]
                     },
                     content: {
                         name: '短信内容', value: '', type: 'input'
@@ -1842,7 +1879,7 @@
                 },
                 callEmail: {
                     modal: {
-                        name: '邮件模板', value: '选择模板', type: 'select', options: '[{"name":"选择模板","value":"选择模板"},{"name":"选择模板1","value":"选择模板1"},{"name":"选择模板2","value":"选择模板2"}]'
+                        name: '邮件模板', value: '选择模板', type: 'select', options: [{ id: 0, text: "选择模板" }, { id: "1", text: "选择模板1" }, { id: "2", text: "选择模板2" }]
                     },
                     content: {
                         name: '邮件内容', value: '', type: 'input'
@@ -1914,6 +1951,22 @@
                 console.log(this.$data.callEmail.content.value);
             },
             afterChange: function () {
+            }
+        },
+        watch: {
+            'callMessage.modal.value': {
+                handler: function (val, oldVal) {
+                    var _self = this;
+                    var options = _self.$data.callMessage.modal.options;
+                    for (var i = 0; i < options.length; i++) {
+                        if (val == options[i].text) {
+                            _self.$data.callMessage.content.value = options[i].content;
+                            return;
+                        }
+                    }
+                },
+                // 深度观察
+                deep: true
             }
         },
         components: {
