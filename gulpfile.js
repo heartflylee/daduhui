@@ -209,6 +209,45 @@ gulp.task('copy', function() {
     .pipe(plumber.stop())
     .pipe(gulp.dest('./dist/js/kindeditor/'));
   gulp
+    .src(['./src/js/jsDate/*.scss', './src/js/jsDate/**/*.scss'])
+    .pipe(
+      changed('./dist/js/jsDate', {
+        hasChanged: changed.compareSha1Digest,
+      })
+    )
+    .pipe(plumber())
+    .pipe(sass())
+    .pipe(
+      autoprefixer({
+        browsers: [
+          'last 8 versions',
+          'Explorer >=6',
+          'Safari >=3',
+          'Chrome >=35',
+          'Android >= 4.0',
+          'Opera >=35',
+          'last 5 OperaMobile versions',
+          'last 5 OperaMini versions',
+          'last 5 FirefoxAndroid versions',
+          'last 5 ChromeAndroid versions',
+          '> 1%',
+          'Firefox >= 14',
+          'Firefox ESR',
+          'ie 8',
+          'ie 7',
+          'ie 6',
+          'IOS 7',
+        ],
+        cascade: true,
+        remove: true,
+        add: true,
+        flexbox: true,
+      })
+    )
+    .pipe(minify())
+    .pipe(plumber.stop())
+    .pipe(gulp.dest('./dist/js/jsDate/'));
+  gulp
     .src(['./src/js/jsDate/*.*', './src/js/jsDate/**/*.*'])
     .pipe(
       changed('./dist/js/jsDate', {

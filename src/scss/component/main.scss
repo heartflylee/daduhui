@@ -333,24 +333,24 @@
 @import 'setup.scss';
 
 //时间输入框
-.input-time {
-  position: relative;
-  input {
-    padding-left: 40px;
-  }
-  .icon-time {
-    position: absolute;
-    top: 50%;
-    left: 17px;
-    transform: translate3d(0, -50%, 0);
-    line-height: 1;
-    color: #50c2c2;
-    &:after {
-      font-size: 20px;
-      content: '\e65f';
-    }
-  }
-}
+// .input-time {
+//   position: relative;
+//   input {
+//     padding-left: 40px;
+//   }
+//   .icon-time {
+//     position: absolute;
+//     top: 50%;
+//     left: 17px;
+//     transform: translate3d(0, -50%, 0);
+//     line-height: 1;
+//     color: #50c2c2;
+//     &:after {
+//       font-size: 20px;
+//       content: '\e65f';
+//     }
+//   }
+// }
 .text-danger {
   color: #c11920;
 }

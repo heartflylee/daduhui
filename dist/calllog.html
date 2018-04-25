@@ -864,8 +864,9 @@
                                                 </div>
                                                 <div class="m-info m-input">
                                                     <div class="input-time">
-                                                        <div class="input" v-time="callSubmit.date"></div>
-                                                        <input type="hidden" id="appointment">
+                                                        <input type="text" v-time="callSubmit.date" class="input" readonly>
+                                                        <!-- <div class="input" v-time="callSubmit.date"></div> -->
+                                                        <!-- <input type="hidden" id="appointment"> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -1094,7 +1095,7 @@
                 },
                 callMessage: {
                     modal: {
-                        name: '短信模板', value: '选择模板', type: 'select', options: '选择模板,'
+                        name: '短信模板', value: '选择模板', type: 'select', options: '[{"name":"选择模板","value":"选择模板"},{"name":"选择模板1","value":"选择模板1"},{"name":"选择模板2","value":"选择模板2"}]'
                     },
                     content: {
                         name: '短信内容', value: '', type: 'input'
@@ -1102,7 +1103,7 @@
                 },
                 callEmail: {
                     modal: {
-                        name: '邮件模板', value: '选择模板', type: 'select', options: '选择模板,'
+                        name: '邮件模板', value: '选择模板', type: 'select', options: '[{"name":"选择模板","value":"选择模板"},{"name":"选择模板1","value":"选择模板1"},{"name":"选择模板2","value":"选择模板2"}]'
                     },
                     content: {
                         name: '邮件内容', value: '', type: 'input'
@@ -1184,18 +1185,28 @@
         directives: {
             time: {
                 inserted: function (el, date) {
-                    console.log(this);
-                    var _slef = this;
-                    $(el).jqxDateTimeInput({
-                        width: '100%',
-                        height: '40px',
-                        culture: 'ch-CN',
-                        formatString: 'yyyy-MM-dd HH:mm:ss',
-                        min: new Date(new Date() + 60)
+                    $.jeDate(el, {
+                        format: 'YYYY-MM-DD hh:mm:ss',
+                        minDate: new Date().Format("yyyy-MM-dd hh:mm:ss"), //最小日期
+                        // maxDate:"2020-06-16 20:50:50" //最大日期
                     });
-                    $(el).on('textchanged', function (event) {
-                        $(event.target).next().val(event.args.date.Format('yyyy-MM-dd hh:mm:ss'));
-                    });
+                    // console.log(this);
+                    // var _slef = this;
+                    // $(el).jqxDateTimeInput({
+                    //     width: '100%',
+                    //     height: '40px',
+                    //     culture: 'ch-CN',
+                    //     formatString: 'yyyy-MM-dd HH:mm:ss',
+                    //     min: new Date(new Date() + 60)
+                    // });
+                    // $(el).on('valuechanged', function (event) {
+                    //     console.log(event);
+                    //     $(event.target).next().val(event.args.date.Format('yyyy-MM-dd hh:mm:ss'));
+                    // });
+                    // $(el).on('textchanged', function (event) {
+                    //     console.log(event);
+                    //     $(event.target).next().val(event.args.date.Format('yyyy-MM-dd hh:mm:ss'));
+                    // });
                 }
             }
         },
