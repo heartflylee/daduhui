@@ -110,6 +110,7 @@ gulp.task('sassCss', function() {
       })
     )
     .pipe(minify())
+    .pipe(minify({ compatibility: 'ie8' }))
     .pipe(sourcemaps.write('./map'))
     .pipe(plumber.stop())
     .pipe(gulp.dest('./dist/css'));

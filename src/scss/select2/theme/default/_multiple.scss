@@ -13,6 +13,7 @@
 
     li {
       list-style: none;
+      line-height: 0;
     }
   }
 
@@ -54,6 +55,8 @@
     font-weight: bold;
 
     margin-right: 2px;
+    height: 9px;
+    line-height: 16px;
 
     &:hover {
       color: #333;
@@ -61,9 +64,11 @@
   }
 }
 
-&[dir="rtl"] {
+&[dir='rtl'] {
   .select2-selection--multiple {
-    .select2-selection__choice, .select2-selection__placeholder, .select2-search--inline {
+    .select2-selection__choice,
+    .select2-selection__placeholder,
+    .select2-search--inline {
       float: right;
     }
 
