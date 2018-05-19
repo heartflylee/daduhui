@@ -95,7 +95,7 @@
         resize: none;
     }
 }
-.rule-add,.rule-business{
+.business-add,.rule-business{
     display: inline-block;
     min-width:100px;
     padding:0 20px;
@@ -105,7 +105,7 @@
     text-align: center;
     cursor: pointer;
 }
-.rule-add{
+.business-add{
     border:1px solid #2495cf;
     color: #2495cf;
 }
@@ -120,14 +120,60 @@
         border:1px solid #2495cf;
         
     }
-    .close{
+    .business-close{
         position: absolute;
+        top:0;
         right:5px;
+        font-size: 18px;
+        color: #383838;
         display: none;
     }
     &:hover{
-        .close{
+        .business-close{
             display: block;
         }
+    }
+    &.active:hover{
+        .business-close{
+            display: none;
+        }
+    }
+}
+.business-add-box{
+    display: inline-block;
+    input[type=text]{
+        width:130px;
+        padding:0 10px;
+        height: 32px;
+        border:1px solid #d4d4d4;
+    }
+}
+.business-add-btn,.business-add-cancle{
+    float: right;
+    width:38px;
+    height:32px;
+    text-align: center;
+}
+.business-add-btn{
+    background: #2495cf;
+    border:1px solid #2495cf;
+    color: #fff;
+    position: relative;
+    &:before{
+        content:'\e626';
+        font-family: 'iconfont';
+        font-size: 18px;
+    }
+}
+.business-add-cancle{
+    background: #d4d4d4;
+    border:1px solid #d4d4d4;
+    color:#383838;  
+    font-size: 24px;
+}
+.rule-btn-box{
+    margin:20px;
+    button{
+        margin-right: 20px;
     }
 }

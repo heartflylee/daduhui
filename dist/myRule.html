@@ -256,52 +256,58 @@
     Vue.component('myRuleStep1', myRuleStep1);
 </script>
      <template id="myRuleStep2">
-            <div class="rule-step" v-show="rulestep==2">
-                <div class="rule-row">
-                    <div class="rule-name required">
-                        规则名称
-                    </div>
-                    <div class="rule-info rule-input">
-                        <input type="text" placeholder="请输入规则名称" class="input">
-                        <div class="rule-text">
-                            最多输入30个字符，支持文字、字母、数字及组合
-                        </div>
-                    </div>
-                </div>
-                <div class="rule-row">
-                        <div class="rule-name required">
-                            所属业务
-                        </div>
-                        <div class="rule-info">
-                            <div class="rule-business-wrap">
-                                <div class="rule-business" :class="businessActive==''?'active':''" @click="businessCheck(-1)">
-                                    所有业务
-                                </div>
-                                <div class="rule-business" v-for="item,$index in business" :class="businessActive == item.id?'active':''"  @click="businessCheck($index)">
-                                    {{item.name}}
-                                    <a href="javascript:void(0)" class="close" @click="removeBusiness($index)">&times;</a>                                    
-                                </div>
-                                <div class="rule-add">
-                                    +添加业务
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rule-row">
-                            <div class="rule-name ">
-                                备注
-                            </div>
-                            <div class="rule-info">
-                               <textarea placeholder="请输入备注"></textarea>
-                               <div class="rule-text">
-                                    最多输入128个字
-                                </div>
-                            </div>
-                        </div>
-                
-
+    <div class="rule-step" v-show="rulestep==2">
+        <div class="rule-row">
+            <div class="rule-name required">
+                规则名称
             </div>
-            
+            <div class="rule-info rule-input">
+                <input type="text" placeholder="请输入规则名称" class="input">
+                <div class="rule-text">
+                    最多输入30个字符，支持文字、字母、数字及组合
+                </div>
+            </div>
+        </div>
+        <div class="rule-row">
+            <div class="rule-name required">
+                所属业务
+            </div>
+            <div class="rule-info">
+                <div class="rule-business-wrap">
+                    <div class="rule-business" :class="businessActive==''?'active':''" @click="businessCheck(-1)">
+                        所有业务
+                    </div>
+                    <div class="rule-business" v-for="item,$index in business" :class="businessActive == item.id?'active':''"  @click="businessCheck($index)">
+                        {{item.name}}
+                        <a href="javascript:void(0)" class="business-close" @click.stop="removeBusiness($index)">&times;</a>                                    
+                    </div>
+                    <div class="business-add" @click="addBusiness" v-show="addBusinessState == false">
+                        +添加业务
+                    </div>
+                    <form class="business-add-box" v-show="addBusinessState == true" @submit.prevent="businessSubmit">
+                        <input type="text" class="business-add-text" v-focus='foucusState'  v-model="businessAddText">
+                        <a href="javascript:void(0);" class="business-add-cancle" @click="businessCancle">&times;</a>
+                        <a href="javascript:void(0);" class="business-add-btn" @click="businessSubmit"></a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="rule-row">
+            <div class="rule-name ">
+                备注
+            </div>
+            <div class="rule-info">
+                <textarea placeholder="请输入备注"></textarea>
+                <div class="rule-text">
+                    最多输入128个字
+                </div>
+            </div>
+        </div>
+        <div class="rule-btn-box">
+            <button class="btn" @click="prevSetp">上一步</button>
+            <button class="btn btn-primary" @click="nextStep">下一步</button>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -314,7 +320,10 @@
                 business:[
                     {name:'业务A',id:'1'},
                     {name:'业务B',id:'2'}
-                ]
+                ],
+                addBusinessState:false,
+                businessAddText:'',
+                foucusState:false
             }
         },
         methods: {
@@ -335,8 +344,38 @@
                 }else{
                     _self.$data.businessActive = _self.$data.business[index].id;
                 }
+            },
+            addBusiness:function(){
+                this.$data.addBusinessState = true;
+                this.$data.businessAddText = '';
+                this.$data.foucusState = true;
+            },
+            businessSubmit:function(){
+                var _self = this;
+                if(_self.$data.businessAddText == ''){
+                    toastr.warning('请输入业务名称');
+                    return;
+                }
+                _self.$data.business.push({
+                    name: _self.$data.businessAddText,
+                    id: _self.$data.business.length+1
+                });
+                _self.businessCancle();
+            },
+            businessCancle:function(){
+                this.$data.foucusState = false;
+                this.$data.addBusinessState = false;
             }
-        }
+        },
+        directives: {
+            focus: {
+            update: function (el, {value}) {
+                if (value) {
+                el.focus()
+                }
+            }
+            }
+        },
     });
     Vue.component('myRuleStep2', myRuleStep2);
 </script>
