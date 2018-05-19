@@ -1,0 +1,26 @@
+<template id="myRuleStep4">
+    
+            <div class="rule-step" v-show="rulestep==4">
+                success
+    </div>
+</template>
+
+<script>
+    var myRuleStep4 = Vue.extend({
+        template: '#myRuleStep4',
+        props:['rulestep'],
+        data: function () {
+            return {
+            }
+        },
+        methods: {
+            nextStep:function(){
+                this.$emit('next');
+            },
+            prevSetp:function(){
+                this.$emit('prev');
+            },
+        }
+    });
+    Vue.component('myRuleStep4', myRuleStep4);
+</script>

@@ -1,0 +1,39 @@
+<template id="myRule">
+    <div class="myrule-wrap">
+        <div class="rule-progress">
+            <div class="rule-progress-li" :class="ruleStep >= 1?'active':''">选择配置方式</div>
+            <div class="rule-progress-li" :class="ruleStep > 1?'active':''">基本信息</div>
+            <div class="rule-progress-li" :class="ruleStep > 2?'active':''">设置规则</div>
+            <div class="rule-progress-li" :class="ruleStep > 3?'active':''">创建结束</div>
+        </div>
+        <div class="myrule-box">
+            <my-rule-step1 ref="step1" :rulestep="ruleStep" @next="nextStep"></my-rule-step1>
+            <my-rule-step2 ref="step2" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step2>
+            <my-rule-step3 ref="step3" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step3>
+            <my-rule-step4 ref="step4" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step4>
+        </div>
+    </div>
+</template>
+
+<script>
+    var myRule = Vue.extend({
+        template: '#myRule',
+        data: function () {
+            return {
+                ruleStep:1
+            }
+        },
+        methods: {
+            nextStep:function(){
+                if(this.$data.ruleSte <=1) {
+                    this.$data.ruleStep =1;
+                }
+                this.$data.ruleStep++;
+            },
+            prevSetp:function(){
+                this.$data.ruleStep--;
+            }
+        }
+    });
+    Vue.component('myRule', myRule);
+</script>

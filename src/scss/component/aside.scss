@@ -135,6 +135,27 @@ $setupMenu: '\e601' '\e65a' '\e643' '\e748' '\e63c' '\e639';
     // }
   }
 }
+
+
+$ruleMenu: '\e663' '\e77a' '\e64d' '\e878' ;
+@for $i from 1 through 4 {
+  .rule-m#{$i} {
+    &:after {
+      font-family: 'iconfont' !important;
+      font-size: 19px;
+      font-style: normal;
+      content: '#{nth($ruleMenu,$i)}';
+      // color: #{nth($menucolor, $i)};
+    }
+    // &.active:after {
+    //     content: "#{nth($menuActive,$i)}";
+    // }
+    // .m-nav:hover &:after,
+    // .nav-info:hover &:after {
+    //     content: "#{nth($menuActive,$i)}";
+    // }
+  }
+}
 .icon-sign {
   position: absolute;
   top: 14px;
@@ -199,6 +220,8 @@ $secondMemu: (
 }
 .setup-icon {
   margin-right: 15px;
+  display: inline-block;
+    vertical-align: top;
 }
 .setup-menu-href {
   padding: 0 15px;

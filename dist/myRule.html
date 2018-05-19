@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的规则</title>
+    <!--公共-->
+    <link type="image/x-icon" href="img/favicon.ico" rel="icon">
+
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<!-- <link rel="stylesheet" href="css/beAlert.css"> -->
+<link rel="stylesheet" href="css/toastr.css">
+<link rel="stylesheet" href="css/select2.css"> 
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/jqxgrid.css">  
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource@1.3.4.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/resize.js"></script>
+<!-- <script src="js/beAlert.js"></script> -->
+<script src="js/toastr.js"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "positionClass": "toast-top-center",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
+<script src="js/select2.js"></script>
+<script src="js/drag.js"></script>
+<!--<script src="js/jsDate/laydate.js"></script>-->
+<!--<script src="js/layDate/laydate.js"></script>-->
+<!---->
+
+<script src="js/audio.js"></script> 
+<!--[if lt IE 10]>
+<script type="text/javascript" src="js/html5shiv.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script>
+<script type="text/javascript" src="js/placeholder.js"></script>
+<![endif]-->
+    <!--表格-->
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+        <!--header-->
+        <setup-head></setup-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <rule-aside menu="myrule"></rule-aside>
+            <div class="b-panel">
+                <div class="setup-title rule-title">
+                    新建规则
+                </div>
+                <div class="setup-main">
+                    <my-rule ref="myrule"></my-rule>
+                </div>
+            </div>
+        </section>
+    </div>
+    <template id="ruleAside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside setupAside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <li class="setup-menu" v-for="item,$index in menuList">
+                    <a :href="item.href" class="setup-menu-href" :class="menu == item.name?'active':''">
+                        <i class="setup-icon" :class="'rule-m'+($index+1)"></i>
+                        <span>{{item.text}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+</template>
+<script>
+
+    var ruleAside = Vue.extend({
+        template: '#ruleAside',
+        props: ['menu'],
+        data: function () {
+            return {
+                menuList: [
+                    {
+                        name: 'template',
+                        text: '规则模板',
+                        href: ''
+                    },
+                    {
+                        name: 'myrule',
+                        text: '我的规则',
+                        href: 'myRule.html'
+                    },
+                    {
+                        name: 'score',
+                        text: '评分设置',
+                        href: ''
+                    },
+                    {
+                        name: 'synonym',
+                        text: '同义词管理',
+                        href: ''
+                    }
+                ]
+            }
+        },
+        methods: {
+        }
+    });
+    Vue.component('ruleAside', ruleAside);
+</script>
+    <!--顶部-->
+    <template id="setupHead">
+    <header class="b-header setupHead-wrap">
+        <div class="h-right">
+            <div class="h-nav-box">
+                <div class="nav-li">
+                    <a class="nav-setup-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-home"></i>
+                        <span>返回首页</span>
+                    </a>
+                </div>
+                <div class="nav-li">
+                    <a class="nav-setup-href" href="javascript:void(0);">
+                        <i class="nav-icon nav-logout"></i>
+                        <span>退出登录</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="h-main">
+            <div class="h-company">
+                <div class="head-photo" :style="'background-image:url('+ user.headImg +');'"></div>
+                <div class="head-company">{{user.company}}</div>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    var setupHead = Vue.extend({
+        template: '#setupHead',
+        data: function () {
+            return {
+                user: {
+                    company: "北京蜜宝世纪科技有限公司",
+                    headImg: "img/head.png"
+                }
+            }
+        },
+        methods: {
+            //头部搜索
+            Hsearch: function () {
+
+            }
+        }
+    });
+    Vue.component('setupHead', setupHead);
+</script>
+     <template id="select2-template">
+    <select>
+        <option v-if="optiondefault == 'true'" selected value="0">请选择{{name}}</option>
+        <slot></slot>
+    </select>
+</template>
+
+<script>
+    Vue.component('select2', {
+        props: ['options', 'value','name','optiondefault'],
+        template: '#select2-template',
+        mounted: function () {
+            console.log("123123")
+            var vm = this
+            $(this.$el)
+            // init select2
+                .select2({ data: this.options })
+                .val(this.value)
+                .trigger('change')
+                // emit event on change.
+                .on('change', function () {
+                    vm.$emit('input', this.value)
+                })
+        },
+        watch: {
+            value: function (value) {
+                // update value
+                $(this.$el).val(value).trigger('change');
+            },
+            options: function (options) {
+                console.log(options);
+                // update options
+                $(this.$el).select2({ data: options })
+            }
+        },
+        destroyed: function () {
+            $(this.$el).off().select2('destroy')
+        }
+    })
+
+</script>
+     
+     <template id="myRuleStep1">
+            <div class="rule-step" v-show="rulestep<=1">
+                <div class="rule-setup-box" @click="setup(0)">
+                    <div class="rule-setup-name">
+                        自定义配置
+                    </div>
+                    <div class="rule-setup-content">
+                            自由组合条件来满足具体业务场景。
+                        </div>
+                </div>
+                <div class="rule-setup-box" @click="setup(1)">
+                        <div class="rule-setup-name">
+                            基于模板设置
+                        </div>
+                        <div class="rule-setup-content">
+                                用户基于常用模板来配置规则，根据具体业务场景对模板稍加修改。
+                        </div>
+                    </div>
+            </div>
+           
+</template>
+
+<script>
+    var myRuleStep1 = Vue.extend({
+        template: '#myRuleStep1',
+        props:['rulestep'],
+        data: function () {
+            return {
+                ruleType:''
+            }
+        },
+        methods: {
+            setup:function(type){
+                var _self = this;
+                _self.$data.ruleType =  type;
+                _self.$emit('next');
+            }
+        }
+    });
+    Vue.component('myRuleStep1', myRuleStep1);
+</script>
+     <template id="myRuleStep2">
+            <div class="rule-step" v-show="rulestep==2">
+                <div class="rule-row">
+                    <div class="rule-name required">
+                        规则名称
+                    </div>
+                    <div class="rule-info rule-input">
+                        <input type="text" placeholder="请输入规则名称" class="input">
+                        <div class="rule-text">
+                            最多输入30个字符，支持文字、字母、数字及组合
+                        </div>
+                    </div>
+                </div>
+                <div class="rule-row">
+                        <div class="rule-name required">
+                            所属业务
+                        </div>
+                        <div class="rule-info">
+                            <div class="rule-business-wrap">
+                                <div class="rule-business" :class="businessActive==''?'active':''" @click="businessCheck(-1)">
+                                    所有业务
+                                </div>
+                                <div class="rule-business" v-for="item,$index in business" :class="businessActive == item.id?'active':''"  @click="businessCheck($index)">
+                                    {{item.name}}
+                                    <a href="javascript:void(0)" class="close" @click="removeBusiness($index)">&times;</a>                                    
+                                </div>
+                                <div class="rule-add">
+                                    +添加业务
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rule-row">
+                            <div class="rule-name ">
+                                备注
+                            </div>
+                            <div class="rule-info">
+                               <textarea placeholder="请输入备注"></textarea>
+                               <div class="rule-text">
+                                    最多输入128个字
+                                </div>
+                            </div>
+                        </div>
+                
+
+            </div>
+            
+</template>
+
+<script>
+    var myRuleStep2 = Vue.extend({
+        template: '#myRuleStep2',
+        props:['rulestep'],
+        data: function () {
+            return {
+                businessActive:'',
+                business:[
+                    {name:'业务A',id:'1'},
+                    {name:'业务B',id:'2'}
+                ]
+            }
+        },
+        methods: {
+            nextStep:function(){
+                this.$emit('next');
+            },
+            prevSetp:function(){
+                this.$emit('prev');
+            },
+            removeBusiness:function(index){
+                var _self = this;
+                _self.$data.business.splice(index,1);
+            },
+            businessCheck:function(index){
+                var _self = this;
+                if(index == -1){
+                    _self.$data.businessActive = '';
+                }else{
+                    _self.$data.businessActive = _self.$data.business[index].id;
+                }
+            }
+        }
+    });
+    Vue.component('myRuleStep2', myRuleStep2);
+</script>
+     <template id="myRuleStep3">
+    
+            <div class="rule-step" v-show="rulestep==3">
+                <button @click="nextStep">next4</button>
+            </div>
+           
+</template>
+
+<script>
+    var myRuleStep3 = Vue.extend({
+        template: '#myRuleStep3',
+        props:['rulestep'],
+        data: function () {
+            return {
+            }
+        },
+        methods: {
+            nextStep:function(){
+                this.$emit('next');
+            },
+            prevSetp:function(){
+                this.$emit('prev');
+            },
+        }
+    });
+    Vue.component('myRuleStep3', myRuleStep3);
+</script>
+     <template id="myRuleStep4">
+    
+            <div class="rule-step" v-show="rulestep==4">
+                success
+    </div>
+</template>
+
+<script>
+    var myRuleStep4 = Vue.extend({
+        template: '#myRuleStep4',
+        props:['rulestep'],
+        data: function () {
+            return {
+            }
+        },
+        methods: {
+            nextStep:function(){
+                this.$emit('next');
+            },
+            prevSetp:function(){
+                this.$emit('prev');
+            },
+        }
+    });
+    Vue.component('myRuleStep4', myRuleStep4);
+</script>
+
+     <template id="myRule">
+    <div class="myrule-wrap">
+        <div class="rule-progress">
+            <div class="rule-progress-li" :class="ruleStep >= 1?'active':''">选择配置方式</div>
+            <div class="rule-progress-li" :class="ruleStep > 1?'active':''">基本信息</div>
+            <div class="rule-progress-li" :class="ruleStep > 2?'active':''">设置规则</div>
+            <div class="rule-progress-li" :class="ruleStep > 3?'active':''">创建结束</div>
+        </div>
+        <div class="myrule-box">
+            <my-rule-step1 ref="step1" :rulestep="ruleStep" @next="nextStep"></my-rule-step1>
+            <my-rule-step2 ref="step2" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step2>
+            <my-rule-step3 ref="step3" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step3>
+            <my-rule-step4 ref="step4" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step4>
+        </div>
+    </div>
+</template>
+
+<script>
+    var myRule = Vue.extend({
+        template: '#myRule',
+        data: function () {
+            return {
+                ruleStep:1
+            }
+        },
+        methods: {
+            nextStep:function(){
+                if(this.$data.ruleSte <=1) {
+                    this.$data.ruleStep =1;
+                }
+                this.$data.ruleStep++;
+            },
+            prevSetp:function(){
+                this.$data.ruleStep--;
+            }
+        }
+    });
+    Vue.component('myRule', myRule);
+</script>
+    <script src="js/scripts.js"></script>
+    <script src="js/myrule.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<template id="myRuleStep2">
+            <div class="rule-step" v-show="rulestep==2">
+                <div class="rule-row">
+                    <div class="rule-name required">
+                        规则名称
+                    </div>
+                    <div class="rule-info rule-input">
+                        <input type="text" placeholder="请输入规则名称" class="input">
+                        <div class="rule-text">
+                            最多输入30个字符，支持文字、字母、数字及组合
+                        </div>
+                    </div>
+                </div>
+                <div class="rule-row">
+                        <div class="rule-name required">
+                            所属业务
+                        </div>
+                        <div class="rule-info">
+                            <div class="rule-business-wrap">
+                                <div class="rule-business" :class="businessActive==''?'active':''" @click="businessCheck(-1)">
+                                    所有业务
+                                </div>
+                                <div class="rule-business" v-for="item,$index in business" :class="businessActive == item.id?'active':''"  @click="businessCheck($index)">
+                                    {{item.name}}
+                                    <a href="javascript:void(0)" class="close" @click="removeBusiness($index)">&times;</a>                                    
+                                </div>
+                                <div class="rule-add">
+                                    +添加业务
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rule-row">
+                            <div class="rule-name ">
+                                备注
+                            </div>
+                            <div class="rule-info">
+                               <textarea placeholder="请输入备注"></textarea>
+                               <div class="rule-text">
+                                    最多输入128个字
+                                </div>
+                            </div>
+                        </div>
+                
+
+            </div>
+            
+</template>
+
+<script>
+    var myRuleStep2 = Vue.extend({
+        template: '#myRuleStep2',
+        props:['rulestep'],
+        data: function () {
+            return {
+                businessActive:'',
+                business:[
+                    {name:'业务A',id:'1'},
+                    {name:'业务B',id:'2'}
+                ]
+            }
+        },
+        methods: {
+            nextStep:function(){
+                this.$emit('next');
+            },
+            prevSetp:function(){
+                this.$emit('prev');
+            },
+            removeBusiness:function(index){
+                var _self = this;
+                _self.$data.business.splice(index,1);
+            },
+            businessCheck:function(index){
+                var _self = this;
+                if(index == -1){
+                    _self.$data.businessActive = '';
+                }else{
+                    _self.$data.businessActive = _self.$data.business[index].id;
+                }
+            }
+        }
+    });
+    Vue.component('myRuleStep2', myRuleStep2);
+</script>

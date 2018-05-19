@@ -1,0 +1,133 @@
+.rule-title{
+    border-bottom:4px solid #4e606e;
+
+}
+.myrule-wrap{
+    margin:0 10px;
+}
+.rule-progress{
+    margin: 10px 0;
+    overflow: hidden;
+}
+.rule-progress-li{
+    position: relative;
+    float: left;
+    width: 25%;
+    line-height: 30px;
+    text-align: center;
+    color:#fff;
+    background:#c3c3c3;
+    &:before,&:after{
+        content:'';
+        position: absolute;
+        top:0;
+        border-width:15px 0 15px 8px;
+        border-style: solid;
+    }
+    &:before{
+        left:0;
+        border-color:transparent transparent transparent #fff;
+    }
+    &:after{
+        right:0;
+        border-color:#fff transparent #fff #c3c3c3;
+    }
+    &.active{
+        background:#2495cf;
+        &:after{
+            border-color:#fff transparent #fff #2495cf;;
+        }
+    }
+    &:first-child{
+        &:before{
+            display: none;
+        }
+    }
+    &:last-child{
+        &:after{
+            display: none;
+        }
+    }
+}
+.rule-setup-box{
+    padding: 20px;
+    margin-bottom: 10px;
+    background: #efefef;
+    line-height: 40px;
+    font-size: 14px;
+    cursor: pointer;
+    &:hover{
+        background:#c3c3c3;
+    }
+}
+.rule-setup-name{
+    font-size: 18px;
+    font-weight: bold;
+}
+.rule-row{
+    margin:20px 0 10px;
+    font-size:14px;
+    line-height: 30px;
+    overflow: hidden;
+}
+.rule-name{
+    float: left;
+    width:90px;
+    position: relative;
+    color:#999;
+    text-align: right;
+    &.required:before{
+        content:'*';
+        color:#c00;
+    }
+}
+.rule-info{
+    margin-left:120px; 
+    input[type="text"],textarea{
+        width:400px;
+    }
+    textarea{
+        height: 200px;
+        padding:5px 20px;
+        line-height:20px;
+        border:1px solid #d4d4d4;
+        border-radius:4px;
+        resize: none;
+    }
+}
+.rule-add,.rule-business{
+    display: inline-block;
+    min-width:100px;
+    padding:0 20px;
+    margin-right:15px;
+    margin-bottom:10px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+}
+.rule-add{
+    border:1px solid #2495cf;
+    color: #2495cf;
+}
+.rule-business{
+    position: relative;
+    background:#d4d4d4;
+    border:1px solid #d4d4d4;
+    color:#383838;
+    &.active{
+        color:#fff;
+        background:#2495cf;
+        border:1px solid #2495cf;
+        
+    }
+    .close{
+        position: absolute;
+        right:5px;
+        display: none;
+    }
+    &:hover{
+        .close{
+            display: block;
+        }
+    }
+}

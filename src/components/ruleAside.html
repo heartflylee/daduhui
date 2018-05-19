@@ -1,0 +1,51 @@
+<template id="ruleAside">
+    <!-- 左侧菜单 -->
+    <aside class="b-aside setupAside">
+        <div class="menu-wrap">
+            <ul class="m-list">
+                <li class="setup-menu" v-for="item,$index in menuList">
+                    <a :href="item.href" class="setup-menu-href" :class="menu == item.name?'active':''">
+                        <i class="setup-icon" :class="'rule-m'+($index+1)"></i>
+                        <span>{{item.text}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+</template>
+<script>
+
+    var ruleAside = Vue.extend({
+        template: '#ruleAside',
+        props: ['menu'],
+        data: function () {
+            return {
+                menuList: [
+                    {
+                        name: 'template',
+                        text: '规则模板',
+                        href: ''
+                    },
+                    {
+                        name: 'myrule',
+                        text: '我的规则',
+                        href: 'myRule.html'
+                    },
+                    {
+                        name: 'score',
+                        text: '评分设置',
+                        href: ''
+                    },
+                    {
+                        name: 'synonym',
+                        text: '同义词管理',
+                        href: ''
+                    }
+                ]
+            }
+        },
+        methods: {
+        }
+    });
+    Vue.component('ruleAside', ruleAside);
+</script>

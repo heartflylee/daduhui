@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的规则</title>
+    <!--公共-->
+    @@include("../component/common.html",{"style":"normal"})
+    <!--表格-->
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="app">
+        <!--header-->
+        <setup-head></setup-head>
+        <section class="b-main">
+            <!--左侧菜单-->
+            <rule-aside menu="myrule"></rule-aside>
+            <div class="b-panel">
+                <div class="setup-title rule-title">
+                    新建规则
+                </div>
+                <div class="setup-main">
+                    <my-rule ref="myrule"></my-rule>
+                </div>
+            </div>
+        </section>
+    </div>
+    @@include('../components/ruleAside.html')
+    <!--顶部-->
+    @@include('../components/setupHead.html')
+     @@include('../components/select2.html')
+     
+     @@include('../components/myruleStep1.html')
+     @@include('../components/myruleStep2.html')
+     @@include('../components/myruleStep3.html')
+     @@include('../components/myruleStep4.html')
+
+     @@include('../components/myrule.html')
+    <script src="js/scripts.js"></script>
+    <script src="js/myrule.js"></script>
+</body>
+
+</html>

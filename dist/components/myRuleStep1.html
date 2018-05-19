@@ -1,0 +1,41 @@
+<template id="myRuleStep1">
+            <div class="rule-step" v-show="rulestep<=1">
+                <div class="rule-setup-box" @click="setup(0)">
+                    <div class="rule-setup-name">
+                        自定义配置
+                    </div>
+                    <div class="rule-setup-content">
+                            自由组合条件来满足具体业务场景。
+                        </div>
+                </div>
+                <div class="rule-setup-box" @click="setup(1)">
+                        <div class="rule-setup-name">
+                            基于模板设置
+                        </div>
+                        <div class="rule-setup-content">
+                                用户基于常用模板来配置规则，根据具体业务场景对模板稍加修改。
+                        </div>
+                    </div>
+            </div>
+           
+</template>
+
+<script>
+    var myRuleStep1 = Vue.extend({
+        template: '#myRuleStep1',
+        props:['rulestep'],
+        data: function () {
+            return {
+                ruleType:''
+            }
+        },
+        methods: {
+            setup:function(type){
+                var _self = this;
+                _self.$data.ruleType =  type;
+                _self.$emit('next');
+            }
+        }
+    });
+    Vue.component('myRuleStep1', myRuleStep1);
+</script>
