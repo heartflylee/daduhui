@@ -1,7 +1,12 @@
 <template id="myRuleStep4">
-    
             <div class="rule-step" v-show="rulestep==4">
-                success
+                <div class="template-success">
+                    <div class="icon-success"></div>
+                    <div class="success-text">设置成功</div>
+                </div>
+                <div class="template-btn-box">
+                    <button class="btn btn-primary" @click="returnStart">返回“我的规则”</button>
+                </div>
     </div>
 </template>
 
@@ -14,12 +19,9 @@
             }
         },
         methods: {
-            nextStep:function(){
-                this.$emit('next');
-            },
-            prevSetp:function(){
-                this.$emit('prev');
-            },
+            returnStart:function(){
+                this.$emit('return');
+            }
         }
     });
     Vue.component('myRuleStep4', myRuleStep4);

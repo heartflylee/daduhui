@@ -50,7 +50,7 @@
 <script type="text/javascript" src="js/placeholder.js"></script>
 <![endif]-->
     <!--表格-->
-
+    <script src="js/tagsinput.js"></script>
 </head>
 
 <body>
@@ -213,7 +213,216 @@
     })
 
 </script>
-     
+    
+     <template id="tagInput">
+    <input type="text" v-tags="value">
+</template>
+<script>
+   var tagInput = Vue.extend({
+        template: '#tagInput',
+        props:['value'],
+        data: function () {
+            return {
+                
+            }
+        },
+        methods: {
+            
+        },
+        watch:{
+            value:function(val){
+                console.log(val);
+            }
+        },
+        directives:{
+            tags:{
+                inserted:function(el,val){
+                    console.log(this);
+                    $(el).tagsInput(
+                        {width:'auto',onChange:function(el){
+                            console.log(tagInput.$props);
+                            console.log(tagInput);
+                            val =  $(el).val();
+                            // tagInput.$props.value = $(el).val();
+                    }});
+                }
+            }
+        }
+    });
+    Vue.component('tagInput', tagInput);
+</script>
+
+    <template id="condition">
+    <div class="condition-wrap">
+        <a href="javaxcript:void(0)" v-if="cindex!=0" class="condition-close" @click="removeCondition(index,cindex)">删除子条件</a>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[0].id">
+            <div class="condition-content-left">
+                <div class="condition-content-row">
+                    <div class="condition-content-name">
+                        匹配规则
+                    </div>
+                    <div class="condition-content-info">
+                        <select2 :options="conditionRule" v-model="itemcon.conditionRule"></select2>
+                    </div>
+                </div>
+                <div class="condition-content-row">
+                    <div class="condition-content-name">
+                        关键词设置
+                    </div>
+                    <div class="condition-content-info">
+                        <label class="check-box">
+                            <input type="checkbox" v-model="itemcon.extend">
+                            <i></i>
+                            开启同义词扩展
+                        </label>
+                        <label class="check-box">
+                            <input type="checkbox">
+                            <i></i>
+                            区分大小写
+                        </label>
+                    </div>
+                </div>
+                <div class="condition-content-row">
+                    <div class="condition-content-name">
+                        输入关键词
+                    </div>
+                    <div class="condition-content-info">
+                        <tag-input :value="itemcon.tags"></tag-input>
+                        <!-- <input type="text" class="info-tag" v-tags="itemCon.tags" > -->
+                    </div>
+                </div>
+            </div>
+            <div class="condition-content-extend" v-if="itemcon.extend == true">
+                <div class="condition-extend-left">
+                    <div class="extend-title">
+                        已输入关键词
+                    </div>
+                    <div class="extend-list">
+                        <div class="extend-li" v-for="itemLi in itemcon.tags.split(',')">{{itemLi}}</div>
+                    </div>
+                </div>
+                <div class="condition-extend-left">
+                    <div class="extend-title">
+                        请输入同义词
+                    </div>
+                    <div class="extend-list extend-tags">
+                        <tag-input ></tag-input>
+                        <button class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[1].id">
+                <div class="text">
+                    用于检测一个句子是否疑问句
+                </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[2].id">
+            <div class="text">
+                请列举参考语句，每句一行。达到与参考语句相似度数值的句子，则将被命中。注意：所填写的参考句子的语义应该是相似的
+            </div>
+            <div class="info-input">
+                <input type="text" class="input" placeholder="请输入指定句子">
+            </div>
+            <div class="text">
+                相似度需求分数
+                <div class="text-input">
+                    <input type="text" class="input">
+                </div>
+                分（范围：0-1 &nbsp;&nbsp;分数越高，相似度越高）
+            </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[3].id">
+                <div class="text">
+                        举例：指定句子“域名出错”，字数差距设为2。则“域名出错”与“域名又出错了”会被该子条件命中
+                    </div>
+                    <div class="info-input">
+                        <input type="text" class="input" placeholder="请输入指定句子">
+                    </div>
+                    <div class="text">
+                        与指定句子的字数差距<span class="chart">&le;</span>
+                        <select2 :options="count"></select2>
+                    </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[4].id">
+                <div class="text">
+                        后一句开始时间 <span class="text-danger"> 减去 </span>前一句结束时间
+                    </div>
+                    <div class="text">
+                        检测范围
+                        <select2 :options="range"></select2>
+                    </div>
+                    <div class="text">
+                            时间间隔
+                            <div class="text-input">
+                                <input type="text" class="input">
+                            </div>
+                            秒
+                        </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[5].id">
+                <div class="text">
+                        正常语速参考：每分钟180-200字
+                    </div>
+                   
+                    <div class="text">
+                            每分钟
+                            <div class="text-input">
+                                <input type="text" class="input">
+                            </div>
+                            秒
+                        </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[6].id">
+                <div class="text">
+                        用于筛选出通话中出现情绪异常的场景
+                    </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[7].id">
+                <div class="text">
+                        销售与客户说话交叉时间 <span class="chart">&ge;</span>
+                          <div class="text-input">
+                                <input type="text" class="input">
+                            </div>
+                            秒
+                    </div>
+                    <div class="text">
+                            (交叉时间：抢话中，客户说话的结束时间减去客服说话的开始时间)
+                        </div>
+                    <div class="text">
+                            客服人员的抢话字数
+                            <div class="text-input">
+                                <input type="text" class="input">
+                            </div>
+                            字
+                        </div>
+        </div>
+    </div>
+</template>
+<script>
+    var condition = Vue.extend({
+        template: '#condition',
+        props:['itemcon','conditiontype','cindex','index'],
+        data: function () {
+            return {
+                conditionRule:[
+                    {id:1,text:'出现任意一个'}
+                ],
+                count:[1,2,3,4,5,6,7,8,9,10],
+                range:[
+                    {id:'1',text:'不区分角色'}
+                ]
+            }
+        },         
+        methods:{
+            removeCondition:function(index,cindex){
+                this.$emit('remove',index,cindex);
+            }
+        }  
+    });
+    Vue.component('condition', condition);
+</script>
+
      <template id="myRuleStep1">
             <div class="rule-step" v-show="rulestep<=1">
                 <div class="rule-setup-box" @click="setup(0)">
@@ -380,19 +589,213 @@
     Vue.component('myRuleStep2', myRuleStep2);
 </script>
      <template id="myRuleStep3">
-    
-            <div class="rule-step" v-show="rulestep==3">
-                <button @click="nextStep">next4</button>
+    <div class="rule-step" v-show="rulestep==3">
+        <div class="rule-text">
+            每个规则由若干个条件组成，每个条件包含检测范围和子条件两部分。检测范围用于控制这个条件对待检文本的那部分区生效，子条件用于配置详细的检测内容，有若干个子条件模型可供选择。
+        </div>
+        <div class="rule-condition-wrap" v-for="item,$index in rule">
+            <div class="rule-condition-table">
+                <div class="rule-condition-title">
+                    条件A
+                    <a href="javascript:void(0)" v-if="$index!=0" class="condition-close" @click="removeRule($index)">删除条件</a>
+                </div>
+                <div class="rule-condition-list" v-for="itemCon,$cIndex in item.conditionList">
+                    <div class="rule-condition-name">
+                        条件{{$cIndex+1}}
+                    </div>
+                    <div class="rule-condition-type">
+                        <label class="condition-type-name">子条件类型</label>
+                        <select2 :options="condition" v-model="itemCon.condition"></select2>
+                    </div>
+                    <condition :conditiontype="condition" :itemcon="itemCon" :cindex="$cIndex" :index="$index" @remove="removeCondition"></condition> 
+                </div>
             </div>
-           
+            <div class="mgtb10">
+                <button class="btn btn-default" @click="addCondition($index)">+添加子条件</button>
+            </div>
+            <div class="rule-logic-wrap">
+                <div class="rule-logic-row">
+                    <div class="rule-logic-name">
+                        子条件间逻辑关系
+                    </div>
+                    <div class="rule-logic-info">
+                        <select2 :options="item.ruleLogic" v-model="item.ruleLogicSelect"></select2>
+                        <label class="logic-text">
+                            满足子条件间逻辑即为命中
+                        </label>
+                        <div class="logic-content" v-if="item.ruleLogicSelect == '0'">
+                            <textarea placeholder="点击下方元素添加逻辑关系，例如：（子条件1 并且 子条件2）或者 子条件3" readonly="readonly" v-model="item.logicText"></textarea>
+                            <div class="logic-choose-box">
+                                <div class="logic-choose-li" @click="logic($index,'(')">(</div>
+                                <div class="logic-choose-li" @click="logic($index,')')">)</div>
+                                <div class="logic-choose-li" @click="logic($index,'并且')">并且</div>
+                                <div class="logic-choose-li" @click="logic($index,'或者')">或者</div>
+                                <div class="logic-choose-li" @click="logic($index,'非')">非</div>
+                                <div class="logic-choose-li" v-for="n,$n in item.conditionList" @click="logic($index,'子条件'+($n+1))">子条件{{$n+1}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rule-logic-row">
+                        <div class="rule-logic-name">
+                            检测角色
+                        </div>
+                        <div class="rule-logic-info">
+                            <select2 :options="role"></select2>
+                        </div>
+                    </div>
+                    <div class="rule-logic-row">
+                            <div class="rule-logic-name">
+                                前置条件
+                            </div>
+                            <div class="rule-logic-info">
+                                <select2 :options="before"></select2>
+                            </div>
+                        </div>
+                        <div class="rule-logic-row">
+                                <div class="rule-logic-name">
+                                    检测范围
+                                </div>
+                                <div class="rule-logic-info">
+                                    <select2 :options="role"></select2>
+                                    <label class="logic-text">
+                                        第
+                                        <div class="text-input">
+                                            <input type="text">
+                                        </div>
+                                        句 &nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;第
+                                        <div class="text-input">
+                                                <input type="text">
+                                            </div>
+                                            句
+                                    </label>
+                                </div>
+                            </div>
+            </div>
+            <div class="mgtb10">
+                    <button class="btn btn-primary">保存条件设置</button>
+                </div>
+        </div>
+        <div class="btn-row-box">
+            <button class="btn btn-primary" @click="addRule">+添加条件</button>
+        </div>
+        <div class="rule-logic-wrap">
+                <div class="rule-logic-row">
+                    <div class="rule-logic-name">
+                        条件间逻辑关系
+                    </div>
+                    <div class="rule-logic-info">
+                        <select2 :options="ruleLogic"></select2>
+                        <label class="logic-text">
+                            满足子条件间逻辑即为命中
+                        </label>
+                        
+                    </div>
+                </div>
+                <div class="rule-logic-row">
+                        <div class="rule-logic-name">
+                            在对话分析中
+                        </div>
+                        <div class="rule-logic-info">
+                                <div class="radio-wrap">
+                                <label class="radio-box">
+                                    <input type="radio" name="type">
+                                    <i></i>标注命中规则的内容</label>
+                                    <label class="radio-box">
+                                        <input type="radio" name="type">
+                                        <i></i>不标注</label>
+                                    </div>
+                                    <label class="check-box check-row">
+                                            <input type="checkbox">
+                                            <i></i>
+                                            条件A
+                                        </label>
+                                        <label class="check-box check-row">
+                                                <input type="checkbox">
+                                                <i></i>
+                                                条件B
+                                            </label>
+                        </div>
+                    </div>
+                    <div class="rule-logic-row">
+                        <div class="rule-logic-name">
+                            条件是否计分
+                        </div>
+                        <div class="rule-logic-info">
+                                <div class="radio-wrap">
+                                <label class="radio-box">
+                                    <input type="radio" name="count">
+                                    <i></i>计分</label>
+                                    <label class="radio-box">
+                                        <input type="radio" name="count">
+                                        <i></i>不计分</label>
+                                    </div>
+                            <div class="question-box">
+                                <select2 :options="questionType"></select2>
+                                <select2 :options="questionList"></select2>
+                            </div>
+                            <div class="text">
+                                    计分项将用于待检文件打分，待检文件初始状态100分，文件得分越低越值得重点关注
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        <div class="rule-btn-box">
+            <button class="btn" @click="prevSetp">上一步</button>
+            <button class="btn btn-primary" @click="nextStep">下一步</button>
+        </div>
+    </div>
 </template>
-
 <script>
     var myRuleStep3 = Vue.extend({
         template: '#myRuleStep3',
         props:['rulestep'],
         data: function () {
             return {
+                condition:[
+                    { id: "1", text: "关键词模糊匹配" },
+                    {id:'2',text:'疑问句'},
+                    {id:'3',text:'语义匹配'},
+                    {id:'4',text:'字数相近句'},
+                    {id:'5',text:'静音检测'},
+                    {id:'6',text:'语速检测'},
+                    {id:'7',text:'情绪检测'},
+                    {id:'8',text:'抢话'}
+                ],
+                role:[
+                    {id:1,text:'所有角色'}
+                ],
+                before:[
+                    {id:1,text:'无'}
+                ],
+                range:[
+                    {id:1,text:'指定范围'}
+                ],
+                rule:[
+                    { 
+                        id:'1',
+                        conditionList:[
+                            {
+                                condition:'1',
+                                conditionRule:'1',
+                                tags:'123,234,345',
+                                extend:false,
+                            },
+                            {
+                                condition:'2',
+                                conditionRule:'1',
+                                tags:'',
+                                extend:false
+                            },
+                        ],
+                        logicText:'',
+                        ruleLogic:[],
+                        ruleLogicSelect:'-1'
+                    }
+                ],
+                ruleLogic:["同时不满足条件A、条件B的句子"],
+                questionType:["问题定位"],
+                questionList:["没理解客户问题"]
             }
         },
         methods: {
@@ -402,14 +805,90 @@
             prevSetp:function(){
                 this.$emit('prev');
             },
+            removeRule:function(index){
+                this.$data.rule.splice(index,1);
+            },
+            removeCondition:function(index,cindex){
+                this.$data.rule[index].conditionList.splice(cindex,1);
+                this.changeRuleLogic(index);                
+            },
+            addCondition:function(index){
+                var _self = this;
+                _self.$data.rule[index].conditionList.push(
+                    {
+                        condition:'1',
+                        conditionRule:'1',
+                        tags:'',
+                        extend:false,
+                    }
+                );
+                _self.changeRuleLogic(index);
+            },
+            addRule:function(){
+                this.$data.rule.push(
+                    { 
+                        id:'1',
+                        conditionList:[
+                            {
+                                condition:'1',
+                                conditionRule:'1',
+                                tags:'',
+                                extend:false,
+                            }
+                        ],
+                        logicText:'',
+                        ruleLogic:[],
+                        ruleLogicSelect:'-1'
+                    }
+                );
+                this.changeRuleLogic(this.$data.rule.length-1);
+            },
+            changeRuleLogic:function(index){
+                var _self = this;
+                _self.$data.rule[index].ruleLogic = [];
+                if(_self.$data.rule[index].conditionList.length==1){
+                    _self.$data.rule[index].ruleLogic = [
+                        {text:'选择满足算子1的句子'},
+                        {text:'选择不满足算子1的句子'}
+                    ];
+                }else{
+                    var logic='';
+                    for(var i=0;i<_self.$data.rule[index].conditionList.length;i++){
+                        if(i!=0){
+                            logic += '、';
+                        }
+                        logic+=('算子'+(i+1));
+                    }
+                    var ruleLogic = [
+                        {text: '选择同时满足'+logic+'的句子'},
+                        {text:'选择同时不满足'+logic+'的句子'},
+                        {text:'选择满足'+logic+'任意一个的句子'},
+                        {text:'选择不满足'+logic+'任意一个的句子'},
+                        {id:0,text:'以上都不是，我要自定义逻辑关系'}
+                    ];
+                    _self.$data.rule[index].ruleLogic = ruleLogic;
+
+                }
+            },
+            logic:function(index,val){
+                this.$data.rule[index].logicText += val;
+            }
+        },
+        mounted:function(){
+            this.changeRuleLogic(0);
         }
     });
     Vue.component('myRuleStep3', myRuleStep3);
 </script>
      <template id="myRuleStep4">
-    
             <div class="rule-step" v-show="rulestep==4">
-                success
+                <div class="template-success">
+                    <div class="icon-success"></div>
+                    <div class="success-text">设置成功</div>
+                </div>
+                <div class="template-btn-box">
+                    <button class="btn btn-primary" @click="returnStart">返回“我的规则”</button>
+                </div>
     </div>
 </template>
 
@@ -422,12 +901,9 @@
             }
         },
         methods: {
-            nextStep:function(){
-                this.$emit('next');
-            },
-            prevSetp:function(){
-                this.$emit('prev');
-            },
+            returnStart:function(){
+                this.$emit('return');
+            }
         }
     });
     Vue.component('myRuleStep4', myRuleStep4);
@@ -445,7 +921,7 @@
             <my-rule-step1 ref="step1" :rulestep="ruleStep" @next="nextStep"></my-rule-step1>
             <my-rule-step2 ref="step2" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step2>
             <my-rule-step3 ref="step3" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step3>
-            <my-rule-step4 ref="step4" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step4>
+            <my-rule-step4 ref="step4" :rulestep="ruleStep" @return="returnStart" ></my-rule-step4>
         </div>
     </div>
 </template>
@@ -455,7 +931,7 @@
         template: '#myRule',
         data: function () {
             return {
-                ruleStep:1
+                ruleStep:3
             }
         },
         methods: {
@@ -467,6 +943,9 @@
             },
             prevSetp:function(){
                 this.$data.ruleStep--;
+            },
+            returnStart:function(){
+                this.$data.ruleStep =1;
             }
         }
     });

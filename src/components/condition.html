@@ -1,0 +1,170 @@
+<template id="condition">
+    <div class="condition-wrap">
+        <a href="javaxcript:void(0)" v-if="cindex!=0" class="condition-close" @click="removeCondition(index,cindex)">删除子条件</a>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[0].id">
+            <div class="condition-content-left">
+                <div class="condition-content-row">
+                    <div class="condition-content-name">
+                        匹配规则
+                    </div>
+                    <div class="condition-content-info">
+                        <select2 :options="conditionRule" v-model="itemcon.conditionRule"></select2>
+                    </div>
+                </div>
+                <div class="condition-content-row">
+                    <div class="condition-content-name">
+                        关键词设置
+                    </div>
+                    <div class="condition-content-info">
+                        <label class="check-box">
+                            <input type="checkbox" v-model="itemcon.extend">
+                            <i></i>
+                            开启同义词扩展
+                        </label>
+                        <label class="check-box">
+                            <input type="checkbox">
+                            <i></i>
+                            区分大小写
+                        </label>
+                    </div>
+                </div>
+                <div class="condition-content-row">
+                    <div class="condition-content-name">
+                        输入关键词
+                    </div>
+                    <div class="condition-content-info">
+                        <tag-input :value="itemcon.tags"></tag-input>
+                        <!-- <input type="text" class="info-tag" v-tags="itemCon.tags" > -->
+                    </div>
+                </div>
+            </div>
+            <div class="condition-content-extend" v-if="itemcon.extend == true">
+                <div class="condition-extend-left">
+                    <div class="extend-title">
+                        已输入关键词
+                    </div>
+                    <div class="extend-list">
+                        <div class="extend-li" v-for="itemLi in itemcon.tags.split(',')">{{itemLi}}</div>
+                    </div>
+                </div>
+                <div class="condition-extend-left">
+                    <div class="extend-title">
+                        请输入同义词
+                    </div>
+                    <div class="extend-list extend-tags">
+                        <tag-input ></tag-input>
+                        <button class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[1].id">
+                <div class="text">
+                    用于检测一个句子是否疑问句
+                </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[2].id">
+            <div class="text">
+                请列举参考语句，每句一行。达到与参考语句相似度数值的句子，则将被命中。注意：所填写的参考句子的语义应该是相似的
+            </div>
+            <div class="info-input">
+                <input type="text" class="input" placeholder="请输入指定句子">
+            </div>
+            <div class="text">
+                相似度需求分数
+                <div class="text-input">
+                    <input type="text" class="input">
+                </div>
+                分（范围：0-1 &nbsp;&nbsp;分数越高，相似度越高）
+            </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[3].id">
+                <div class="text">
+                        举例：指定句子“域名出错”，字数差距设为2。则“域名出错”与“域名又出错了”会被该子条件命中
+                    </div>
+                    <div class="info-input">
+                        <input type="text" class="input" placeholder="请输入指定句子">
+                    </div>
+                    <div class="text">
+                        与指定句子的字数差距<span class="chart">&le;</span>
+                        <select2 :options="count"></select2>
+                    </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[4].id">
+                <div class="text">
+                        后一句开始时间 <span class="text-danger"> 减去 </span>前一句结束时间
+                    </div>
+                    <div class="text">
+                        检测范围
+                        <select2 :options="range"></select2>
+                    </div>
+                    <div class="text">
+                            时间间隔
+                            <div class="text-input">
+                                <input type="text" class="input">
+                            </div>
+                            秒
+                        </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[5].id">
+                <div class="text">
+                        正常语速参考：每分钟180-200字
+                    </div>
+                   
+                    <div class="text">
+                            每分钟
+                            <div class="text-input">
+                                <input type="text" class="input">
+                            </div>
+                            秒
+                        </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[6].id">
+                <div class="text">
+                        用于筛选出通话中出现情绪异常的场景
+                    </div>
+        </div>
+        <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[7].id">
+                <div class="text">
+                        销售与客户说话交叉时间 <span class="chart">&ge;</span>
+                          <div class="text-input">
+                                <input type="text" class="input">
+                            </div>
+                            秒
+                    </div>
+                    <div class="text">
+                            (交叉时间：抢话中，客户说话的结束时间减去客服说话的开始时间)
+                        </div>
+                    <div class="text">
+                            客服人员的抢话字数
+                            <div class="text-input">
+                                <input type="text" class="input">
+                            </div>
+                            字
+                        </div>
+        </div>
+    </div>
+</template>
+<script>
+    var condition = Vue.extend({
+        template: '#condition',
+        props:['itemcon','conditiontype','cindex','index'],
+        data: function () {
+            return {
+                conditionRule:[
+                    {id:1,text:'出现任意一个'}
+                ],
+                count:[1,2,3,4,5,6,7,8,9,10],
+                range:[
+                    {id:'1',text:'不区分角色'}
+                ]
+            }
+        },         
+        methods:{
+            removeCondition:function(index,cindex){
+                this.$emit('remove',index,cindex);
+            }
+        }  
+    });
+    Vue.component('condition', condition);
+</script>

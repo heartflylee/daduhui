@@ -73,7 +73,8 @@ gulp.task('reserve', function() {
 
 gulp.task('sassCss', function() {
   return gulp
-    .src('./src/scss/*.scss')
+    // .src(['./src/scss/*.scss','./src/scss/**/*.scss'])
+    .src(['./src/scss/*.scss'])
     .pipe(
       changed('./dist/css', {
         hasChanged: changed.compareSha1Digest,

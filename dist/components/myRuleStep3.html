@@ -1,17 +1,211 @@
 <template id="myRuleStep3">
-    
-            <div class="rule-step" v-show="rulestep==3">
-                <button @click="nextStep">next4</button>
+    <div class="rule-step" v-show="rulestep==3">
+        <div class="rule-text">
+            每个规则由若干个条件组成，每个条件包含检测范围和子条件两部分。检测范围用于控制这个条件对待检文本的那部分区生效，子条件用于配置详细的检测内容，有若干个子条件模型可供选择。
+        </div>
+        <div class="rule-condition-wrap" v-for="item,$index in rule">
+            <div class="rule-condition-table">
+                <div class="rule-condition-title">
+                    条件A
+                    <a href="javascript:void(0)" v-if="$index!=0" class="condition-close" @click="removeRule($index)">删除条件</a>
+                </div>
+                <div class="rule-condition-list" v-for="itemCon,$cIndex in item.conditionList">
+                    <div class="rule-condition-name">
+                        条件{{$cIndex+1}}
+                    </div>
+                    <div class="rule-condition-type">
+                        <label class="condition-type-name">子条件类型</label>
+                        <select2 :options="condition" v-model="itemCon.condition"></select2>
+                    </div>
+                    <condition :conditiontype="condition" :itemcon="itemCon" :cindex="$cIndex" :index="$index" @remove="removeCondition"></condition> 
+                </div>
             </div>
-           
+            <div class="mgtb10">
+                <button class="btn btn-default" @click="addCondition($index)">+添加子条件</button>
+            </div>
+            <div class="rule-logic-wrap">
+                <div class="rule-logic-row">
+                    <div class="rule-logic-name">
+                        子条件间逻辑关系
+                    </div>
+                    <div class="rule-logic-info">
+                        <select2 :options="item.ruleLogic" v-model="item.ruleLogicSelect"></select2>
+                        <label class="logic-text">
+                            满足子条件间逻辑即为命中
+                        </label>
+                        <div class="logic-content" v-if="item.ruleLogicSelect == '0'">
+                            <textarea placeholder="点击下方元素添加逻辑关系，例如：（子条件1 并且 子条件2）或者 子条件3" readonly="readonly" v-model="item.logicText"></textarea>
+                            <div class="logic-choose-box">
+                                <div class="logic-choose-li" @click="logic($index,'(')">(</div>
+                                <div class="logic-choose-li" @click="logic($index,')')">)</div>
+                                <div class="logic-choose-li" @click="logic($index,'并且')">并且</div>
+                                <div class="logic-choose-li" @click="logic($index,'或者')">或者</div>
+                                <div class="logic-choose-li" @click="logic($index,'非')">非</div>
+                                <div class="logic-choose-li" v-for="n,$n in item.conditionList" @click="logic($index,'子条件'+($n+1))">子条件{{$n+1}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rule-logic-row">
+                        <div class="rule-logic-name">
+                            检测角色
+                        </div>
+                        <div class="rule-logic-info">
+                            <select2 :options="role"></select2>
+                        </div>
+                    </div>
+                    <div class="rule-logic-row">
+                            <div class="rule-logic-name">
+                                前置条件
+                            </div>
+                            <div class="rule-logic-info">
+                                <select2 :options="before"></select2>
+                            </div>
+                        </div>
+                        <div class="rule-logic-row">
+                                <div class="rule-logic-name">
+                                    检测范围
+                                </div>
+                                <div class="rule-logic-info">
+                                    <select2 :options="role"></select2>
+                                    <label class="logic-text">
+                                        第
+                                        <div class="text-input">
+                                            <input type="text">
+                                        </div>
+                                        句 &nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;第
+                                        <div class="text-input">
+                                                <input type="text">
+                                            </div>
+                                            句
+                                    </label>
+                                </div>
+                            </div>
+            </div>
+            <div class="mgtb10">
+                    <button class="btn btn-primary">保存条件设置</button>
+                </div>
+        </div>
+        <div class="btn-row-box">
+            <button class="btn btn-primary" @click="addRule">+添加条件</button>
+        </div>
+        <div class="rule-logic-wrap">
+                <div class="rule-logic-row">
+                    <div class="rule-logic-name">
+                        条件间逻辑关系
+                    </div>
+                    <div class="rule-logic-info">
+                        <select2 :options="ruleLogic"></select2>
+                        <label class="logic-text">
+                            满足子条件间逻辑即为命中
+                        </label>
+                        
+                    </div>
+                </div>
+                <div class="rule-logic-row">
+                        <div class="rule-logic-name">
+                            在对话分析中
+                        </div>
+                        <div class="rule-logic-info">
+                                <div class="radio-wrap">
+                                <label class="radio-box">
+                                    <input type="radio" name="type">
+                                    <i></i>标注命中规则的内容</label>
+                                    <label class="radio-box">
+                                        <input type="radio" name="type">
+                                        <i></i>不标注</label>
+                                    </div>
+                                    <label class="check-box check-row">
+                                            <input type="checkbox">
+                                            <i></i>
+                                            条件A
+                                        </label>
+                                        <label class="check-box check-row">
+                                                <input type="checkbox">
+                                                <i></i>
+                                                条件B
+                                            </label>
+                        </div>
+                    </div>
+                    <div class="rule-logic-row">
+                        <div class="rule-logic-name">
+                            条件是否计分
+                        </div>
+                        <div class="rule-logic-info">
+                                <div class="radio-wrap">
+                                <label class="radio-box">
+                                    <input type="radio" name="count">
+                                    <i></i>计分</label>
+                                    <label class="radio-box">
+                                        <input type="radio" name="count">
+                                        <i></i>不计分</label>
+                                    </div>
+                            <div class="question-box">
+                                <select2 :options="questionType"></select2>
+                                <select2 :options="questionList"></select2>
+                            </div>
+                            <div class="text">
+                                    计分项将用于待检文件打分，待检文件初始状态100分，文件得分越低越值得重点关注
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        <div class="rule-btn-box">
+            <button class="btn" @click="prevSetp">上一步</button>
+            <button class="btn btn-primary" @click="nextStep">下一步</button>
+        </div>
+    </div>
 </template>
-
 <script>
     var myRuleStep3 = Vue.extend({
         template: '#myRuleStep3',
         props:['rulestep'],
         data: function () {
             return {
+                condition:[
+                    { id: "1", text: "关键词模糊匹配" },
+                    {id:'2',text:'疑问句'},
+                    {id:'3',text:'语义匹配'},
+                    {id:'4',text:'字数相近句'},
+                    {id:'5',text:'静音检测'},
+                    {id:'6',text:'语速检测'},
+                    {id:'7',text:'情绪检测'},
+                    {id:'8',text:'抢话'}
+                ],
+                role:[
+                    {id:1,text:'所有角色'}
+                ],
+                before:[
+                    {id:1,text:'无'}
+                ],
+                range:[
+                    {id:1,text:'指定范围'}
+                ],
+                rule:[
+                    { 
+                        id:'1',
+                        conditionList:[
+                            {
+                                condition:'1',
+                                conditionRule:'1',
+                                tags:'123,234,345',
+                                extend:false,
+                            },
+                            {
+                                condition:'2',
+                                conditionRule:'1',
+                                tags:'',
+                                extend:false
+                            },
+                        ],
+                        logicText:'',
+                        ruleLogic:[],
+                        ruleLogicSelect:'-1'
+                    }
+                ],
+                ruleLogic:["同时不满足条件A、条件B的句子"],
+                questionType:["问题定位"],
+                questionList:["没理解客户问题"]
             }
         },
         methods: {
@@ -21,6 +215,77 @@
             prevSetp:function(){
                 this.$emit('prev');
             },
+            removeRule:function(index){
+                this.$data.rule.splice(index,1);
+            },
+            removeCondition:function(index,cindex){
+                this.$data.rule[index].conditionList.splice(cindex,1);
+                this.changeRuleLogic(index);                
+            },
+            addCondition:function(index){
+                var _self = this;
+                _self.$data.rule[index].conditionList.push(
+                    {
+                        condition:'1',
+                        conditionRule:'1',
+                        tags:'',
+                        extend:false,
+                    }
+                );
+                _self.changeRuleLogic(index);
+            },
+            addRule:function(){
+                this.$data.rule.push(
+                    { 
+                        id:'1',
+                        conditionList:[
+                            {
+                                condition:'1',
+                                conditionRule:'1',
+                                tags:'',
+                                extend:false,
+                            }
+                        ],
+                        logicText:'',
+                        ruleLogic:[],
+                        ruleLogicSelect:'-1'
+                    }
+                );
+                this.changeRuleLogic(this.$data.rule.length-1);
+            },
+            changeRuleLogic:function(index){
+                var _self = this;
+                _self.$data.rule[index].ruleLogic = [];
+                if(_self.$data.rule[index].conditionList.length==1){
+                    _self.$data.rule[index].ruleLogic = [
+                        {text:'选择满足算子1的句子'},
+                        {text:'选择不满足算子1的句子'}
+                    ];
+                }else{
+                    var logic='';
+                    for(var i=0;i<_self.$data.rule[index].conditionList.length;i++){
+                        if(i!=0){
+                            logic += '、';
+                        }
+                        logic+=('算子'+(i+1));
+                    }
+                    var ruleLogic = [
+                        {text: '选择同时满足'+logic+'的句子'},
+                        {text:'选择同时不满足'+logic+'的句子'},
+                        {text:'选择满足'+logic+'任意一个的句子'},
+                        {text:'选择不满足'+logic+'任意一个的句子'},
+                        {id:0,text:'以上都不是，我要自定义逻辑关系'}
+                    ];
+                    _self.$data.rule[index].ruleLogic = ruleLogic;
+
+                }
+            },
+            logic:function(index,val){
+                this.$data.rule[index].logicText += val;
+            }
+        },
+        mounted:function(){
+            this.changeRuleLogic(0);
         }
     });
     Vue.component('myRuleStep3', myRuleStep3);

@@ -10,7 +10,7 @@
             <my-rule-step1 ref="step1" :rulestep="ruleStep" @next="nextStep"></my-rule-step1>
             <my-rule-step2 ref="step2" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step2>
             <my-rule-step3 ref="step3" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step3>
-            <my-rule-step4 ref="step4" :rulestep="ruleStep" @next="nextStep" @prev="prevSetp"></my-rule-step4>
+            <my-rule-step4 ref="step4" :rulestep="ruleStep" @return="returnStart" ></my-rule-step4>
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@
         template: '#myRule',
         data: function () {
             return {
-                ruleStep:1
+                ruleStep:3
             }
         },
         methods: {
@@ -32,6 +32,9 @@
             },
             prevSetp:function(){
                 this.$data.ruleStep--;
+            },
+            returnStart:function(){
+                this.$data.ruleStep =1;
             }
         }
     });

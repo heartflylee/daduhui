@@ -335,7 +335,8 @@ $breakpoints: (
       height: 20px;
       background: url(../img/radio.png);
       margin-right: 5px;
-      vertical-align: top;
+      // vertical-align: top;
+      vertical-align: middle;
     }
     &:checked {
       + i {
@@ -353,7 +354,8 @@ $breakpoints: (
       height: 20px;
       background: url(../img/check.png);
       margin-right: 5px;
-      vertical-align: top;
+      // vertical-align: top;
+      vertical-align: middle;
     }
     &:checked {
       + i {
