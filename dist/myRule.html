@@ -181,13 +181,13 @@
 
 <script>
     Vue.component('select2', {
-        props: ['options', 'value','name','optiondefault'],
+        props: ['options', 'value', 'name', 'optiondefault'],
         template: '#select2-template',
         mounted: function () {
             console.log("123123")
             var vm = this
             $(this.$el)
-            // init select2
+                // init select2
                 .select2({ data: this.options })
                 .val(this.value)
                 .trigger('change')
@@ -203,7 +203,8 @@
             },
             options: function (options) {
                 console.log(options);
-                // update options
+                // update options 
+                $(this.$el).empty();
                 $(this.$el).select2({ data: options })
             }
         },
@@ -607,7 +608,7 @@
                         <label class="condition-type-name">子条件类型</label>
                         <select2 :options="condition" v-model="itemCon.condition"></select2>
                     </div>
-                    <condition :conditiontype="condition" :itemcon="itemCon" :cindex="$cIndex" :index="$index" @remove="removeCondition"></condition> 
+                    <condition :conditiontype="condition" :itemcon="itemCon" :cindex="$cIndex" :index="$index" @remove="removeCondition"></condition>
                 </div>
             </div>
             <div class="mgtb10">
@@ -637,109 +638,109 @@
                     </div>
                 </div>
                 <div class="rule-logic-row">
-                        <div class="rule-logic-name">
-                            检测角色
-                        </div>
-                        <div class="rule-logic-info">
-                            <select2 :options="role"></select2>
-                        </div>
+                    <div class="rule-logic-name">
+                        检测角色
                     </div>
-                    <div class="rule-logic-row">
-                            <div class="rule-logic-name">
-                                前置条件
+                    <div class="rule-logic-info">
+                        <select2 :options="role"></select2>
+                    </div>
+                </div>
+                <div class="rule-logic-row">
+                    <div class="rule-logic-name">
+                        前置条件
+                    </div>
+                    <div class="rule-logic-info">
+                        <select2 :options="before"></select2>
+                    </div>
+                </div>
+                <div class="rule-logic-row">
+                    <div class="rule-logic-name">
+                        检测范围
+                    </div>
+                    <div class="rule-logic-info">
+                        <select2 :options="role"></select2>
+                        <label class="logic-text">
+                            第
+                            <div class="text-input">
+                                <input type="text">
                             </div>
-                            <div class="rule-logic-info">
-                                <select2 :options="before"></select2>
+                            句 &nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;第
+                            <div class="text-input">
+                                <input type="text">
                             </div>
-                        </div>
-                        <div class="rule-logic-row">
-                                <div class="rule-logic-name">
-                                    检测范围
-                                </div>
-                                <div class="rule-logic-info">
-                                    <select2 :options="role"></select2>
-                                    <label class="logic-text">
-                                        第
-                                        <div class="text-input">
-                                            <input type="text">
-                                        </div>
-                                        句 &nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;第
-                                        <div class="text-input">
-                                                <input type="text">
-                                            </div>
-                                            句
-                                    </label>
-                                </div>
-                            </div>
+                            句
+                        </label>
+                    </div>
+                </div>
             </div>
             <div class="mgtb10">
-                    <button class="btn btn-primary">保存条件设置</button>
-                </div>
+                <button class="btn btn-primary">保存条件设置</button>
+            </div>
         </div>
         <div class="btn-row-box">
             <button class="btn btn-primary" @click="addRule">+添加条件</button>
         </div>
         <div class="rule-logic-wrap">
-                <div class="rule-logic-row">
-                    <div class="rule-logic-name">
-                        条件间逻辑关系
+            <div class="rule-logic-row">
+                <div class="rule-logic-name">
+                    条件间逻辑关系
+                </div>
+                <div class="rule-logic-info">
+                    <select2 :options="ruleLogic"></select2>
+                    <label class="logic-text">
+                        满足子条件间逻辑即为命中
+                    </label>
+
+                </div>
+            </div>
+            <div class="rule-logic-row">
+                <div class="rule-logic-name">
+                    在对话分析中
+                </div>
+                <div class="rule-logic-info">
+                    <div class="radio-wrap">
+                        <label class="radio-box">
+                            <input type="radio" name="type">
+                            <i></i>标注命中规则的内容</label>
+                        <label class="radio-box">
+                            <input type="radio" name="type">
+                            <i></i>不标注</label>
                     </div>
-                    <div class="rule-logic-info">
-                        <select2 :options="ruleLogic"></select2>
-                        <label class="logic-text">
-                            满足子条件间逻辑即为命中
-                        </label>
-                        
+                    <label class="check-box check-row">
+                        <input type="checkbox">
+                        <i></i>
+                        条件A
+                    </label>
+                    <label class="check-box check-row">
+                        <input type="checkbox">
+                        <i></i>
+                        条件B
+                    </label>
+                </div>
+            </div>
+            <div class="rule-logic-row">
+                <div class="rule-logic-name">
+                    条件是否计分
+                </div>
+                <div class="rule-logic-info">
+                    <div class="radio-wrap">
+                        <label class="radio-box">
+                            <input type="radio" name="count">
+                            <i></i>计分</label>
+                        <label class="radio-box">
+                            <input type="radio" name="count">
+                            <i></i>不计分</label>
+                    </div>
+                    <div class="question-box">
+                        <select2 :options="questionType"></select2>
+                        <select2 :options="questionList"></select2>
+                    </div>
+                    <div class="text">
+                        计分项将用于待检文件打分，待检文件初始状态100分，文件得分越低越值得重点关注
                     </div>
                 </div>
-                <div class="rule-logic-row">
-                        <div class="rule-logic-name">
-                            在对话分析中
-                        </div>
-                        <div class="rule-logic-info">
-                                <div class="radio-wrap">
-                                <label class="radio-box">
-                                    <input type="radio" name="type">
-                                    <i></i>标注命中规则的内容</label>
-                                    <label class="radio-box">
-                                        <input type="radio" name="type">
-                                        <i></i>不标注</label>
-                                    </div>
-                                    <label class="check-box check-row">
-                                            <input type="checkbox">
-                                            <i></i>
-                                            条件A
-                                        </label>
-                                        <label class="check-box check-row">
-                                                <input type="checkbox">
-                                                <i></i>
-                                                条件B
-                                            </label>
-                        </div>
-                    </div>
-                    <div class="rule-logic-row">
-                        <div class="rule-logic-name">
-                            条件是否计分
-                        </div>
-                        <div class="rule-logic-info">
-                                <div class="radio-wrap">
-                                <label class="radio-box">
-                                    <input type="radio" name="count">
-                                    <i></i>计分</label>
-                                    <label class="radio-box">
-                                        <input type="radio" name="count">
-                                        <i></i>不计分</label>
-                                    </div>
-                            <div class="question-box">
-                                <select2 :options="questionType"></select2>
-                                <select2 :options="questionList"></select2>
-                            </div>
-                            <div class="text">
-                                    计分项将用于待检文件打分，待检文件初始状态100分，文件得分越低越值得重点关注
-                            </div>
-                        </div>
-                    </div>
             </div>
+        </div>
         <div class="rule-btn-box">
             <button class="btn" @click="prevSetp">上一步</button>
             <button class="btn btn-primary" @click="nextStep">下一步</button>
@@ -749,132 +750,133 @@
 <script>
     var myRuleStep3 = Vue.extend({
         template: '#myRuleStep3',
-        props:['rulestep'],
+        props: ['rulestep'],
         data: function () {
             return {
-                condition:[
+                condition: [
                     { id: "1", text: "关键词模糊匹配" },
-                    {id:'2',text:'疑问句'},
-                    {id:'3',text:'语义匹配'},
-                    {id:'4',text:'字数相近句'},
-                    {id:'5',text:'静音检测'},
-                    {id:'6',text:'语速检测'},
-                    {id:'7',text:'情绪检测'},
-                    {id:'8',text:'抢话'}
+                    { id: '2', text: '疑问句' },
+                    { id: '3', text: '语义匹配' },
+                    { id: '4', text: '字数相近句' },
+                    { id: '5', text: '静音检测' },
+                    { id: '6', text: '语速检测' },
+                    { id: '7', text: '情绪检测' },
+                    { id: '8', text: '抢话' }
                 ],
-                role:[
-                    {id:1,text:'所有角色'}
+                role: [
+                    { id: 1, text: '所有角色' }
                 ],
-                before:[
-                    {id:1,text:'无'}
+                before: [
+                    { id: 1, text: '无' }
                 ],
-                range:[
-                    {id:1,text:'指定范围'}
+                range: [
+                    { id: 1, text: '指定范围' }
                 ],
-                rule:[
-                    { 
-                        id:'1',
-                        conditionList:[
+                rule: [
+                    {
+                        id: '1',
+                        conditionList: [
                             {
-                                condition:'1',
-                                conditionRule:'1',
-                                tags:'123,234,345',
-                                extend:false,
+                                condition: '1',
+                                conditionRule: '1',
+                                tags: '123,234,345',
+                                extend: false,
                             },
                             {
-                                condition:'2',
-                                conditionRule:'1',
-                                tags:'',
-                                extend:false
+                                condition: '2',
+                                conditionRule: '1',
+                                tags: '',
+                                extend: false
                             },
                         ],
-                        logicText:'',
-                        ruleLogic:[],
-                        ruleLogicSelect:'-1'
+                        logicText: '',
+                        ruleLogic: [],
+                        ruleLogicSelect: '-1'
                     }
                 ],
-                ruleLogic:["同时不满足条件A、条件B的句子"],
-                questionType:["问题定位"],
-                questionList:["没理解客户问题"]
+                ruleLogic: ["同时不满足条件A、条件B的句子"],
+                questionType: ["问题定位"],
+                questionList: ["没理解客户问题"]
             }
         },
         methods: {
-            nextStep:function(){
+            nextStep: function () {
                 this.$emit('next');
             },
-            prevSetp:function(){
+            prevSetp: function () {
                 this.$emit('prev');
             },
-            removeRule:function(index){
-                this.$data.rule.splice(index,1);
+            removeRule: function (index) {
+                this.$data.rule.splice(index, 1);
             },
-            removeCondition:function(index,cindex){
-                this.$data.rule[index].conditionList.splice(cindex,1);
-                this.changeRuleLogic(index);                
+            removeCondition: function (index, cindex) {
+                this.$data.rule[index].conditionList.splice(cindex, 1);
+                this.changeRuleLogic(index);
             },
-            addCondition:function(index){
+            addCondition: function (index) {
                 var _self = this;
                 _self.$data.rule[index].conditionList.push(
                     {
-                        condition:'1',
-                        conditionRule:'1',
-                        tags:'',
-                        extend:false,
+                        condition: '1',
+                        conditionRule: '1',
+                        tags: '',
+                        extend: false,
                     }
                 );
                 _self.changeRuleLogic(index);
             },
-            addRule:function(){
+            addRule: function () {
                 this.$data.rule.push(
-                    { 
-                        id:'1',
-                        conditionList:[
+                    {
+                        id: '1',
+                        conditionList: [
                             {
-                                condition:'1',
-                                conditionRule:'1',
-                                tags:'',
-                                extend:false,
+                                condition: '1',
+                                conditionRule: '1',
+                                tags: '',
+                                extend: false,
                             }
                         ],
-                        logicText:'',
-                        ruleLogic:[],
-                        ruleLogicSelect:'-1'
+                        logicText: '',
+                        ruleLogic: [],
+                        ruleLogicSelect: '-1'
                     }
                 );
-                this.changeRuleLogic(this.$data.rule.length-1);
+                this.changeRuleLogic(this.$data.rule.length - 1);
             },
-            changeRuleLogic:function(index){
+            changeRuleLogic: function (index) {
                 var _self = this;
                 _self.$data.rule[index].ruleLogic = [];
-                if(_self.$data.rule[index].conditionList.length==1){
+                if (_self.$data.rule[index].conditionList.length == 1) {
                     _self.$data.rule[index].ruleLogic = [
-                        {text:'选择满足算子1的句子'},
-                        {text:'选择不满足算子1的句子'}
+                        { id: '1', text: '选择满足算子1的句子' },
+                        { id: '2', text: '选择不满足算子1的句子' }
                     ];
-                }else{
-                    var logic='';
-                    for(var i=0;i<_self.$data.rule[index].conditionList.length;i++){
-                        if(i!=0){
+                } else {
+                    var logic = '';
+                    for (var i = 0; i < _self.$data.rule[index].conditionList.length; i++) {
+                        if (i != 0) {
                             logic += '、';
                         }
-                        logic+=('算子'+(i+1));
+                        logic += ('算子' + (i + 1));
                     }
                     var ruleLogic = [
-                        {text: '选择同时满足'+logic+'的句子'},
-                        {text:'选择同时不满足'+logic+'的句子'},
-                        {text:'选择满足'+logic+'任意一个的句子'},
-                        {text:'选择不满足'+logic+'任意一个的句子'},
-                        {id:0,text:'以上都不是，我要自定义逻辑关系'}
+                        { id: '1', text: '选择同时满足' + logic + '的句子' },
+                        { id: '2', text: '选择同时不满足' + logic + '的句子' },
+                        { id: '3', text: '选择满足' + logic + '任意一个的句子' },
+                        { id: '4', text: '选择不满足' + logic + '任意一个的句子' },
+                        { id: 0, text: '以上都不是，我要自定义逻辑关系' }
                     ];
+                    // _self.$data.rule[index].ruleLogic = [];
                     _self.$data.rule[index].ruleLogic = ruleLogic;
 
                 }
             },
-            logic:function(index,val){
+            logic: function (index, val) {
                 this.$data.rule[index].logicText += val;
             }
         },
-        mounted:function(){
+        mounted: function () {
             this.changeRuleLogic(0);
         }
     });
