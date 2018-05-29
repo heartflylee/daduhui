@@ -1,35 +1,35 @@
 <template id="tagInput">
-    <input type="text" v-tags="value">
+    <input type="text" v-model="value" v-tags="value">
 </template>
 <script>
-   var tagInput = Vue.extend({
+    var tagInput = Vue.extend({
         template: '#tagInput',
-        props:['value'],
+        props: ['value'],
         data: function () {
             return {
-                
+
             }
         },
         methods: {
-            
+
         },
-        watch:{
-            value:function(val){
-                console.log(val);
+        watch: {
+            value: function (val) {
+                this.$emit('change', val);
             }
         },
-        directives:{
-            tags:{
-                inserted:function(el,val){
+        directives: {
+            tags: {
+                inserted: function (el, val) {
                     console.log(this);
                     $(el).tagsInput(
-                        {width:'auto',onChange:function(el){
-                            console.log(tagInput.$props);
-                            console.log(tagInput);
-                            val =  $(el).val();
-                            // tagInput.$props.value = $(el).val();
-                    }});
-                }
+                        {
+                            width: 'auto', onChange: function (el) {
+                                $(el)[0].dispatchEvent(new Event('input'));
+                            }
+                        });
+                },
+
             }
         }
     });

@@ -17,7 +17,7 @@
                         <label class="condition-type-name">子条件类型</label>
                         <select2 :options="condition" v-model="itemCon.condition"></select2>
                     </div>
-                    <condition :conditiontype="condition" :itemcon="itemCon" :cindex="$cIndex" :index="$index" @remove="removeCondition"></condition>
+                    <condition ref="condition" :conditiontype="condition" :itemcon="itemCon" :cindex="$cIndex" :index="$index" @remove="removeCondition"></condition>
                 </div>
             </div>
             <div class="mgtb10">

@@ -216,43 +216,42 @@
 </script>
     
      <template id="tagInput">
-    <input type="text" v-tags="value">
+    <input type="text" v-model="value" v-tags="value">
 </template>
 <script>
-   var tagInput = Vue.extend({
+    var tagInput = Vue.extend({
         template: '#tagInput',
-        props:['value'],
+        props: ['value'],
         data: function () {
             return {
-                
+
             }
         },
         methods: {
-            
+
         },
-        watch:{
-            value:function(val){
-                console.log(val);
+        watch: {
+            value: function (val) {
+                this.$emit('change', val);
             }
         },
-        directives:{
-            tags:{
-                inserted:function(el,val){
+        directives: {
+            tags: {
+                inserted: function (el, val) {
                     console.log(this);
                     $(el).tagsInput(
-                        {width:'auto',onChange:function(el){
-                            console.log(tagInput.$props);
-                            console.log(tagInput);
-                            val =  $(el).val();
-                            // tagInput.$props.value = $(el).val();
-                    }});
-                }
+                        {
+                            width: 'auto', onChange: function (el) {
+                                $(el)[0].dispatchEvent(new Event('input'));
+                            }
+                        });
+                },
+
             }
         }
     });
     Vue.component('tagInput', tagInput);
 </script>
-
     <template id="condition">
     <div class="condition-wrap">
         <a href="javaxcript:void(0)" v-if="cindex!=0" class="condition-close" @click="removeCondition(index,cindex)">删除子条件</a>
@@ -288,7 +287,7 @@
                         输入关键词
                     </div>
                     <div class="condition-content-info">
-                        <tag-input :value="itemcon.tags"></tag-input>
+                        <tag-input ref="taginput" @change="tagChange" :value="itemcon.tags"></tag-input>
                         <!-- <input type="text" class="info-tag" v-tags="itemCon.tags" > -->
                     </div>
                 </div>
@@ -307,16 +306,16 @@
                         请输入同义词
                     </div>
                     <div class="extend-list extend-tags">
-                        <tag-input ></tag-input>
+                        <tag-input></tag-input>
                         <button class="btn btn-primary">保存</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[1].id">
-                <div class="text">
-                    用于检测一个句子是否疑问句
-                </div>
+            <div class="text">
+                用于检测一个句子是否疑问句
+            </div>
         </div>
         <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[2].id">
             <div class="text">
@@ -334,96 +333,101 @@
             </div>
         </div>
         <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[3].id">
-                <div class="text">
-                        举例：指定句子“域名出错”，字数差距设为2。则“域名出错”与“域名又出错了”会被该子条件命中
-                    </div>
-                    <div class="info-input">
-                        <input type="text" class="input" placeholder="请输入指定句子">
-                    </div>
-                    <div class="text">
-                        与指定句子的字数差距<span class="chart">&le;</span>
-                        <select2 :options="count"></select2>
-                    </div>
+            <div class="text">
+                举例：指定句子“域名出错”，字数差距设为2。则“域名出错”与“域名又出错了”会被该子条件命中
+            </div>
+            <div class="info-input">
+                <input type="text" class="input" placeholder="请输入指定句子">
+            </div>
+            <div class="text">
+                与指定句子的字数差距
+                <span class="chart">&le;</span>
+                <select2 :options="count"></select2>
+            </div>
         </div>
         <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[4].id">
-                <div class="text">
-                        后一句开始时间 <span class="text-danger"> 减去 </span>前一句结束时间
-                    </div>
-                    <div class="text">
-                        检测范围
-                        <select2 :options="range"></select2>
-                    </div>
-                    <div class="text">
-                            时间间隔
-                            <div class="text-input">
-                                <input type="text" class="input">
-                            </div>
-                            秒
-                        </div>
+            <div class="text">
+                后一句开始时间
+                <span class="text-danger"> 减去 </span>前一句结束时间
+            </div>
+            <div class="text">
+                检测范围
+                <select2 :options="range"></select2>
+            </div>
+            <div class="text">
+                时间间隔
+                <div class="text-input">
+                    <input type="text" class="input">
+                </div>
+                秒
+            </div>
         </div>
         <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[5].id">
-                <div class="text">
-                        正常语速参考：每分钟180-200字
-                    </div>
-                   
-                    <div class="text">
-                            每分钟
-                            <div class="text-input">
-                                <input type="text" class="input">
-                            </div>
-                            秒
-                        </div>
+            <div class="text">
+                正常语速参考：每分钟180-200字
+            </div>
+
+            <div class="text">
+                每分钟
+                <div class="text-input">
+                    <input type="text" class="input">
+                </div>
+                秒
+            </div>
         </div>
         <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[6].id">
-                <div class="text">
-                        用于筛选出通话中出现情绪异常的场景
-                    </div>
+            <div class="text">
+                用于筛选出通话中出现情绪异常的场景
+            </div>
         </div>
         <div class="rule-condition-content" v-if="itemcon.condition == conditiontype[7].id">
-                <div class="text">
-                        销售与客户说话交叉时间 <span class="chart">&ge;</span>
-                          <div class="text-input">
-                                <input type="text" class="input">
-                            </div>
-                            秒
-                    </div>
-                    <div class="text">
-                            (交叉时间：抢话中，客户说话的结束时间减去客服说话的开始时间)
-                        </div>
-                    <div class="text">
-                            客服人员的抢话字数
-                            <div class="text-input">
-                                <input type="text" class="input">
-                            </div>
-                            字
-                        </div>
+            <div class="text">
+                销售与客户说话交叉时间
+                <span class="chart">&ge;</span>
+                <div class="text-input">
+                    <input type="text" class="input">
+                </div>
+                秒
+            </div>
+            <div class="text">
+                (交叉时间：抢话中，客户说话的结束时间减去客服说话的开始时间)
+            </div>
+            <div class="text">
+                客服人员的抢话字数
+                <div class="text-input">
+                    <input type="text" class="input">
+                </div>
+                字
+            </div>
         </div>
     </div>
 </template>
 <script>
     var condition = Vue.extend({
         template: '#condition',
-        props:['itemcon','conditiontype','cindex','index'],
+        props: ['itemcon', 'conditiontype', 'cindex', 'index'],
         data: function () {
             return {
-                conditionRule:[
-                    {id:1,text:'出现任意一个'}
+                conditionRule: [
+                    { id: 1, text: '出现任意一个' }
                 ],
-                count:[1,2,3,4,5,6,7,8,9,10],
-                range:[
-                    {id:'1',text:'不区分角色'}
+                count: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                range: [
+                    { id: '1', text: '不区分角色' }
                 ]
             }
-        },         
-        methods:{
-            removeCondition:function(index,cindex){
-                this.$emit('remove',index,cindex);
+        },
+        methods: {
+            removeCondition: function (index, cindex) {
+                this.$emit('remove', index, cindex);
+            },
+            tagChange: function (val) {
+                this.$props.itemcon.tags = val;
             }
-        }  
+        }
     });
     Vue.component('condition', condition);
 </script>
-
      <template id="myRuleStep1">
             <div class="rule-step" v-show="rulestep<=1">
                 <div class="rule-setup-box" @click="setup(0)">
@@ -608,7 +612,7 @@
                         <label class="condition-type-name">子条件类型</label>
                         <select2 :options="condition" v-model="itemCon.condition"></select2>
                     </div>
-                    <condition :conditiontype="condition" :itemcon="itemCon" :cindex="$cIndex" :index="$index" @remove="removeCondition"></condition>
+                    <condition ref="condition" :conditiontype="condition" :itemcon="itemCon" :cindex="$cIndex" :index="$index" @remove="removeCondition"></condition>
                 </div>
             </div>
             <div class="mgtb10">
