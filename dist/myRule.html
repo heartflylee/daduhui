@@ -216,7 +216,7 @@
 </script>
     
      <template id="tagInput">
-    <input type="text" v-model="value" v-tags="value">
+    <input type="text" ref="tags" v-model="value" v-tags="value">
 </template>
 <script>
     var tagInput = Vue.extend({
@@ -224,21 +224,23 @@
         props: ['value'],
         data: function () {
             return {
-
+               
             }
         },
         methods: {
-
+          
         },
         watch: {
             value: function (val) {
                 this.$emit('change', val);
+                // $(this.$refs.tags).importTags('');
+                $(this.$refs.tags).importTags(val);
+                $(this.$refs.tags)[0].dispatchEvent(new Event('input'));
             }
         },
         directives: {
             tags: {
-                inserted: function (el, val) {
-                    console.log(this);
+                inserted:function (el, val) {
                     $(el).tagsInput(
                         {
                             width: 'auto', onChange: function (el) {
@@ -246,7 +248,6 @@
                             }
                         });
                 },
-
             }
         }
     });
@@ -306,7 +307,7 @@
                         请输入同义词
                     </div>
                     <div class="extend-list extend-tags">
-                        <tag-input></tag-input>
+                        <tag-input :value="itemcon.smalltags"></tag-input>
                         <button class="btn btn-primary">保存</button>
                     </div>
                 </div>
@@ -785,12 +786,14 @@
                                 conditionRule: '1',
                                 tags: '123,234,345',
                                 extend: false,
+                                smalltags:'123123,234234234,123123'
                             },
                             {
                                 condition: '2',
                                 conditionRule: '1',
                                 tags: '',
-                                extend: false
+                                extend: false,
+                                smalltags:'123123,234234234,123123'
                             },
                         ],
                         logicText: '',
